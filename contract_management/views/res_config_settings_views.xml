@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Config Settings View -->
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.contract.management</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="90" />
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Contratos" string="Contratos" name="contract_management" groups="base.group_system">
+                    <block title="Características Opcionales" name="contract_optional_features">
+                        <setting id="contract_template_setting" help="Permite crear y utilizar plantillas base para nuevos contratos.">
+                            <field name="group_contract_template"/>
+                        </setting>
+                        <setting id="contract_tag_setting" help="Permite categorizar los contratos usando etiquetas personalizadas.">
+                            <field name="group_contract_tag"/>
+                        </setting>
+                        <setting id="contract_line_recurrence_setting" help="Permite configurar reglas de facturación diferentes para cada línea individual de un contrato.">
+                            <field name="group_contract_line_recurrence"/>
+                        </setting>
+                        <setting id="contract_modification_rule_setting" help="Habilita la gestión de reglas automáticas para aplicar cambios en lote a múltiples contratos.">
+                            <field name="group_contract_modification_rule"/>
+                        </setting>
+                    </block>
+                    <block title="Motores de Generación" name="contract_generation_engines">
+                        <setting id="contract_sale_invoice_setting" help="Permite generar recurrentemente Facturas de Venta a clientes.">
+                            <field name="group_contract_sale_invoice"/>
+                        </setting>
+                        <setting id="contract_sale_order_setting" help="Permite generar recurrentemente Pedidos de Venta a clientes (instala módulo de OCA).">
+                            <field name="group_contract_sale_order"/>
+                            <div class="content-group" invisible="not group_contract_sale_order">
+                                <div class="mt8 text-muted">
+                                    <field name="module_contract_sale_generation" invisible="1"/>
+                                    Se instalará el módulo de la OCA 'contract_sale_generation'.
+                                </div>
+                            </div>
+                        </setting>
+                        <setting id="contract_purchase_invoice_setting" help="Permite generar recurrentemente Facturas de Compra de proveedores.">
+                            <field name="group_contract_purchase_invoice"/>
+                        </setting>
+                    </block>
+                    <block title="Facturación Avanzada y Pagos" name="contract_advanced_invoicing">
+                        <setting id="contract_invoice_auto_validate_setting" help="Publica (valida) automáticamente las facturas de contrato apenas el sistema las crea.">
+                            <field name="group_contract_invoice_auto_validate"/>
+                        </setting>
+                        <setting id="contract_invoice_start_end_dates_setting" help="Inyecta campos para controlar estrictamente las fechas de inicio y fin en las líneas de factura generadas.">
+                            <field name="module_contract_invoice_start_end_dates"/>
+                        </setting>
+                        <setting id="contract_invoice_manually_setting" help="Agrega un botón para forzar la facturación de un contrato manualmente sin esperar al proceso programado.">
+                            <field name="module_contract_invoice_manually"/>
+                        </setting>
+                        <setting id="contract_payment_mode_setting" help="Integra los Contratos con métodos de pago bancarios y adeudos SEPA.">
+                            <field name="module_contract_payment_mode"/>
+                        </setting>
+                        <setting id="contract_mandate_setting" help="Integra los Contratos con Mandatos Bancarios SEPA (Requiere Métodos de Pago)." invisible="not module_contract_payment_mode">
+                            <field name="module_contract_mandate"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action for Config Settings -->
+    <record id="action_contract_config_settings" model="ir.actions.act_window">
+        <field name="name">Ajustes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'contract_management', 'bin_size': False}</field>
+    </record>
+
+    <!-- Menu Item for Config Settings -->
+    <menuitem id="menu_contract_config_settings" 
+              name="Ajustes" 
+              parent="contract_management.contract_menu_config" 
+              sequence="0" 
+              action="action_contract_config_settings" 
+              groups="base.group_system"/>
+</odoo>
