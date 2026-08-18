@@ -35,6 +35,22 @@ class Contract(models.Model):
 
     category_id = fields.Many2one('contract.category', string="Categoría")
 
+    @api.onchange('category_id')
+    def _onchange_category_id(self):
+        if self.category_id:
+            if self.category_id.contract_template_id:
+                self.contract_template_id = self.category_id.contract_template_id
+            
+            if self.category_id.base_type == 'sale_order':
+                self.contract_type = 'sale'
+                self.generation_type = 'sale'
+            elif self.category_id.base_type == 'sale_invoice':
+                self.contract_type = 'sale'
+                self.generation_type = 'invoice'
+            elif self.category_id.base_type == 'purchase_invoice':
+                self.contract_type = 'purchase'
+                self.generation_type = 'invoice'
+
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('in_progress', 'En Curso'),
