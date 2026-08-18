@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Permitir actualizar la plantilla ignorando el noupdate de OCA -->
+    <function name="write" model="ir.model.data">
+        <value model="ir.model.data" search="[('module', '=', 'contract'), ('name', '=', 'email_contract_template')]"/>
+        <value eval="{'noupdate': False}"/>
+    </function>
+
+    <!-- Sobrescribir la plantilla de correo de OCA -->
+    <record id="contract.email_contract_template" model="mail.template">
+        <field name="name">Contrato (Envío)</field>
+        <field name="subject">{{ object.company_id.name }} - Contrato (Ref {{ object.name or 'n/a' }})</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Hola <t t-out="object.partner_id.name or ''">Cliente</t>,<br/><br/>
+        
+        Adjunto encontrarás el contrato <strong><t t-out="object.name or ''">CSO-0001</t></strong>
+        <t t-if="object.date_start"> con fecha de inicio <strong><t t-out="format_date(object.date_start)">18/08/2026</t></strong></t>.
+        <br/><br/>
+        
+        Puedes revisar y descargar los detalles de tu contrato accediendo al portal en línea a través del siguiente enlace:
+        <br/><br/>
+        
+        <div style="text-align: center; margin: 16px 0px 16px 0px;">
+            <a t-attf-href="/my/contracts/{{ object.id }}?access_token={{ object.access_token }}"
+                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">
+                Ver Contrato
+            </a>
+        </div>
+        <br/>
+        
+        Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos.<br/><br/>
+        
+        Atentamente,<br/>
+        <t t-if="object.user_id">
+            <strong><t t-out="object.user_id.name">Mitchell Admin</t></strong><br/>
+            <span style="color: #888888;"><t t-out="object.user_id.email">admin@yourcompany.example.com</t></span><br/>
+        </t>
+        <t t-else="">
+            <strong><t t-out="object.company_id.name">Tu Empresa</t></strong>
+        </t>
+    </p>
+</div>
+        </field>
+    </record>
+</odoo>

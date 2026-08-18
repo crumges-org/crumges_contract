@@ -43,6 +43,7 @@
             <xpath expr="//group[@name='main']" position="before">
                 <group name="main_custom">
                     <group name="left_column_custom">
+                        <field name="category_id" readonly="1"/>
                         <separator string="Identificación" name="sep_identification"/>
                         <field name="sale_generation_type" invisible="contract_type == 'purchase'" readonly="1"/>
                         <field name="purchase_generation_type" invisible="contract_type == 'sale'" readonly="1"/>
@@ -166,6 +167,14 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
 
+            <xpath expr="//group[@name='group_legend']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='group_id']" position="attributes">
+                <attribute name="string">Cuenta Analítica</attribute>
+            </xpath>
+
 
             <!-- Nomenclatura Genérica (Renombrar "Invoicing" o "Facturas Recurrentes" a "Detalles del Contrato" y "Líneas Recurrentes") -->
             <xpath expr="//page[@name='info']" position="attributes">
@@ -256,11 +265,24 @@
         </field>
     </record>
 
+    <!-- Gantt View -->
+    <record id="contract_view_gantt" model="ir.ui.view">
+        <field name="name">contract.contract.gantt</field>
+        <field name="model">contract.contract</field>
+        <field name="arch" type="xml">
+            <gantt date_start="date_start" date_stop="date_end" string="Contratos" default_group_by="partner_id" color="partner_id">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </gantt>
+        </field>
+    </record>
+
     <!-- ACCIONES DE VENTANA PERSONALIZADAS -->
     <record id="action_customer_invoice_contract" model="ir.actions.act_window">
         <field name="name">Contratos de Facturas de Cliente</field>
         <field name="res_model">contract.contract</field>
-        <field name="view_mode">kanban,list,form,timeline,calendar,activity</field>
+        <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
         <field name="domain">[('contract_type', '=', 'sale'), ('generation_type', '=', 'invoice')]</field>
         <field name="context">{'default_contract_type': 'sale', 'default_generation_type': 'invoice', 'default_sale_generation_type': 'invoice'}</field>
     </record>
@@ -268,7 +290,7 @@
     <record id="action_customer_sale_contract" model="ir.actions.act_window">
         <field name="name">Contratos de Ventas</field>
         <field name="res_model">contract.contract</field>
-        <field name="view_mode">kanban,list,form,timeline,calendar,activity</field>
+        <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
         <field name="domain">[('contract_type', '=', 'sale'), ('generation_type', '=', 'sale')]</field>
         <field name="context">{'default_contract_type': 'sale', 'default_generation_type': 'sale', 'default_sale_generation_type': 'sale'}</field>
     </record>
@@ -276,7 +298,7 @@
     <record id="action_supplier_invoice_contract" model="ir.actions.act_window">
         <field name="name">Contratos de Facturas de Proveedor</field>
         <field name="res_model">contract.contract</field>
-        <field name="view_mode">kanban,list,form,timeline,calendar,activity</field>
+        <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
         <field name="domain">[('contract_type', '=', 'purchase'), ('generation_type', '=', 'invoice')]</field>
         <field name="context">{'default_contract_type': 'purchase', 'default_generation_type': 'invoice', 'default_purchase_generation_type': 'invoice'}</field>
     </record>
@@ -322,6 +344,17 @@
                 <filter string="Fecha de Inicio" name="filter_date_start" date="date_start"/>
                 <filter string="Fecha de Finalización" name="filter_date_end" date="date_end"/>
                 <filter string="Fecha de Próxima Factura" name="filter_next_date" date="recurring_next_date"/>
+                <separator/>
+                <filter string="Estado: Borrador" name="filter_state_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Estado: En Curso" name="filter_state_in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Estado: Pausado" name="filter_state_paused" domain="[('state', '=', 'paused')]"/>
+                <filter string="Estado: Finalizado" name="filter_state_done" domain="[('state', '=', 'done')]"/>
+                <filter string="Estado: Cancelado" name="filter_state_cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Vence en 7 días" name="filter_expiring_d7" domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Vence en 15 días" name="filter_expiring_d15" domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=15)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Vence en 30 días" name="filter_expiring_d30" domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=15)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Vence en 1 año" name="filter_expiring_d365" domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=365)).strftime('%Y-%m-%d'))]"/>
             </xpath>
         </field>
     </record>
@@ -331,5 +364,10 @@
     <menuitem id="contract.sale_contract_manually_create_invoice_menu" active="False"/>
     <menuitem id="contract.purchase_contract_manually_create_invoice_menu" active="False"/>
     <menuitem id="contract.menu_config_contract" active="False"/>
+
+    <!-- Sobrescribir el reporte para asignar un nombre de descarga dinámico -->
+    <record id="contract.report_contract" model="ir.actions.report">
+        <field name="print_report_name">'Contrato %s' % (object.name or object.code)</field>
+    </record>
 
 </odoo>

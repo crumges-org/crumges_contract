@@ -52,6 +52,18 @@
               groups="contract_management.group_contract_purchase_invoice"
               sequence="10"/>
               
+    <record id="action_contract_category_config" model="ir.actions.act_window">
+        <field name="name">Categorías de Contrato</field>
+        <field name="res_model">contract.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    
+    <menuitem id="menu_contract_category_config"
+              name="Categorías de Contrato"
+              parent="contract_menu_config"
+              action="action_contract_category_config"
+              sequence="5"/>
+              
     <record id="action_contract_template" model="ir.actions.act_window">
         <field name="name">Plantillas del Contrato</field>
         <field name="res_model">contract.template</field>

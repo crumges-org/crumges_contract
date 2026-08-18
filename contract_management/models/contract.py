@@ -33,11 +33,14 @@ class Contract(models.Model):
     
     name = fields.Char(default=lambda self: _('New'), copy=False, readonly=True)
 
+    category_id = fields.Many2one('contract.category', string="Categoría")
+
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('in_progress', 'En Curso'),
         ('done', 'Finalizado'),
-        ('cancelled', 'Cancelado')
+        ('cancelled', 'Cancelado'),
+        ('paused', 'Pausado')
     ], string='Estado', default='draft', tracking=True)
 
     @api.model_create_multi
@@ -257,3 +260,150 @@ class Contract(models.Model):
             if any(c.auto_post_invoice for c in contracts):
                 move.action_post()
         return moves
+
+    @api.model
+    def get_global_dashboard_stats(self):
+        from datetime import timedelta
+        
+        today = fields.Date.today()
+        d7 = today + timedelta(days=7)
+        d15 = today + timedelta(days=15)
+        d30 = today + timedelta(days=30)
+        d365 = today + timedelta(days=365)
+        
+        active_contracts = self.search([('state', '=', 'in_progress')])
+        
+        # Conteo de estados globales
+        state_groups = self.read_group([], ['state'], ['state'])
+        state_counts = {g['state']: g['state_count'] for g in state_groups}
+
+        # Contratos con fecha de fin
+        expiring_contracts = active_contracts.filtered(lambda c: c.date_end)
+        
+        exp_7 = len(expiring_contracts.filtered(lambda c: c.date_end <= d7))
+        exp_15 = len(expiring_contracts.filtered(lambda c: d7 < c.date_end <= d15))
+        exp_30 = len(expiring_contracts.filtered(lambda c: d15 < c.date_end <= d30))
+        exp_365 = len(expiring_contracts.filtered(lambda c: d30 < c.date_end <= d365))
+        
+        total_revenue = 0
+        company_currency = self.env.company.currency_id
+        
+        state_revenue = {'draft': 0, 'in_progress': 0, 'paused': 0}
+        for contract in self.search([('state', 'in', ['draft', 'in_progress', 'paused'])]):
+            amount = sum(contract.contract_line_ids.mapped('price_subtotal'))
+            if contract.currency_id and company_currency and contract.currency_id != company_currency:
+                amount = contract.currency_id._convert(amount, company_currency, self.env.company, today)
+            state_revenue[contract.state] += amount
+            if contract.state == 'in_progress':
+                total_revenue += amount
+                
+        total_expiring = exp_7 + exp_15 + exp_30 + exp_365
+            
+        def date_str(d):
+            return d.strftime('%Y-%m-%d')
+            
+        # ==========================================
+        # CALCULADORA DE TENDENCIAS (KPIs)
+        # ==========================================
+        trends = self.env['contract.dashboard.trend'].search([])
+        trend_results = {
+            'active_contracts': None,
+            'total_revenue': None,
+            'expiring_soon': None,
+        }
+        
+        # Helper para calcular métricas en una fecha pasada
+        def _get_metrics_at_date(target_date):
+            domain = [
+                ('state', 'not in', ['draft', 'cancelled']),
+                '|', ('date_start', '=', False), ('date_start', '<=', target_date)
+            ]
+            past_contracts = self.search(domain)
+            # Descartar los que ya habían terminado en esa fecha
+            past_active = past_contracts.filtered(lambda c: not c.date_end or c.date_end >= target_date)
+            
+            past_revenue = 0
+            for c in past_active:
+                amt = sum(c.contract_line_ids.mapped('price_subtotal'))
+                if c.currency_id and company_currency and c.currency_id != company_currency:
+                    amt = c.currency_id._convert(amt, company_currency, self.env.company, target_date)
+                past_revenue += amt
+                
+            past_expiring = len(past_active.filtered(lambda c: c.date_end and c.date_end <= target_date + timedelta(days=30)))
+            
+            return len(past_active), past_revenue, past_expiring
+
+        # Agrupar las reglas de tendencia requeridas
+        required_periods = set(int(t.comparison_period) for t in trends)
+        metrics_history = {}
+        for p in required_periods:
+            metrics_history[p] = _get_metrics_at_date(today - timedelta(days=p))
+            
+        current_metrics = {
+            'active_contracts': len(active_contracts),
+            'total_revenue': total_revenue,
+            'expiring_soon': exp_30 + exp_15 + exp_7 # Todos los menores a 30 días
+        }
+        
+        for metric in trend_results.keys():
+            metric_trends = trends.filtered(lambda t: t.metric_type == metric)
+            for t in metric_trends:
+                period = int(t.comparison_period)
+                past_val = metrics_history[period][0 if metric == 'active_contracts' else 1 if metric == 'total_revenue' else 2]
+                curr_val = current_metrics[metric]
+                
+                # Calcular crecimiento %
+                growth = 0.0
+                if past_val > 0:
+                    growth = ((curr_val - past_val) / past_val) * 100
+                elif curr_val > 0:
+                    growth = 100.0 # Crecimiento infinito desde 0
+                    
+                if t.evaluate_trend(growth):
+                    trend_results[metric] = {
+                        'legend': t.name,
+                        'percentage': round(growth, 1),
+                        'color': t.color,
+                        'details': t.details,
+                    }
+                    break # Tomar la primera regla que coincida (por sequence)
+            
+        # ==========================================
+
+        return {
+            'total_active': current_metrics['active_contracts'],
+            'total_revenue': round(current_metrics['total_revenue'], 2),
+            'total_expiring': total_expiring,
+            'currency_symbol': company_currency.symbol or '$',
+            'trends': trend_results,
+            'state_revenue': {
+                'draft': round(state_revenue.get('draft', 0), 2),
+                'in_progress': round(state_revenue.get('in_progress', 0), 2),
+                'paused': round(state_revenue.get('paused', 0), 2),
+            },
+            'states': {
+                'draft': state_counts.get('draft', 0),
+                'in_progress': state_counts.get('in_progress', 0),
+                'paused': state_counts.get('paused', 0),
+                'done': state_counts.get('done', 0),
+                'cancelled': state_counts.get('cancelled', 0),
+            },
+            'expiring': {
+                'd7': {
+                    'count': exp_7,  
+                    'domain': [('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '<=', date_str(d7))]
+                },
+                'd15': {
+                    'count': exp_15, 
+                    'domain': [('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '>', date_str(d7)), ('date_end', '<=', date_str(d15))]
+                },
+                'd30': {
+                    'count': exp_30, 
+                    'domain': [('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '>', date_str(d15)), ('date_end', '<=', date_str(d30))]
+                },
+                'd365': {
+                    'count': exp_365, 
+                    'domain': [('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '>', date_str(d30)), ('date_end', '<=', date_str(d365))]
+                },
+            }
+        }

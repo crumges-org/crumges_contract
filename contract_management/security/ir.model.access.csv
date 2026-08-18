@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_contract_modification_rule,contract.modification.rule,model_contract_modification_rule,base.group_user,1,1,1,1
 access_contract_modification_log,contract.modification.log,model_contract_modification_log,base.group_user,1,1,1,1
-access_contract_dashboard_card,contract.dashboard.card,model_contract_dashboard_card,base.group_user,1,1,1,1
+access_contract_category,contract.category,model_contract_category,base.group_user,1,1,1,1
+access_contract_dashboard_trend,contract.dashboard.trend,model_contract_dashboard_trend,base.group_user,1,1,1,1

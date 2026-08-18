@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- CONTRATOS ACTIVOS -->
+        <record id="trend_active_excellent" model="contract.dashboard.trend">
+            <field name="name">Crecimiento Fuerte</field>
+            <field name="metric_type">active_contracts</field>
+            <field name="comparison_period">30</field>
+            <field name="operator">&gt;=</field>
+            <field name="percentage">15.0</field>
+            <field name="color">text-success</field>
+            <field name="details">Gran adopción de contratos este último mes.</field>
+            <field name="sequence">1</field>
+        </record>
+        
+        <record id="trend_active_good" model="contract.dashboard.trend">
+            <field name="name">Buen Crecimiento</field>
+            <field name="metric_type">active_contracts</field>
+            <field name="comparison_period">30</field>
+            <field name="operator">&gt;=</field>
+            <field name="percentage">5.0</field>
+            <field name="color">text-success</field>
+            <field name="details">Crecimiento estable de contratos.</field>
+            <field name="sequence">2</field>
+        </record>
+        
+        <record id="trend_active_neutral" model="contract.dashboard.trend">
+            <field name="name">Estable</field>
+            <field name="metric_type">active_contracts</field>
+            <field name="comparison_period">30</field>
+            <field name="operator">&gt;=</field>
+            <field name="percentage">0.0</field>
+            <field name="color">text-dark</field>
+            <field name="details">No hubo pérdida neta de contratos.</field>
+            <field name="sequence">3</field>
+        </record>
+        
+        <record id="trend_active_bad" model="contract.dashboard.trend">
+            <field name="name">Baja Retención</field>
+            <field name="metric_type">active_contracts</field>
+            <field name="comparison_period">30</field>
+            <field name="operator">&lt;</field>
+            <field name="percentage">0.0</field>
+            <field name="color">text-danger</field>
+            <field name="details">Hemos perdido más contratos de los que ganamos.</field>
+            <field name="sequence">4</field>
+        </record>
+
+        <!-- INGRESOS -->
+        <record id="trend_revenue_good" model="contract.dashboard.trend">
+            <field name="name">Buen Crecimiento</field>
+            <field name="metric_type">total_revenue</field>
+            <field name="comparison_period">30</field>
+            <field name="operator">&gt;=</field>
+            <field name="percentage">5.0</field>
+            <field name="color">text-success</field>
+            <field name="details">Los ingresos recurrentes están aumentando saludablemente.</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="trend_revenue_bad" model="contract.dashboard.trend">
+            <field name="name">Caída de Ingresos</field>
+            <field name="metric_type">total_revenue</field>
+            <field name="comparison_period">30</field>
+            <field name="operator">&lt;</field>
+            <field name="percentage">0.0</field>
+            <field name="color">text-danger</field>
+            <field name="details">El valor total de contratos activos ha disminuido.</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <!-- VENCIMIENTOS -->
+        <record id="trend_expiring_bad" model="contract.dashboard.trend">
+            <field name="name">Alerta de Renovaciones</field>
+            <field name="metric_type">expiring_soon</field>
+            <field name="comparison_period">30</field>
+            <field name="operator">&gt;=</field>
+            <field name="percentage">15.0</field>
+            <field name="color">text-danger</field>
+            <field name="details">Muchos contratos por vencer. El equipo de ventas debería enfocarse en renovaciones.</field>
+            <field name="sequence">1</field>
+        </record>
+        
+        <record id="trend_expiring_good" model="contract.dashboard.trend">
+            <field name="name">Buena Retención</field>
+            <field name="metric_type">expiring_soon</field>
+            <field name="comparison_period">30</field>
+            <field name="operator">&lt;</field>
+            <field name="percentage">5.0</field>
+            <field name="color">text-success</field>
+            <field name="details">Pocos contratos en riesgo de vencimiento cercano.</field>
+            <field name="sequence">2</field>
+        </record>
+    </data>
+</odoo>
