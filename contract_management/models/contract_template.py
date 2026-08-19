@@ -1,7 +1,8 @@
 from odoo import models, fields, api
 
 class ContractTemplate(models.Model):
-    _inherit = 'contract.template'
+    _name = 'contract.template'
+    _inherit = ['contract.template', 'analytic.mixin']
 
     sale_autoconfirm = fields.Boolean(
         string="Confirmar Pedidos Automáticamente",
@@ -140,3 +141,10 @@ class ContractTemplate(models.Model):
         
     def action_open_all(self):
         return self._get_action(None)
+
+    @api.onchange('analytic_distribution')
+    def _onchange_analytic_distribution_header(self):
+        """Propaga la distribución analítica de la cabecera a todas las líneas."""
+        if self.analytic_distribution:
+            for line in self.contract_line_ids:
+                line.analytic_distribution = self.analytic_distribution

@@ -1,8 +1,10 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
+from markupsafe import Markup
 
 class Contract(models.Model):
-    _inherit = "contract.contract"
+    _name = "contract.contract"
+    _inherit = ["contract.contract", "analytic.mixin"]
 
     # Nomenclatura Genérica: En lugar de usar términos de "factura" en el código custom, 
     # preferimos términos genéricos.
@@ -274,15 +276,15 @@ class Contract(models.Model):
     def _prepare_invoice(self, date_invoice, journal=None):
         vals = super()._prepare_invoice(date_invoice, journal=journal)
         
-        narration = ""
+        narration = Markup("")
         if self.terms_and_conditions:
             narration += self.terms_and_conditions
-            
+
         if self.note:
             if narration:
-                narration += "<br/><br/>"
-            narration += f"<b>Notas Internas:</b><br/>{self.note}"
-            
+                narration += Markup("<br/><br/>")
+            narration += Markup("<b>Notas Internas:</b><br/>") + self.note
+
         if narration:
             vals['narration'] = narration
             
@@ -467,3 +469,19 @@ class Contract(models.Model):
                 },
             }
         }
+
+    @api.onchange('contract_template_id')
+    def _onchange_contract_template_id(self):
+        super()._onchange_contract_template_id()
+        if self.contract_template_id and self.contract_template_id.analytic_distribution:
+            self.analytic_distribution = self.contract_template_id.analytic_distribution
+            self._onchange_analytic_distribution_header()
+
+    @api.onchange('analytic_distribution')
+    def _onchange_analytic_distribution_header(self):
+        """Propaga la distribución analítica de la cabecera a todas las líneas."""
+        if self.analytic_distribution:
+            for line in self.contract_line_ids:
+                line.analytic_distribution = self.analytic_distribution
+            for line in self.contract_line_fixed_ids:
+                line.analytic_distribution = self.analytic_distribution

@@ -152,6 +152,7 @@
                         <group string="Automatización">
                             <field name="sale_autoconfirm" invisible="contract_type != 'sale' or generation_type != 'sale'"/>
                             <field name="auto_post_invoice" invisible="generation_type != 'invoice'"/>
+                            <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting" options="{'product_field': 'product_id', 'business_domain': 'contract'}"/>
                         </group>
                         <group string="Organización y Diseño">
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>

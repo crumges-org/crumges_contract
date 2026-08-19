@@ -69,6 +69,7 @@
                     
                     <group name="right_column_custom">
                         <separator string="Clasificación y Contexto" name="sep_classification"/>
+                        <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting" options="{'product_field': 'product_id', 'business_domain': 'contract'}"/>
                         <separator string="Fechas del Contrato" name="sep_dates"/>
                     </group>
                 </group>
@@ -187,7 +188,7 @@
             </xpath>
 
             <xpath expr="//field[@name='group_id']" position="attributes">
-                <attribute name="string">Cuenta Analítica</attribute>
+                <attribute name="invisible">1</attribute>
             </xpath>
 
 
@@ -228,6 +229,13 @@
                 <attribute name="required">0</attribute>
             </xpath>
 
+            <!-- Propagar distribución analítica a nuevas líneas creadas manualmente -->
+            <xpath expr="//field[@name='contract_line_ids']" position="attributes">
+                <attribute name="context">{'default_analytic_distribution': analytic_distribution}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='contract_line_fixed_ids']" position="attributes">
+                <attribute name="context">{'default_analytic_distribution': analytic_distribution}</attribute>
+            </xpath>
 
         </field>
     </record>
