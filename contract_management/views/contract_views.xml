@@ -34,6 +34,9 @@
             </xpath>
 
             <!-- Campo de estado invisible para controlar accesos -->
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="icon" widget="fontawesome" class="oe_inline me-2" placeholder="Icono"/>
+            </xpath>
             <xpath expr="//field[@name='name']" position="after">
                 <field name="state" invisible="1"/>
             </xpath>
@@ -43,7 +46,6 @@
             <xpath expr="//group[@name='main']" position="before">
                 <group name="main_custom">
                     <group name="left_column_custom">
-                        <field name="category_id" readonly="1"/>
                         <separator string="Identificación" name="sep_identification"/>
                         <field name="sale_generation_type" invisible="contract_type == 'purchase'" readonly="1"/>
                         <field name="purchase_generation_type" invisible="contract_type == 'sale'" readonly="1"/>
@@ -163,8 +165,21 @@
                 <xpath expr="//field[@name='journal_id']" position="move"/>
             </xpath>
 
+            <xpath expr="//notebook" position="before">
+                <field name="description" placeholder="Descripción del contrato..."/>
+            </xpath>
+
             <xpath expr="//page[@name='invoicing']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//page[@name='info']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//field[@name='contract_line_ids']" position="after">
+                <field name="terms_and_conditions" nolabel="1" placeholder="Términos y condiciones..."/>
+                <field name="note" nolabel="1" placeholder="Notas internas..."/>
             </xpath>
 
             <xpath expr="//group[@name='group_legend']" position="attributes">
@@ -235,6 +250,7 @@
         <field name="model">contract.contract</field>
         <field name="arch" type="xml">
             <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="icon"/>
                 <field name="name"/>
                 <field name="contract_template_id" groups="contract_management.group_contract_template"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="contract_management.group_contract_tag"/>
@@ -248,6 +264,7 @@
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">
                                     <strong class="o_kanban_record_title">
+                                        <i t-if="record.icon.raw_value" t-attf-class="fa #{record.icon.raw_value} me-2"/>
                                         <field name="name"/>
                                     </strong>
                                 </div>
@@ -399,7 +416,7 @@
         <field name="inherit_id" ref="contract.contract_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='contract_type']" position="after">
-                <field name="generation_type" widget="radio" options="{'horizontal': True}"/>
+                <field name="generation_type" widget="radio" options="{'horizontal': True}" invisible="contract_type == 'purchase'"/>
             </xpath>
 
             <xpath expr="//field[@name='contract_line_ids']/list" position="attributes">

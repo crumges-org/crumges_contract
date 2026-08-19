@@ -82,7 +82,8 @@ class ContractLine(models.Model):
                 line.automatic_price = line.contract_id.contract_type == "sale"
 
 class ContractTemplateLine(models.Model):
-    _inherit = 'contract.template.line'
+    _name = 'contract.template.line'
+    _inherit = ['contract.template.line', 'analytic.mixin']
 
     product_template_id = fields.Many2one(
         'product.template',

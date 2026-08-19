@@ -2,21 +2,24 @@
 <odoo>
     <data noupdate="1">
         
-        <record id="category_sale_invoice" model="contract.category">
+        <record id="template_sale_invoice" model="contract.template">
             <field name="name">Contratos de facturas de venta</field>
-            <field name="base_type">sale_invoice</field>
+            <field name="contract_type">sale</field>
+            <field name="generation_type">invoice</field>
             <field name="color">2</field>
         </record>
 
-        <record id="category_purchase_invoice" model="contract.category">
+        <record id="template_purchase_invoice" model="contract.template">
             <field name="name">Contratos de facturas de compra</field>
-            <field name="base_type">purchase_invoice</field>
+            <field name="contract_type">purchase</field>
+            <field name="generation_type">invoice</field>
             <field name="color">3</field>
         </record>
 
-        <record id="category_sale_order" model="contract.category">
+        <record id="template_sale_order" model="contract.template">
             <field name="name">Contratos de venta (Pedidos)</field>
-            <field name="base_type">sale_order</field>
+            <field name="contract_type">sale</field>
+            <field name="generation_type">sale</field>
             <field name="color">4</field>
         </record>
 

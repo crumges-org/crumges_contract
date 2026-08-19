@@ -33,23 +33,7 @@ class Contract(models.Model):
     
     name = fields.Char(default=lambda self: _('New'), copy=False, readonly=True)
 
-    category_id = fields.Many2one('contract.category', string="Categoría")
 
-    @api.onchange('category_id')
-    def _onchange_category_id(self):
-        if self.category_id:
-            if self.category_id.contract_template_id:
-                self.contract_template_id = self.category_id.contract_template_id
-            
-            if self.category_id.base_type == 'sale_order':
-                self.contract_type = 'sale'
-                self.generation_type = 'sale'
-            elif self.category_id.base_type == 'sale_invoice':
-                self.contract_type = 'sale'
-                self.generation_type = 'invoice'
-            elif self.category_id.base_type == 'purchase_invoice':
-                self.contract_type = 'purchase'
-                self.generation_type = 'invoice'
 
     state = fields.Selection([
         ('draft', 'Borrador'),
@@ -99,6 +83,22 @@ class Contract(models.Model):
             }
         else:
             self.contract_template_id = self.safe_template_id
+            
+            # Apply contract_type and generation_type logic from the template
+            self.contract_type = self.safe_template_id.contract_type
+            # Handle the generation_type (it could be defined in the template or default to invoice)
+            self.generation_type = getattr(self.safe_template_id, 'generation_type', 'invoice')
+            
+            # Propagate text fields
+            if self.safe_template_id.description:
+                self.description = self.safe_template_id.description
+            if self.safe_template_id.icon:
+                self.icon = self.safe_template_id.icon
+            if self.safe_template_id.note:
+                self.note = self.safe_template_id.note
+            if self.safe_template_id.terms_and_conditions:
+                self.terms_and_conditions = self.safe_template_id.terms_and_conditions
+            
             self.safe_template_id = False
 
     def action_in_progress(self):
@@ -147,6 +147,21 @@ class Contract(models.Model):
         compute="_compute_sale_generation_type",
         inverse="_inverse_sale_generation_type"
     )
+
+    description = fields.Html(
+        string="Descripción / Propósito"
+    )
+    icon = fields.Char(
+        string="Icono"
+    )
+
+    terms_and_conditions = fields.Html(
+        string="Términos y Condiciones"
+    )
+    note = fields.Html(
+        string="Notas Internas"
+    )
+
 
     @api.depends('generation_type')
     def _compute_sale_generation_type(self):
@@ -248,13 +263,42 @@ class Contract(models.Model):
         for rec in self:
             if rec.add_period_legend and rec.period_legend_location == 'note':
                 legend_note = rec.contract_line_ids.filtered(
-                    lambda l: l.display_type == 'line_note' and l.name and
-                    ("#START# al #END#" in l.name or "#INVOICEMONTHNAME#" in l.name)
+                    lambda l: l.display_type == 'line_note' and l.name and 
+                              l.name.startswith(rec.period_legend_text or "")
                 )
                 if legend_note:
                     max_seq = max(rec.contract_line_ids.filtered(lambda l: l.id != legend_note[0].id).mapped('sequence')) if len(rec.contract_line_ids) > 1 else 10
                     if legend_note[0].sequence <= max_seq:
                         legend_note[0].sequence = max_seq + 1
+
+    def _prepare_invoice(self, date_invoice, journal=None):
+        vals = super()._prepare_invoice(date_invoice, journal=journal)
+        
+        narration = ""
+        if self.terms_and_conditions:
+            narration += self.terms_and_conditions
+            
+        if self.note:
+            if narration:
+                narration += "<br/><br/>"
+            narration += f"<b>Notas Internas:</b><br/>{self.note}"
+            
+        if narration:
+            vals['narration'] = narration
+            
+        return vals
+
+    def _prepare_sale(self, date_ref):
+        vals = super()._prepare_sale(date_ref)
+        if self.terms_and_conditions:
+            vals['note'] = self.terms_and_conditions
+        # Usamos try/except por si el módulo que agrega internal_note a sales no está o cambia en el futuro
+        try:
+            if self.note:
+                vals['internal_note'] = self.note
+        except Exception:
+            pass
+        return vals
         return res
 
     # Extensión del Cron: Para evitar que Odoo genere documentos de contratos en borrador,
