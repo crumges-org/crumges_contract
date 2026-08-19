@@ -4,7 +4,7 @@
     "author": "Crumges",
     "website": "https://crumges.com",
     "category": "Sales/Contracts",
-    "depends": ["contract", "contract_sale_generation", "web_timeline", "base_setup"],
+    "depends": ["contract", "contract_sale_generation", "web_timeline", "base_setup", "crumges_generic_variant_wizard"],
     "data": [
         "security/contract_groups.xml",
         "security/ir.model.access.csv",

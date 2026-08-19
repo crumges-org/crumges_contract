@@ -184,13 +184,36 @@
                 <attribute name="string">Líneas Recurrentes</attribute>
             </xpath>
 
-            <!-- Hacer el Producto obligatorio si se generan Pedidos de Venta -->
+            <!-- Reemplazar Búsqueda de Producto por Plantilla -->
+            <xpath expr="//field[@name='contract_line_fixed_ids']//field[@name='product_id']" position="before">
+                <field name="is_configurable_product" column_invisible="1"/>
+                <field name="variant_description" column_invisible="1"/>
+                <field name="product_template_id" 
+                       string="Producto" 
+                       widget="generic_variant_many2one"
+                       options="{'no_create': True}"
+                       required="parent.generation_type == 'sale'"/>
+            </xpath>
+            <xpath expr="//field[@name='contract_line_ids']//field[@name='product_id']" position="before">
+                <field name="is_configurable_product" column_invisible="1"/>
+                <field name="variant_description" column_invisible="1"/>
+                <field name="product_template_id" 
+                       string="Producto" 
+                       widget="generic_variant_many2one"
+                       options="{'no_create': True}"
+                       required="parent.generation_type == 'sale'"/>
+            </xpath>
+
             <xpath expr="//field[@name='contract_line_fixed_ids']//field[@name='product_id']" position="attributes">
-                <attribute name="required">parent.generation_type == 'sale'</attribute>
+                <attribute name="column_invisible">1</attribute>
+                <attribute name="required">0</attribute>
             </xpath>
             <xpath expr="//field[@name='contract_line_ids']//field[@name='product_id']" position="attributes">
-                <attribute name="required">parent.generation_type == 'sale'</attribute>
+                <attribute name="column_invisible">1</attribute>
+                <attribute name="required">0</attribute>
             </xpath>
+
+
         </field>
     </record>
 
@@ -368,6 +391,48 @@
     <!-- Sobrescribir el reporte para asignar un nombre de descarga dinámico -->
     <record id="contract.report_contract" model="ir.actions.report">
         <field name="print_report_name">'Contrato %s' % (object.name or object.code)</field>
+    </record>
+    <!-- Vistas de Plantilla de Contrato para mostrar generation_type -->
+    <record id="contract_template_form_view_inherit" model="ir.ui.view">
+        <field name="name">contract.template.form.management</field>
+        <field name="model">contract.template</field>
+        <field name="inherit_id" ref="contract.contract_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='contract_type']" position="after">
+                <field name="generation_type" widget="radio" options="{'horizontal': True}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='contract_line_ids']/list" position="attributes">
+                <attribute name="editable">bottom</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='contract_line_ids']//field[@name='product_id']" position="before">
+                <field name="is_configurable_product" column_invisible="1"/>
+                <field name="variant_description" column_invisible="1"/>
+                <field name="product_template_id" 
+                       string="Producto" 
+                       widget="generic_variant_many2one"
+                       options="{'no_create': True}"
+                       required="parent.generation_type == 'sale'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='contract_line_ids']//field[@name='product_id']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+                <attribute name="required">0</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="contract_template_tree_view_inherit" model="ir.ui.view">
+        <field name="name">contract.template.tree.management</field>
+        <field name="model">contract.template</field>
+        <field name="inherit_id" ref="contract.contract_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='contract_type']" position="before">
+                <field name="generation_type"/>
+            </xpath>
+        </field>
     </record>
 
 </odoo>

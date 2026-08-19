@@ -1,6 +1,7 @@
 from . import contract
 from . import contract_modification
 from . import contract_line
+from . import contract_line_wizard
 from . import res_config_settings
 from . import contract_category
 from . import account_move
