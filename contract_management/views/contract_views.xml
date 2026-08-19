@@ -178,9 +178,12 @@
                 <attribute name="invisible">1</attribute>
             </xpath>
             
-            <xpath expr="//field[@name='contract_line_ids']" position="after">
+            <xpath expr="//field[@name='note']" position="before">
                 <field name="terms_and_conditions" nolabel="1" placeholder="Términos y condiciones..."/>
-                <field name="note" nolabel="1" placeholder="Notas internas..."/>
+            </xpath>
+            <xpath expr="//field[@name='note']" position="attributes">
+                <attribute name="nolabel">1</attribute>
+                <attribute name="placeholder">Notas internas...</attribute>
             </xpath>
 
             <xpath expr="//group[@name='group_legend']" position="attributes">
