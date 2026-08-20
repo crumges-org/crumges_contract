@@ -259,8 +259,18 @@ class Contract(models.Model):
                             'sequence': max_seq + 1,
                         })
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for record in records:
+            self.env['contract.modification.rule'].evaluate_rules(record, 'create', {})
+        return records
+
     def write(self, vals):
+        old_vals = {rec.id: {k: rec[k] for k in vals if k in rec._fields} for rec in self}
         res = super().write(vals)
+        for rec in self:
+            self.env['contract.modification.rule'].evaluate_rules(rec, 'write', vals, old_vals.get(rec.id, {}))
         # Asegurar que si la leyenda es tipo nota, siempre esté al final (mayor secuencia)
         for rec in self:
             if rec.add_period_legend and rec.period_legend_location == 'note':

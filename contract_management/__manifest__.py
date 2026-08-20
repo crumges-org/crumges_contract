@@ -3,6 +3,7 @@
     "version": "18.0.1.0.0",
     "author": "Crumges",
     "website": "https://crumges.com",
+    "license": "AGPL-3",
     "category": "Sales/Contracts",
     "depends": ["contract", "contract_sale_generation", "web_timeline", "base_setup", "crumges_generic_variant_wizard", "crumges_web_widget_fontawesome"],
     "data": [
@@ -22,7 +23,8 @@
         "views/sale_order_views.xml",
         "views/contract_portal_templates.xml",
         "views/contract_report_templates.xml",
-        "data/mail_template_data.xml"
+        "data/mail_template_data.xml",
+        "data/contract_modification_data.xml"
     ],
     "assets": {
         "web.assets_backend": [

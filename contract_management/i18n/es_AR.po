@@ -1,0 +1,242 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* contract_management
+#
+#. module: contract_management
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-20 13:00+0000\n"
+"PO-Revision-Date: 2026-08-20 13:00+0000\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+"Language: es_AR\n"
+
+#. module: contract_management
+#: model:ir.model,name:contract_management.model_contract_modification_rule
+msgid "Contract Modification Rule"
+msgstr "Regla de Modificación de Contrato"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_rule__name
+msgid "Rule Name"
+msgstr "Nombre de Regla"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_rule__model_id
+msgid "Model"
+msgstr "Modelo"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_rule__field_id
+msgid "Field to Audit"
+msgstr "Campo a Auditar"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_rule__action_type
+msgid "Action"
+msgstr "Acción"
+
+#. module: contract_management
+#: model:ir.model.fields.selection,name:contract_management.selection__contract_modification_rule__action_type__create
+msgid "Creation"
+msgstr "Alta (Creación)"
+
+#. module: contract_management
+#: model:ir.model.fields.selection,name:contract_management.selection__contract_modification_rule__action_type__write
+msgid "Modification"
+msgstr "Modificación (Edición)"
+
+#. module: contract_management
+#: model:ir.model.fields.selection,name:contract_management.selection__contract_modification_rule__action_type__unlink
+msgid "Deletion"
+msgstr "Baja (Eliminación)"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_rule__message_template
+msgid "Message Template"
+msgstr "Plantilla de Mensaje"
+
+#. module: contract_management
+#: model:ir.model.fields,help:contract_management.field_contract_modification_rule__message_template
+msgid "Use variables like ${object.name}, ${old_value}, ${new_value}."
+msgstr "Use variables como ${object.name}, ${old_value}, ${new_value}."
+
+#. module: contract_management
+#: model:ir.model,name:contract_management.model_contract_modification_log
+msgid "Contract Modification Log"
+msgstr "Registro de Modificación de Contrato"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_log__contract_id
+msgid "Contract"
+msgstr "Contrato"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_log__rule_id
+msgid "Applied Rule"
+msgstr "Regla Aplicada"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_log__message
+msgid "Message"
+msgstr "Mensaje"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_log__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: contract_management
+#: model:ir.model.fields,field_description:contract_management.field_contract_modification_log__user_id
+msgid "User"
+msgstr "Usuario"
+
+#. module: contract_management
+#: model:ir.actions.act_window,name:contract_management.action_contract_modification_rule
+msgid "Contract Audit Rules"
+msgstr "Reglas de Auditoría de Contratos"
+
+#. module: contract_management
+#: model:ir.ui.menu,name:contract_management.menu_contract_modification_rule
+msgid "Modification Rules"
+msgstr "Reglas de Modificación"
+
+#. module: contract_management
+#: model:ir.model.fields,name:contract_management.contract_mod_rule_state
+msgid "State Change"
+msgstr "Cambio de Estado"
+
+#. module: contract_management
+#: model:ir.model.fields,name:contract_management.contract_mod_rule_price
+msgid "Price Change"
+msgstr "Cambio de Precio"
+
+#. module: contract_management
+#: model:ir.model.fields,name:contract_management.contract_mod_rule_quantity
+msgid "Quantity Change"
+msgstr "Cambio de Cantidad"
+
+#. module: contract_management
+#: model:ir.model.fields,name:contract_management.contract_mod_rule_discount
+msgid "Discount Change"
+msgstr "Cambio de Descuento"
+
+#. module: contract_management
+#: model:ir.model.fields,name:contract_management.contract_mod_rule_date_end
+msgid "End Date Modification"
+msgstr "Modificación de Fecha de Finalización"
+
+#. module: contract_management
+#: model:ir.model.fields,name:contract_management.contract_mod_rule_next_date
+msgid "Next Generation Date Modification"
+msgstr "Modificación de Próxima Generación"
+
+#. module: contract_management
+#, python-format
+msgid "Empty"
+msgstr "Vacío"
+
+#. module: contract_management
+#, python-format
+msgid "Audit Rules"
+msgstr "Reglas de Auditoría"
+
+#. module: contract_management
+#, python-format
+msgid "Audit Rule"
+msgstr "Regla de Auditoría"
+
+#. module: contract_management
+#, python-format
+msgid "e.g. Changed from $&#8203;{old_value} to $&#8203;{new_value}"
+msgstr "Ej: Cambió de $&#8203;{old_value} a $&#8203;{new_value}"
+
+#. module: contract_management
+#, python-format
+msgid "💡 Template Variables Guide:"
+msgstr "💡 Guía de Variables para la Plantilla:"
+
+#. module: contract_management
+#, python-format
+msgid "Use Cases and Examples:"
+msgstr "Casos de Uso y Ejemplos:"
+
+#. module: contract_management
+#, python-format
+msgid "$&#8203;{object.name}: Replaced by the name or description of the audited record (e.g. Contract Name or Line Description)."
+msgstr "$&#8203;{object.name}: Se reemplaza por el nombre o descripción del registro auditado (ej. Nombre del Contrato o Descripción de la Línea)."
+
+#. module: contract_management
+#, python-format
+msgid "$&#8203;{old_value}: The previous value of the field before the modification."
+msgstr "$&#8203;{old_value}: El valor que tenía el campo antes de ser modificado por el usuario."
+
+#. module: contract_management
+#, python-format
+msgid "$&#8203;{new_value}: The new value just saved by the user."
+msgstr "$&#8203;{new_value}: El nuevo valor que el usuario acaba de guardar."
+
+#. module: contract_management
+#, python-format
+msgid "State Change (Contract):"
+msgstr "Cambio de Estado (Contrato):"
+
+#. module: contract_management
+#, python-format
+msgid "Price Change (Line):"
+msgstr "Cambio de Precio (Línea):"
+
+#. module: contract_management
+#, python-format
+msgid "End Date:"
+msgstr "Fecha de Vencimiento:"
+
+#. module: contract_management
+#, python-format
+msgid "The contract state changed from $&#8203;{old_value} to $&#8203;{new_value}."
+msgstr "El estado del contrato cambió de $&#8203;{old_value} a $&#8203;{new_value}."
+
+#. module: contract_management
+#, python-format
+msgid "The price of the item \"$&#8203;{object.name}\" was modified from $&#8203;{old_value} to $&#8203;{new_value}."
+msgstr "Se modificó el precio del ítem \"$&#8203;{object.name}\" de $&#8203;{old_value} a $&#8203;{new_value}."
+
+#. module: contract_management
+#, python-format
+msgid "The contract end date was postponed from $&#8203;{old_value} to $&#8203;{new_value}."
+msgstr "La fecha de finalización del contrato se pospuso de $&#8203;{old_value} a $&#8203;{new_value}."
+
+#. module: contract_management
+#, python-format
+msgid "The contract state changed from ${old_value} to ${new_value}."
+msgstr "El estado del contrato cambió de ${old_value} a ${new_value}."
+
+#. module: contract_management
+#, python-format
+msgid "The price of the item \"${object.name}\" was modified from \"${old_value}\" to \"${new_value}\"."
+msgstr "Se modificó el precio de la línea de \"${old_value}\" a \"${new_value}\"."
+
+#. module: contract_management
+#, python-format
+msgid "The quantity of the item \"${object.name}\" was modified from \"${old_value}\" to \"${new_value}\"."
+msgstr "Se modificó la cantidad de la línea de \"${old_value}\" a \"${new_value}\"."
+
+#. module: contract_management
+#, python-format
+msgid "The discount of the item \"${object.name}\" was modified from \"${old_value}\" to \"${new_value}\"."
+msgstr "Se modificó el descuento de la línea de \"${old_value}\" a \"${new_value}\"."
+
+#. module: contract_management
+#, python-format
+msgid "The contract end date changed from \"${old_value}\" to \"${new_value}\"."
+msgstr "La fecha de finalización del contrato cambió de \"${old_value}\" a \"${new_value}\"."
+
+#. module: contract_management
+#, python-format
+msgid "The next generation date of the line changed from \"${old_value}\" to \"${new_value}\"."
+msgstr "La próxima fecha de generación de la línea cambió de \"${old_value}\" a \"${new_value}\"."

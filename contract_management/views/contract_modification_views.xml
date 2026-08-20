@@ -4,7 +4,7 @@
         <field name="name">contract.modification.rule.tree</field>
         <field name="model">contract.modification.rule</field>
         <field name="arch" type="xml">
-            <list string="Reglas de Auditoría">
+            <list string="Audit Rules">
                 <field name="name"/>
                 <field name="model_id"/>
                 <field name="field_id"/>
@@ -17,7 +17,7 @@
         <field name="name">contract.modification.rule.form</field>
         <field name="model">contract.modification.rule</field>
         <field name="arch" type="xml">
-            <form string="Regla de Auditoría">
+            <form string="Audit Rule">
                 <sheet>
                     <group>
                         <group>
@@ -30,8 +30,22 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Plantilla del Mensaje">
-                            <field name="message_template" placeholder="Ej: Cambió de ${old_value} a ${new_value}"/>
+                        <page string="Message Template">
+                            <field name="message_template" placeholder="e.g. Changed from $&#8203;{old_value} to $&#8203;{new_value}"/>
+                            <div class="mt-4 alert alert-info" role="alert">
+                                <strong>💡 Template Variables Guide:</strong>
+                                <ul class="mt-2 mb-3">
+                                    <li><code>$&#8203;{object.name}</code>: Replaced by the name or description of the audited record (e.g. Contract Name or Line Description).</li>
+                                    <li><code>$&#8203;{old_value}</code>: The previous value of the field before the modification.</li>
+                                    <li><code>$&#8203;{new_value}</code>: The new value just saved by the user.</li>
+                                </ul>
+                                <strong>Use Cases and Examples:</strong>
+                                <ul class="mt-2 mb-0">
+                                    <li><em>State Change (Contract):</em> The contract state changed from $&#8203;{old_value} to $&#8203;{new_value}.</li>
+                                    <li><em>Price Change (Line):</em> The price of the item "$&#8203;{object.name}" was modified from $&#8203;{old_value} to $&#8203;{new_value}.</li>
+                                    <li><em>End Date:</em> The contract end date was postponed from $&#8203;{old_value} to $&#8203;{new_value}.</li>
+                                </ul>
+                            </div>
                         </page>
                     </notebook>
                 </sheet>
@@ -40,13 +54,13 @@
     </record>
 
     <record id="action_contract_modification_rule" model="ir.actions.act_window">
-        <field name="name">Reglas de Auditoría de Contratos</field>
+        <field name="name">Contract Audit Rules</field>
         <field name="res_model">contract.modification.rule</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_contract_modification_rule"
-              name="Reglas de Modificación"
+              name="Modification Rules"
               parent="contract_management.contract_menu_config"
               action="action_contract_modification_rule"
               sequence="30"

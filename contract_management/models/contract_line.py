@@ -3,6 +3,20 @@ from odoo import models, api, fields
 class ContractLine(models.Model):
     _inherit = 'contract.line'
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for record in records:
+            self.env['contract.modification.rule'].evaluate_rules(record, 'create', {})
+        return records
+
+    def write(self, vals):
+        old_vals = {rec.id: {k: rec[k] for k in vals if k in rec._fields} for rec in self}
+        res = super().write(vals)
+        for rec in self:
+            self.env['contract.modification.rule'].evaluate_rules(rec, 'write', vals, old_vals.get(rec.id, {}))
+        return res
+
     recurring_invoicing_type = fields.Selection(
         [
             ("pre-paid", "Al inicio del periodo"),
