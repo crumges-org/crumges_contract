@@ -95,6 +95,20 @@ class ContractLine(models.Model):
             else:
                 line.automatic_price = line.contract_id.contract_type == "sale"
 
+    @api.constrains('recurring_next_date', 'date_end', 'last_date_invoiced')
+    def _check_recurring_next_date_recurring_invoices(self):
+        draft_lines = self.filtered(lambda l: l.contract_id.state == 'draft')
+        active_lines = self - draft_lines
+        if active_lines and hasattr(super(ContractLine, active_lines), '_check_recurring_next_date_recurring_invoices'):
+            super(ContractLine, active_lines)._check_recurring_next_date_recurring_invoices()
+
+    @api.constrains('date_start', 'recurring_next_date')
+    def _check_recurring_next_date_start_date(self):
+        draft_lines = self.filtered(lambda l: l.contract_id.state == 'draft')
+        active_lines = self - draft_lines
+        if active_lines and hasattr(super(ContractLine, active_lines), '_check_recurring_next_date_start_date'):
+            super(ContractLine, active_lines)._check_recurring_next_date_start_date()
+
 class ContractTemplateLine(models.Model):
     _name = 'contract.template.line'
     _inherit = ['contract.template.line', 'analytic.mixin']

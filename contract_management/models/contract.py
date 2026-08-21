@@ -19,6 +19,22 @@ class Contract(models.Model):
     )
     
     recurring_next_date = fields.Date(string="Próxima Generación")
+    prorating_legend = fields.Char(compute='_compute_prorating_legend')
+
+    @api.depends('date_start', 'recurring_next_date')
+    def _compute_prorating_legend(self):
+        for rec in self:
+            if rec.date_start and rec.recurring_next_date:
+                if rec.recurring_next_date < rec.date_start:
+                    rec.prorating_legend = "⚠️ Incoherencia: La fecha de próxima generación no puede ser anterior a la fecha de inicio."
+                elif rec.date_start.day == rec.recurring_next_date.day:
+                    rec.prorating_legend = "Periodos regulares. No se requiere prorrateo inicial ya que los ciclos son meses absolutos (Ej. del 15 al 14)."
+                elif rec.recurring_next_date.day == 1:
+                    rec.prorating_legend = "Alineación el día 1. El primer periodo será un ciclo corto prorrateado automáticamente por el sistema."
+                else:
+                    rec.prorating_legend = False
+            else:
+                rec.prorating_legend = False
     last_date_invoiced = fields.Date(string="Última Generación")
     
     auto_post_invoice = fields.Boolean(
@@ -106,6 +122,11 @@ class Contract(models.Model):
     def action_in_progress(self):
         for rec in self:
             rec.state = 'in_progress'
+            # Forzar las validaciones que fueron ignoradas en estado borrador
+            if hasattr(rec.contract_line_ids, '_check_recurring_next_date_recurring_invoices'):
+                rec.contract_line_ids._check_recurring_next_date_recurring_invoices()
+            if hasattr(rec.contract_line_ids, '_check_recurring_next_date_start_date'):
+                rec.contract_line_ids._check_recurring_next_date_start_date()
 
     def action_draft(self):
         for rec in self:

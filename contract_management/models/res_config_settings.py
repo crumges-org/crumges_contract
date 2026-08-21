@@ -23,6 +23,10 @@ class ResConfigSettings(models.TransientModel):
         implied_group="contract_management.group_contract_modification_rule",
         help="Habilita el menú de Reglas de Modificación para automatizar cambios en los contratos."
     )
+    module_contract_variable_qty_prorated = fields.Boolean(
+        string="Prorrateo de Cantidades Variables",
+        help="Permite aplicar reglas de prorrateo a las fórmulas y consumos variables a mitad de mes."
+    )
 
     # Bloque: Motores de Generación
     group_contract_sale_invoice = fields.Boolean(

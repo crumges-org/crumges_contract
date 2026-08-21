@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="contract_variable_quantity.menu_contract_quantity_formula" model="ir.ui.menu">
+        <field name="parent_id" ref="contract_management.contract_menu_config"/>
+    </record>
+</odoo>

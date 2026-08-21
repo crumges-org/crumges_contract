@@ -20,10 +20,10 @@
                                     <a t-attf-href="/report/pdf/contract.report_contract/#{contract.id}?access_token=#{contract.access_token}" class="btn btn-primary w-100 text-start" title="Descargar PDF">
                                         <i class="fa fa-download me-1"/> Descargar PDF
                                     </a>
-                                    <a t-if="contract.invoice_count > 0" t-attf-href="/my/invoices" class="btn btn-primary w-100 text-start">
+                                    <a t-if="contract.invoice_count > 0" t-attf-href="/my/invoices?contract_id=#{contract.id}" class="btn btn-primary w-100 text-start">
                                         <i class="fa fa-file-text-o me-1"/> <t t-esc="contract.invoice_count"/> Facturas
                                     </a>
-                                    <a t-if="contract.sale_count > 0" t-attf-href="/my/orders" class="btn btn-primary w-100 text-start">
+                                    <a t-if="contract.sale_count > 0" t-attf-href="/my/orders?contract_id=#{contract.id}" class="btn btn-primary w-100 text-start">
                                         <i class="fa fa-shopping-cart me-1"/> <t t-esc="contract.sale_count"/> Ventas
                                     </a>
                                 </div>

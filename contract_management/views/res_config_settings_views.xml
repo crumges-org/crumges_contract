@@ -22,17 +22,20 @@
                         <setting id="contract_modification_rule_setting" help="Habilita la gestión de reglas automáticas para aplicar cambios en lote a múltiples contratos.">
                             <field name="group_contract_modification_rule"/>
                         </setting>
+                        <setting id="contract_variable_qty_prorated_setting" help="Permite aplicar reglas de prorrateo a consumos o plantillas de variables a mitad de mes.">
+                            <field name="module_contract_variable_qty_prorated"/>
+                        </setting>
                     </block>
                     <block title="Motores de Generación" name="contract_generation_engines">
                         <setting id="contract_sale_invoice_setting" help="Permite generar recurrentemente Facturas de Venta a clientes.">
                             <field name="group_contract_sale_invoice"/>
                         </setting>
-                        <setting id="contract_sale_order_setting" help="Permite generar recurrentemente Pedidos de Venta a clientes (instala módulo de OCA).">
+                        <setting id="contract_sale_order_setting" help="Permite generar recurrentemente Pedidos de Venta a clientes.">
                             <field name="group_contract_sale_order"/>
                             <div class="content-group" invisible="not group_contract_sale_order">
                                 <div class="mt8 text-muted">
                                     <field name="module_contract_sale_generation" invisible="1"/>
-                                    Se instalará el módulo de la OCA 'contract_sale_generation'.
+
                                 </div>
                             </div>
                         </setting>

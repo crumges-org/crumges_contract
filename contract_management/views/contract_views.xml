@@ -119,6 +119,7 @@
             </xpath>
             <xpath expr="//field[@name='date_end']" position="after">
                 <xpath expr="//field[@name='recurring_next_date']" position="move"/>
+                <field name="prorating_legend" invisible="not prorating_legend" nolabel="1" class="text-muted" decoration-danger="recurring_next_date &lt; date_start" />
             </xpath>
 
             <!-- Ocultamiento dinámico (generation_type) -->
