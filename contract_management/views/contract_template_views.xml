@@ -1,91 +1,185 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- VISTA KANBAN DEL DASHBOARD -->
     <record id="contract_template_kanban_view" model="ir.ui.view">
         <field name="name">contract.template.kanban</field>
         <field name="model">contract.template</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard o_contract_dashboard" action="action_open_all" type="object" js_class="contract_dashboard_kanban">
-                <field name="icon"/>
-                <field name="active"/>
-                <field name="name"/>
-                <field name="contract_type"/>
-                <field name="generation_type"/>
-                <field name="color"/>
-                <field name="count_draft"/>
-                <field name="count_in_progress"/>
-                <field name="count_done"/>
-                <field name="count_cancelled"/>
-                <field name="count_paused"/>
+            <kanban
+                class="oe_background_grey o_kanban_dashboard o_contract_dashboard"
+                action="action_open_all"
+                type="object"
+                js_class="contract_dashboard_kanban"
+            >
+                <field name="icon" />
+                <field name="active" />
+                <field name="name" />
+                <field name="contract_type" />
+                <field name="generation_type" />
+                <field name="color" />
+                <field name="count_draft" />
+                <field name="count_in_progress" />
+                <field name="count_done" />
+                <field name="count_cancelled" />
+                <field name="count_paused" />
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)}">
-                            <widget name="web_ribbon" title="Archivada" bg_color="bg-danger" invisible="active"/>
-                            
+                            <widget
+                                name="web_ribbon"
+                                title="Archivada"
+                                bg_color="bg-danger"
+                                invisible="active"
+                            />
+
                             <!-- TITULO DE LA TARJETA -->
-                            <div class="o_kanban_card_header d-flex justify-content-between align-items-start">
+                            <div
+                                class="o_kanban_card_header d-flex justify-content-between align-items-start"
+                            >
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary">
                                         <a type="object" name="action_open_all">
-                                            <i t-if="record.icon.raw_value" t-attf-class="fa #{record.icon.raw_value} me-2"/>
-                                            <field name="name"/>
+                                            <i
+                                                t-if="record.icon.raw_value"
+                                                t-attf-class="fa #{record.icon.raw_value} me-2"
+                                            />
+                                            <field name="name" />
                                         </a>
                                     </div>
                                     <div class="o_secondary text-muted">
-                                        <field name="contract_type"/> - <field name="generation_type"/>
+                                        <field name="contract_type" /> - <field
+                                            name="generation_type"
+                                        />
                                     </div>
                                 </div>
                                 <div class="o_dropdown_kanban dropdown">
-                                    <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" data-bs-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                        <span class="fa fa-ellipsis-v"/>
+                                    <a
+                                        class="dropdown-toggle o-no-caret btn"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        data-bs-display="static"
+                                        href="#"
+                                        aria-label="Dropdown menu"
+                                        title="Dropdown menu"
+                                    >
+                                        <span class="fa fa-ellipsis-v" />
                                     </a>
                                     <div class="dropdown-menu" role="menu">
-                                        <a role="menuitem" type="edit" class="dropdown-item">Editar Plantilla</a>
+                                        <a
+                                            role="menuitem"
+                                            type="edit"
+                                            class="dropdown-item"
+                                        >Editar Plantilla</a>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- CONTENIDO DE LA TARJETA -->
                             <div class="container o_kanban_card_content">
                                 <div class="row">
                                     <!-- Boton Principal -->
                                     <div class="col-12 mb-3">
-                                        <button type="object" name="action_open_all" class="btn btn-primary w-100">
-                                            Contratos (<t t-esc="record.count_draft.raw_value + record.count_in_progress.raw_value + record.count_done.raw_value + record.count_cancelled.raw_value + record.count_paused.raw_value"/>)
+                                        <button
+                                            type="object"
+                                            name="action_open_all"
+                                            class="btn btn-primary w-100"
+                                        >
+                                            Contratos (<t
+                                                t-esc="record.count_draft.raw_value + record.count_in_progress.raw_value + record.count_done.raw_value + record.count_cancelled.raw_value + record.count_paused.raw_value"
+                                            />)
                                         </button>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Fila inferior con contadores -->
-                                <div class="row text-center mt-2" style="border-top: 1px solid #dee2e6; padding-top: 10px;">
+                                <div
+                                    class="row text-center mt-2"
+                                    style="border-top: 1px solid #dee2e6; padding-top: 10px;"
+                                >
                                     <div class="col px-1" title="Borrador">
-                                        <a type="object" name="action_open_draft" class="d-block text-decoration-none text-muted">
-                                            <div class="fw-bold"><field name="count_draft"/></div>
-                                            <small style="font-size: 0.7em;">Borrador</small>
+                                        <a
+                                            type="object"
+                                            name="action_open_draft"
+                                            class="d-block text-decoration-none text-muted"
+                                        >
+                                            <div class="fw-bold"><field
+                                                    name="count_draft"
+                                                /></div>
+                                            <small
+                                                style="font-size: 0.7em;"
+                                            >Borrador</small>
                                         </a>
                                     </div>
-                                    <div class="col px-1" title="En Curso" style="border-left: 1px solid #dee2e6;">
-                                        <a type="object" name="action_open_in_progress" class="d-block text-decoration-none text-muted">
-                                            <div class="fw-bold"><field name="count_in_progress"/></div>
-                                            <small style="font-size: 0.7em;">En Curso</small>
+                                    <div
+                                        class="col px-1"
+                                        title="En Curso"
+                                        style="border-left: 1px solid #dee2e6;"
+                                    >
+                                        <a
+                                            type="object"
+                                            name="action_open_in_progress"
+                                            class="d-block text-decoration-none text-muted"
+                                        >
+                                            <div class="fw-bold"><field
+                                                    name="count_in_progress"
+                                                /></div>
+                                            <small
+                                                style="font-size: 0.7em;"
+                                            >En Curso</small>
                                         </a>
                                     </div>
-                                    <div class="col px-1" title="Pausados" style="border-left: 1px solid #dee2e6;">
-                                        <a type="object" name="action_open_paused" class="d-block text-decoration-none text-muted">
-                                            <div class="fw-bold"><field name="count_paused"/></div>
-                                            <small style="font-size: 0.7em;">Pausados</small>
+                                    <div
+                                        class="col px-1"
+                                        title="Pausados"
+                                        style="border-left: 1px solid #dee2e6;"
+                                    >
+                                        <a
+                                            type="object"
+                                            name="action_open_paused"
+                                            class="d-block text-decoration-none text-muted"
+                                        >
+                                            <div class="fw-bold"><field
+                                                    name="count_paused"
+                                                /></div>
+                                            <small
+                                                style="font-size: 0.7em;"
+                                            >Pausados</small>
                                         </a>
                                     </div>
-                                    <div class="col px-1" title="Finalizados" style="border-left: 1px solid #dee2e6;">
-                                        <a type="object" name="action_open_done" class="d-block text-decoration-none text-muted">
-                                            <div class="fw-bold"><field name="count_done"/></div>
-                                            <small style="font-size: 0.7em;">Finalizados</small>
+                                    <div
+                                        class="col px-1"
+                                        title="Finalizados"
+                                        style="border-left: 1px solid #dee2e6;"
+                                    >
+                                        <a
+                                            type="object"
+                                            name="action_open_done"
+                                            class="d-block text-decoration-none text-muted"
+                                        >
+                                            <div class="fw-bold"><field
+                                                    name="count_done"
+                                                /></div>
+                                            <small
+                                                style="font-size: 0.7em;"
+                                            >Finalizados</small>
                                         </a>
                                     </div>
-                                    <div class="col px-1" title="Cancelados" style="border-left: 1px solid #dee2e6;">
-                                        <a type="object" name="action_open_cancelled" class="d-block text-decoration-none text-muted">
-                                            <div class="fw-bold"><field name="count_cancelled"/></div>
-                                            <small style="font-size: 0.7em;">Cancelados</small>
+                                    <div
+                                        class="col px-1"
+                                        title="Cancelados"
+                                        style="border-left: 1px solid #dee2e6;"
+                                    >
+                                        <a
+                                            type="object"
+                                            name="action_open_cancelled"
+                                            class="d-block text-decoration-none text-muted"
+                                        >
+                                            <div class="fw-bold"><field
+                                                    name="count_cancelled"
+                                                /></div>
+                                            <small
+                                                style="font-size: 0.7em;"
+                                            >Cancelados</small>
                                         </a>
                                     </div>
                                 </div>
@@ -101,7 +195,7 @@
     <record id="contract_template_form_view_inherit_extra" model="ir.ui.view">
         <field name="name">contract.template.form.inherit</field>
         <field name="model">contract.template</field>
-        <field name="inherit_id" ref="contract.contract_template_form_view"/>
+        <field name="inherit_id" ref="contract.contract_template_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="before">
                 <header>
@@ -109,19 +203,38 @@
                 </header>
             </xpath>
             <xpath expr="//div[hasclass('oe_title')]" position="before">
-                <widget name="web_ribbon" title="Archivada" bg_color="bg-danger" invisible="active"/>
+                <widget
+                    name="web_ribbon"
+                    title="Archivada"
+                    bg_color="bg-danger"
+                    invisible="active"
+                />
             </xpath>
             <xpath expr="//field[@name='name']" position="before">
-                <field name="icon" widget="fontawesome" class="oe_inline me-2" placeholder="Icono"/>
+                <field
+                    name="icon"
+                    widget="fontawesome"
+                    class="oe_inline me-2"
+                    placeholder="Icono"
+                />
             </xpath>
-            <xpath expr="//div[hasclass('oe_title')]/label[@for='name']" position="attributes">
+            <xpath
+                expr="//div[hasclass('oe_title')]/label[@for='name']"
+                position="attributes"
+            >
                 <attribute name="string">Nombre de Plantilla</attribute>
             </xpath>
-            <xpath expr="//group[@name='group_main_left']/field[@name='contract_type']" position="before">
-                <field name="active" widget="boolean_toggle"/>
+            <xpath
+                expr="//group[@name='group_main_left']/field[@name='contract_type']"
+                position="before"
+            >
+                <field name="active" widget="boolean_toggle" />
             </xpath>
             <!-- 1. Mejorar el bloque principal -->
-            <xpath expr="//group[@name='group_main_left']/field[@name='contract_type']" position="attributes">
+            <xpath
+                expr="//group[@name='group_main_left']/field[@name='contract_type']"
+                position="attributes"
+            >
                 <attribute name="widget">radio</attribute>
                 <attribute name="options">{'horizontal': true}</attribute>
             </xpath>
@@ -131,60 +244,108 @@
                 <page name="billing" string="Facturación y Pagos">
                     <group>
                         <group string="Recurrencia">
-                            <field name="line_recurrence"/>
-                            <label for="recurring_interval" invisible="line_recurrence"/>
+                            <field name="line_recurrence" />
+                            <label
+                                for="recurring_interval"
+                                invisible="line_recurrence"
+                            />
                             <div invisible="line_recurrence" class="o_row">
                                 <span class="me-2">Facturar cada</span>
-                                <field name="recurring_interval" class="oe_inline"/>
-                                <field name="recurring_rule_type" class="oe_inline"/>
+                                <field name="recurring_interval" class="oe_inline" />
+                                <field name="recurring_rule_type" class="oe_inline" />
                             </div>
-                            <field name="recurring_invoicing_type" invisible="line_recurrence"/>
+                            <field
+                                name="recurring_invoicing_type"
+                                invisible="line_recurrence"
+                            />
                         </group>
                         <group string="Condiciones Adicionales">
-                            <field name="payment_term_id"/>
-                            <field name="fiscal_position_id"/>
+                            <field name="payment_term_id" />
+                            <field name="fiscal_position_id" />
                         </group>
                     </group>
                 </page>
-                
+
                 <page name="advanced" string="Configuración Avanzada">
                     <group>
                         <group string="Automatización">
-                            <field name="sale_autoconfirm" invisible="contract_type != 'sale' or generation_type != 'sale'"/>
-                            <field name="auto_post_invoice" invisible="generation_type != 'invoice'"/>
-                            <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting" options="{'product_field': 'product_id', 'business_domain': 'contract'}"/>
+                            <field
+                                name="sale_autoconfirm"
+                                invisible="contract_type != 'sale' or generation_type != 'sale'"
+                            />
+                            <field
+                                name="auto_post_invoice"
+                                invisible="generation_type != 'invoice'"
+                            />
+                            <field
+                                name="analytic_distribution"
+                                widget="analytic_distribution"
+                                groups="analytic.group_analytic_accounting"
+                                options="{'product_field': 'product_id', 'business_domain': 'contract'}"
+                            />
                         </group>
                         <group string="Organización y Diseño">
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="color" widget="color_picker"/>
+                            <field
+                                name="tag_ids"
+                                widget="many2many_tags"
+                                options="{'color_field': 'color'}"
+                            />
+                            <field name="color" widget="color_picker" />
                         </group>
                     </group>
                     <group string="Leyenda de Periodo">
                         <group>
-                            <field name="add_period_legend" widget="boolean_toggle"/>
-                            <field name="period_legend_type" invisible="not add_period_legend" required="add_period_legend"/>
+                            <field name="add_period_legend" widget="boolean_toggle" />
+                            <field
+                                name="period_legend_type"
+                                invisible="not add_period_legend"
+                                required="add_period_legend"
+                            />
                         </group>
                         <group>
-                            <field name="period_legend_location" invisible="not add_period_legend" required="add_period_legend"/>
-                            <field name="period_legend_text" invisible="not add_period_legend" placeholder="Ej: Periodo correspondiente a..."/>
+                            <field
+                                name="period_legend_location"
+                                invisible="not add_period_legend"
+                                required="add_period_legend"
+                            />
+                            <field
+                                name="period_legend_text"
+                                invisible="not add_period_legend"
+                                placeholder="Ej: Periodo correspondiente a..."
+                            />
                         </group>
                     </group>
                 </page>
             </xpath>
             <!-- Add Analytic Distribution to the contract lines notebook -->
-            <xpath expr="//field[@name='contract_line_ids']/list/field[@name='name']" position="after">
-                <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting" options="{'product_field': 'product_id', 'business_domain': 'contract'}"/>
+            <xpath
+                expr="//field[@name='contract_line_ids']/list/field[@name='name']"
+                position="after"
+            >
+                <field
+                    name="analytic_distribution"
+                    widget="analytic_distribution"
+                    groups="analytic.group_analytic_accounting"
+                    options="{'product_field': 'product_id', 'business_domain': 'contract'}"
+                />
             </xpath>
-            
+
             <xpath expr="//field[@name='contract_line_ids']" position="after">
-                <field name="terms_and_conditions" nolabel="1" placeholder="Términos y condiciones..."/>
-                <field name="note" nolabel="1" placeholder="Notas internas..."/>
+                <field
+                    name="terms_and_conditions"
+                    nolabel="1"
+                    placeholder="Términos y condiciones..."
+                />
+                <field name="note" nolabel="1" placeholder="Notas internas..." />
             </xpath>
-            
+
             <xpath expr="//notebook" position="before">
-                <field name="description" placeholder="Descripción de la plantilla..."/>
+                <field
+                    name="description"
+                    placeholder="Descripción de la plantilla..."
+                />
             </xpath>
-            
+
             <!-- Ocultar solapa 'Otra Información' ya que usamos leyenda dinámica -->
             <xpath expr="//page[@name='info']" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -212,27 +373,56 @@
     <record id="contract_template_search_view_inherit" model="ir.ui.view">
         <field name="name">contract.template.search.inherit</field>
         <field name="model">contract.template</field>
-        <field name="inherit_id" ref="contract.contract_template_search_view"/>
+        <field name="inherit_id" ref="contract.contract_template_search_view" />
         <field name="arch" type="xml">
             <!-- Add search fields -->
             <xpath expr="//field[@name='name']" position="after">
-                <field name="tag_ids" string="Etiquetas"/>
+                <field name="tag_ids" string="Etiquetas" />
             </xpath>
             <!-- Add filters -->
             <xpath expr="//filter[@name='contract_type']" position="before">
-                <filter name="inactive" string="Archivado" domain="[('active', '=', False)]" context="{'active_test': False}"/>
-                <separator/>
-                <filter name="filter_sale" string="Venta" domain="[('contract_type', '=', 'sale')]"/>
-                <filter name="filter_purchase" string="Compra" domain="[('contract_type', '=', 'purchase')]"/>
-                <separator/>
-                <filter name="filter_invoice" string="Genera Factura" domain="[('generation_type', '=', 'invoice')]"/>
-                <filter name="filter_sale_order" string="Genera Orden de Venta" domain="[('generation_type', '=', 'sale')]"/>
-                <separator/>
+                <filter
+                    name="inactive"
+                    string="Archivado"
+                    domain="[('active', '=', False)]"
+                    context="{'active_test': False}"
+                />
+                <separator />
+                <filter
+                    name="filter_sale"
+                    string="Venta"
+                    domain="[('contract_type', '=', 'sale')]"
+                />
+                <filter
+                    name="filter_purchase"
+                    string="Compra"
+                    domain="[('contract_type', '=', 'purchase')]"
+                />
+                <separator />
+                <filter
+                    name="filter_invoice"
+                    string="Genera Factura"
+                    domain="[('generation_type', '=', 'invoice')]"
+                />
+                <filter
+                    name="filter_sale_order"
+                    string="Genera Orden de Venta"
+                    domain="[('generation_type', '=', 'sale')]"
+                />
+                <separator />
             </xpath>
             <!-- Add Group by -->
             <xpath expr="//filter[@name='contract_type']" position="after">
-                <filter name="group_generation_type" string="Tipo de Generación" context="{'group_by': 'generation_type'}"/>
-                <filter name="group_active" string="Estado (Activo/Archivado)" context="{'group_by': 'active'}"/>
+                <filter
+                    name="group_generation_type"
+                    string="Tipo de Generación"
+                    context="{'group_by': 'generation_type'}"
+                />
+                <filter
+                    name="group_active"
+                    string="Estado (Activo/Archivado)"
+                    context="{'group_by': 'active'}"
+                />
             </xpath>
         </field>
     </record>

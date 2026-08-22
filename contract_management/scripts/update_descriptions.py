@@ -197,15 +197,20 @@ descriptions = {
             <li>Líneas de Compra: <i>Suscripción Odoo Enterprise</i>, <i>Servidores Google Cloud</i>.</li>
         </ul>
         <p><b>⚠️ Recuerda:</b> Revisa el tipo de cambio oficial si el contrato está en moneda extranjera y ajústalo antes de aprobar la factura de compra.</p>
-    ]]>"""
+    ]]>""",
 }
 
-with open('/home/mario/Documentos/Desarrollo/modulos_de_odoo/creacion_de_modulos/modulos_18/contract_management/data/contract_template_data.xml', 'r', encoding='utf-8') as f:
+with open(
+    "/home/mario/Documentos/Desarrollo/modulos_de_odoo/creacion_de_modulos/modulos_18/contract_management/data/contract_template_data.xml",
+    encoding="utf-8",
+) as f:
     content = f.read()
 
 for template_id, new_desc in descriptions.items():
     # Find the record block
-    block_pattern = f'(<record id="{template_id}" model="contract.template">.*?</record>)'
+    block_pattern = (
+        f'(<record id="{template_id}" model="contract.template">.*?</record>)'
+    )
     block_match = re.search(block_pattern, content, flags=re.DOTALL)
     if block_match:
         block = block_match.group(1)
@@ -213,9 +218,16 @@ for template_id, new_desc in descriptions.items():
         desc_pattern = r'<field name="description"><!\[CDATA\[.*?\]\]></field>'
         new_field = f'<field name="description">{new_desc}</field>'
         new_block = re.sub(desc_pattern, new_field, block, flags=re.DOTALL)
-        
+
         content = content.replace(block, new_block)
 
-with open('/home/mario/Documentos/Desarrollo/modulos_de_odoo/creacion_de_modulos/modulos_18/contract_management/data/contract_template_data.xml', 'w', encoding='utf-8') as f:
+with open(
+    "/home/mario/Documentos/Desarrollo/modulos_de_odoo/creacion_de_modulos/modulos_18/contract_management/data/contract_template_data.xml",
+    "w",
+    encoding="utf-8",
+) as f:
     f.write(content)
-print("Updated XML descriptions successfully.")
+import logging
+
+logger = logging.getLogger(__name__)
+logger.info("Updated XML descriptions successfully.")

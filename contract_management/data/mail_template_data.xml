@@ -1,45 +1,115 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- Permitir actualizar la plantilla ignorando el noupdate de OCA -->
     <function name="write" model="ir.model.data">
-        <value model="ir.model.data" search="[('module', '=', 'contract'), ('name', '=', 'email_contract_template')]"/>
-        <value eval="{'noupdate': False}"/>
+        <value
+            model="ir.model.data"
+            search="[('module', '=', 'contract'), ('name', '=', 'email_contract_template')]"
+        />
+        <value eval="{'noupdate': False}" />
     </function>
 
     <!-- Sobrescribir la plantilla de correo de OCA -->
     <record id="contract.email_contract_template" model="mail.template">
         <field name="name">Contrato (Envío)</field>
-        <field name="subject">{{ object.company_id.name }} - Contrato (Ref {{ object.name or 'n/a' }})</field>
+        <field
+            name="subject"
+        >{{ object.company_id.name }} - Contrato (Ref {{ object.name or 'n/a' }})</field>
         <field name="body_html" type="html">
 <div style="margin: 0px; padding: 0px;">
     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-        Hola <t t-out="object.partner_id.name or ''">Cliente</t>,<br/><br/>
-        
-        Adjunto encontrarás el contrato <strong><t t-out="object.name or ''">CSO-0001</t></strong>
-        <t t-if="object.date_start"> con fecha de inicio <strong><t t-out="format_date(object.date_start)">18/08/2026</t></strong></t>.
-        <br/><br/>
-        
+        Hola <t t-out="object.partner_id.name or ''">Cliente</t>,<br /><br />
+
+        Adjunto encontrarás el contrato <strong><t
+                            t-out="object.name or ''"
+                        >CSO-0001</t></strong>
+        <t t-if="object.date_start"> con fecha de inicio <strong><t
+                                t-out="format_date(object.date_start)"
+                            >18/08/2026</t></strong></t>.
+        <br /><br />
+
         Puedes revisar y descargar los detalles de tu contrato accediendo al portal en línea a través del siguiente enlace:
-        <br/><br/>
-        
+        <br /><br />
+
         <div style="text-align: center; margin: 16px 0px 16px 0px;">
-            <a t-attf-href="/my/contracts/{{ object.id }}?access_token={{ object.access_token }}"
-                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;">
+            <a
+                            t-attf-href="/my/contracts/{{ object.id }}?access_token={{ object.access_token }}"
+                            style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+                        >
                 Ver Contrato
             </a>
         </div>
-        <br/>
-        
-        Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos.<br/><br/>
-        
-        Atentamente,<br/>
+        <br />
+
+        Si tienes alguna pregunta o necesitas asistencia, no dudes en contactarnos.<br
+                    /><br />
+
+        Atentamente,<br />
         <t t-if="object.user_id">
-            <strong><t t-out="object.user_id.name">Mitchell Admin</t></strong><br/>
-            <span style="color: #888888;"><t t-out="object.user_id.email">admin@yourcompany.example.com</t></span><br/>
+            <strong><t t-out="object.user_id.name">Mitchell Admin</t></strong><br />
+            <span style="color: #888888;"><t
+                                t-out="object.user_id.email"
+                            >admin@yourcompany.example.com</t></span><br />
         </t>
         <t t-else="">
             <strong><t t-out="object.company_id.name">Tu Empresa</t></strong>
         </t>
+    </p>
+</div>
+        </field>
+    </record>
+
+    <!-- Plantilla para Notificaciones de Modificaciones Agrupadas -->
+    <record id="mail_template_contract_modification_grouped" model="mail.template">
+        <field name="name">Contrato: Modificaciones Agrupadas</field>
+        <field
+            name="subject"
+        >{{ object.company_id.name }} - Actualización en tu contrato (Ref {{ object.name or 'n/a' }})</field>
+        <field
+            name="email_from"
+        >{{ (object.user_id.email_formatted or object.company_id.catchall_formatted) }}</field>
+        <field name="partner_to">{{ object.partner_id.id }}</field>
+        <field name="model_id" ref="contract.model_contract_contract" />
+        <field name="auto_delete" eval="True" />
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Hola <t t-out="object.partner_id.name or ''">Cliente</t>,<br /><br />
+
+        Te escribimos para notificarte que se han realizado las siguientes actualizaciones en tu contrato <strong
+                    ><t t-out="object.name or ''">CSO-0001</t></strong>:<br /><br />
+    </p>
+
+    <table
+                    style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; text-align: left;"
+                >
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th style="padding: 8px; border: 1px solid #dddddd;">Fecha</th>
+                <th style="padding: 8px; border: 1px solid #dddddd;">Modificación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <t
+                            t-foreach="object.modification_ids.filtered(lambda m: not m.sent and not m.is_internal)"
+                            t-as="mod"
+                        >
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #dddddd;"><t
+                                        t-out="format_date(mod.date)"
+                                    /></td>
+                    <td style="padding: 8px; border: 1px solid #dddddd;"><t
+                                        t-out="mod.description"
+                                    /></td>
+                </tr>
+            </t>
+        </tbody>
+    </table>
+    <br />
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Si tienes alguna pregunta, no dudes en contactarnos.<br /><br />
+        Atentamente,<br />
+        <strong><t t-out="object.company_id.name">Tu Empresa</t></strong>
     </p>
 </div>
         </field>

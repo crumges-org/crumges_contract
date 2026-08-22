@@ -1,60 +1,101 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data noupdate="1">
-        
+
         <!-- Estado -->
         <record id="contract_mod_rule_state" model="contract.modification.rule">
             <field name="name">State Change</field>
-            <field name="model_id" search="[('model', '=', 'contract.contract')]"/>
-            <field name="field_id" search="[('model_id.model', '=', 'contract.contract'), ('name', '=', 'state')]"/>
+            <field name="model_id" search="[('model', '=', 'contract.contract')]" />
+            <field
+                name="field_id"
+                search="[('model_id.model', '=', 'contract.contract'), ('name', '=', 'state')]"
+            />
             <field name="action_type">write</field>
-            <field name="message_template">The contract state changed from ${old_value} to ${new_value}.</field>
+            <field
+                name="message_template"
+            >The contract state changed from ${old_value} to ${new_value}.</field>
         </record>
 
         <!-- Precio -->
         <record id="contract_mod_rule_price" model="contract.modification.rule">
             <field name="name">Price Change</field>
-            <field name="model_id" search="[('model', '=', 'contract.line')]"/>
-            <field name="field_id" search="[('model_id.model', '=', 'contract.line'), ('name', '=', 'price_unit')]"/>
+            <field name="model_id" search="[('model', '=', 'contract.line')]" />
+            <field
+                name="field_id"
+                search="[('model_id.model', '=', 'contract.line'), ('name', '=', 'price_unit')]"
+            />
             <field name="action_type">write</field>
-            <field name="message_template">The price of the item "${object.name}" was modified from "${old_value}" to "${new_value}".</field>
+            <field
+                name="message_template"
+            >The price of the item "${object.name}" was modified from "${old_value}" to "${new_value}".</field>
         </record>
 
         <!-- Cantidad -->
         <record id="contract_mod_rule_quantity" model="contract.modification.rule">
             <field name="name">Quantity Change</field>
-            <field name="model_id" search="[('model', '=', 'contract.line')]"/>
-            <field name="field_id" search="[('model_id.model', '=', 'contract.line'), ('name', '=', 'quantity')]"/>
+            <field name="model_id" search="[('model', '=', 'contract.line')]" />
+            <field
+                name="field_id"
+                search="[('model_id.model', '=', 'contract.line'), ('name', '=', 'quantity')]"
+            />
             <field name="action_type">write</field>
-            <field name="message_template">The quantity of the item "${object.name}" was modified from "${old_value}" to "${new_value}".</field>
+            <field
+                name="message_template"
+            >The quantity of the item "${object.name}" was modified from "${old_value}" to "${new_value}".</field>
         </record>
 
         <!-- Descuento -->
         <record id="contract_mod_rule_discount" model="contract.modification.rule">
             <field name="name">Discount Change</field>
-            <field name="model_id" search="[('model', '=', 'contract.line')]"/>
-            <field name="field_id" search="[('model_id.model', '=', 'contract.line'), ('name', '=', 'discount')]"/>
+            <field name="model_id" search="[('model', '=', 'contract.line')]" />
+            <field
+                name="field_id"
+                search="[('model_id.model', '=', 'contract.line'), ('name', '=', 'discount')]"
+            />
             <field name="action_type">write</field>
-            <field name="message_template">The discount of the item "${object.name}" was modified from "${old_value}" to "${new_value}".</field>
+            <field
+                name="message_template"
+            >The discount of the item "${object.name}" was modified from "${old_value}" to "${new_value}".</field>
         </record>
 
         <!-- Fecha Fin Contrato -->
         <record id="contract_mod_rule_date_end" model="contract.modification.rule">
             <field name="name">End Date Modification</field>
-            <field name="model_id" search="[('model', '=', 'contract.contract')]"/>
-            <field name="field_id" search="[('model_id.model', '=', 'contract.contract'), ('name', '=', 'date_end')]"/>
+            <field name="model_id" search="[('model', '=', 'contract.contract')]" />
+            <field
+                name="field_id"
+                search="[('model_id.model', '=', 'contract.contract'), ('name', '=', 'date_end')]"
+            />
             <field name="action_type">write</field>
-            <field name="message_template">The contract end date changed from "${old_value}" to "${new_value}".</field>
+            <field
+                name="message_template"
+            >The contract end date changed from "${old_value}" to "${new_value}".</field>
         </record>
 
         <!-- Próxima Fecha de Generación -->
         <record id="contract_mod_rule_next_date" model="contract.modification.rule">
             <field name="name">Next Generation Date Modification</field>
-            <field name="model_id" search="[('model', '=', 'contract.line')]"/>
-            <field name="field_id" search="[('model_id.model', '=', 'contract.line'), ('name', '=', 'recurring_next_date')]"/>
+            <field name="model_id" search="[('model', '=', 'contract.line')]" />
+            <field
+                name="field_id"
+                search="[('model_id.model', '=', 'contract.line'), ('name', '=', 'recurring_next_date')]"
+            />
             <field name="action_type">write</field>
-            <field name="message_template">The next generation date of the line changed from "${old_value}" to "${new_value}".</field>
+            <field
+                name="message_template"
+            >The next generation date of the line changed from "${old_value}" to "${new_value}".</field>
         </record>
 
     </data>
+    <!-- Regla por defecto para reemplazar lineas -->
+    <record id="rule_contract_line_replace" model="contract.modification.rule">
+        <field name="name">Reemplazo de Línea / Upgrade</field>
+        <field name="model_id" ref="contract_management.model_contract_line" />
+        <field name="action_type">replace</field>
+        <field name="is_internal" eval="False" />
+        <field
+            name="message_template"
+        >🚀 ¡Tu servicio fue actualizado! Pasaste de ${old_quantity}x ${old_product} a ${new_quantity}x ${new_product} a partir del ${date}. Verás un ajuste proporcional en tu próxima factura mensual.</field>
+    </record>
+
 </odoo>

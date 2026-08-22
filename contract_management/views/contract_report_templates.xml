@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- Sobrescribir el reporte base de OCA -->
-    <template id="report_contract_document_inherit" inherit_id="contract.report_contract_document">
-        
+    <template
+        id="report_contract_document_inherit"
+        inherit_id="contract.report_contract_document"
+    >
+
         <!-- Reemplazar el header_info para añadir generación y recurrencia -->
         <xpath expr="//div[@id='header_info']" position="replace">
             <h2 class="mt-4 mb-4">
-                <span t-if="o.contract_type == 'sale'">Contrato de Venta #<span t-field="o.name"/></span>
-                <span t-if="o.contract_type == 'purchase'">Contrato de Compra #<span t-field="o.name"/></span>
+                <span t-if="o.contract_type == 'sale'">Contrato de Venta #<span
+                        t-field="o.name"
+                    /></span>
+                <span t-if="o.contract_type == 'purchase'">Contrato de Compra #<span
+                        t-field="o.name"
+                    /></span>
             </h2>
             <div class="row mt-4 mb-4" id="header_info">
                 <div class="col-auto mw-100 mb-2">
@@ -20,27 +27,53 @@
                 </div>
                 <div class="col-auto mw-100 mb-2">
                     <strong>Fecha de Inicio: </strong>
-                    <p class="m-0" t-field="o.date_start" t-options='{"widget": "date"}'/>
+                    <p
+                        class="m-0"
+                        t-field="o.date_start"
+                        t-options='{"widget": "date"}'
+                    />
                 </div>
-                <div class="col-auto mw-100 mb-2" t-if="o.recurring_next_date and not o.line_recurrence">
+                <div
+                    class="col-auto mw-100 mb-2"
+                    t-if="o.recurring_next_date and not o.line_recurrence"
+                >
                     <strong>Próxima Generación: </strong>
-                    <p class="m-0" t-field="o.recurring_next_date" t-options='{"widget": "date"}'/>
+                    <p
+                        class="m-0"
+                        t-field="o.recurring_next_date"
+                        t-options='{"widget": "date"}'
+                    />
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="col-12">
-                    <span class="badge rounded-pill text-bg-light border px-3 py-2 text-start text-dark">
-                        <i class="fa fa-refresh me-1"/>
-                        <t t-if="o.contract_type == 'sale' and o.generation_type == 'invoice'">Facturas de venta</t>
-                        <t t-elif="o.contract_type == 'sale' and o.generation_type == 'sale'">Pedidos de venta</t>
-                        <t t-elif="o.contract_type == 'purchase' and o.generation_type == 'invoice'">Facturas de compra</t>
+                    <span
+                        class="badge rounded-pill text-bg-light border px-3 py-2 text-start text-dark"
+                    >
+                        <i class="fa fa-refresh me-1" />
+                        <t
+                            t-if="o.contract_type == 'sale' and o.generation_type == 'invoice'"
+                        >Facturas de venta</t>
+                        <t
+                            t-elif="o.contract_type == 'sale' and o.generation_type == 'sale'"
+                        >Pedidos de venta</t>
+                        <t
+                            t-elif="o.contract_type == 'purchase' and o.generation_type == 'invoice'"
+                        >Facturas de compra</t>
                         <t t-else="">Contrato</t>
-                        
+
                         <t t-if="not o.line_recurrence">
-                            <span class="ms-1 fw-normal">(cada <span t-field="o.recurring_interval"/> <span t-field="o.recurring_rule_type" class="text-lowercase"/>)</span>
+                            <span class="ms-1 fw-normal">(cada <span
+                                    t-field="o.recurring_interval"
+                                /> <span
+                                    t-field="o.recurring_rule_type"
+                                    class="text-lowercase"
+                                />)</span>
                         </t>
                         <t t-else="">
-                            <span class="ms-1 fw-normal">(Múltiples frecuencias por línea)</span>
+                            <span
+                                class="ms-1 fw-normal"
+                            >(Múltiples frecuencias por línea)</span>
                         </t>
                     </span>
                 </div>
@@ -52,34 +85,70 @@
             <table class="table table-sm">
                 <thead>
                     <tr>
-                        <th name="th_name" class="text-start"><strong>Descripción</strong></th>
-                        <th name="th_quantity" class="text-end"><strong>Cant.</strong></th>
-                        <th name="th_price_unit" class="text-end"><strong>Precio Unitario</strong></th>
-                        <th name="th_discount" class="text-end" t-if="any(l.discount > 0 for l in o.contract_line_ids)"><strong>Desc. (%)</strong></th>
-                        <th name="th_frequency" class="text-start" t-if="o.line_recurrence"><strong>Frecuencia</strong></th>
-                        <th name="th_next_date" class="text-start" t-if="o.line_recurrence"><strong>Próxima Gen.</strong></th>
-                        <th name="th_price_subtotal" class="text-end"><strong>Sub Total</strong></th>
+                        <th name="th_name" class="text-start"><strong
+                            >Descripción</strong></th>
+                        <th name="th_quantity" class="text-end"><strong
+                            >Cant.</strong></th>
+                        <th name="th_price_unit" class="text-end"><strong
+                            >Precio Unitario</strong></th>
+                        <th
+                            name="th_discount"
+                            class="text-end"
+                            t-if="any(l.discount > 0 for l in o.contract_line_ids)"
+                        ><strong>Desc. (%)</strong></th>
+                        <th
+                            name="th_frequency"
+                            class="text-start"
+                            t-if="o.line_recurrence"
+                        ><strong>Frecuencia</strong></th>
+                        <th
+                            name="th_next_date"
+                            class="text-start"
+                            t-if="o.line_recurrence"
+                        ><strong>Próxima Gen.</strong></th>
+                        <th name="th_price_subtotal" class="text-end"><strong
+                            >Sub Total</strong></th>
                     </tr>
                 </thead>
                 <tbody>
                     <t t-set="current_subtotal" t-value="0" />
                     <t t-foreach="o.contract_line_ids" t-as="l">
-                        <t t-set="current_subtotal" t-value="current_subtotal + l.price_subtotal" />
-                        <tr t-att-class="'bg-200 font-weight-bold o_line_section' if l.display_type == 'line_section' else 'font-italic o_line_note' if l.display_type == 'line_note' else ''">
+                        <t
+                            t-set="current_subtotal"
+                            t-value="current_subtotal + l.price_subtotal"
+                        />
+                        <tr
+                            t-att-class="'bg-200 font-weight-bold o_line_section' if l.display_type == 'line_section' else 'font-italic o_line_note' if l.display_type == 'line_note' else ''"
+                        >
                             <t t-if="not l.display_type">
                                 <td><span t-field="l.name" /></td>
                                 <td class="text-end"><span t-field="l.quantity" /></td>
-                                <td class="text-end"><span t-field="l.price_unit" t-options='{"widget": "monetary", "display_currency": o.currency_id}' /></td>
-                                <td class="text-end" t-if="any(line.discount > 0 for line in o.contract_line_ids)"><span t-field="l.discount" /></td>
+                                <td class="text-end"><span
+                                        t-field="l.price_unit"
+                                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                    /></td>
+                                <td
+                                    class="text-end"
+                                    t-if="any(line.discount > 0 for line in o.contract_line_ids)"
+                                ><span t-field="l.discount" /></td>
                                 <td name="td_frequency" t-if="o.line_recurrence">
                                     <t t-if="l.recurring_interval">
-                                        <span t-field="l.recurring_interval"/> <span t-field="l.recurring_rule_type" class="text-lowercase"/>
+                                        <span t-field="l.recurring_interval" /> <span
+                                            t-field="l.recurring_rule_type"
+                                            class="text-lowercase"
+                                        />
                                     </t>
                                 </td>
                                 <td name="td_next_date" t-if="o.line_recurrence">
-                                    <span t-field="l.recurring_next_date" t-options='{"widget": "date"}'/>
+                                    <span
+                                        t-field="l.recurring_next_date"
+                                        t-options='{"widget": "date"}'
+                                    />
                                 </td>
-                                <td class="text-end"><span t-field="l.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}' /></td>
+                                <td class="text-end"><span
+                                        t-field="l.price_subtotal"
+                                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                    /></td>
                                 <t t-set="total" t-value="total + l.price_subtotal" />
                             </t>
                             <t t-if="l.display_type == 'line_section'">
@@ -91,11 +160,16 @@
                                 <td colspan="99"><span t-field="l.name" /></td>
                             </t>
                         </tr>
-                        <t t-if="current_section and (l_last or o.contract_line_ids[l_index+1].display_type == 'line_section')">
+                        <t
+                            t-if="current_section and (l_last or o.contract_line_ids[l_index+1].display_type == 'line_section')"
+                        >
                             <tr class="is-subtotal text-end">
                                 <td colspan="99">
                                     <strong class="mr16">Subtotal</strong>
-                                    <span t-esc="current_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}' />
+                                    <span
+                                        t-esc="current_subtotal"
+                                        t-options='{"widget": "monetary", "display_currency": o.currency_id}'
+                                    />
                                 </td>
                             </tr>
                         </t>

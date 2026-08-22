@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_contract_line_replace_wizard" model="ir.ui.view">
+        <field name="name">contract.line.replace.wizard.form</field>
+        <field name="model">contract.line.replace.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reemplazar Línea (Upgrade/Downgrade)">
+                <sheet>
+                    <field name="line_id" invisible="1" />
+                    <group>
+                        <group string="SERVICIO ACTUAL">
+                            <field name="old_product_name" />
+                            <field name="old_quantity" />
+                        </group>
+                        <group string="Nuevo Servicio">
+                            <field name="date_change" />
+                            <field
+                                name="product_template_id"
+                                string="Nuevo Producto"
+                                options="{'no_create': True}"
+                            />
+                        </group>
+
+                        <group
+                            invisible="not product_template_id"
+                            string="Configuración de Variantes"
+                        >
+                            <field name="line_ids" nolabel="1">
+                                <list editable="bottom" create="0" delete="0">
+                                    <field
+                                        name="attribute_id"
+                                        readonly="1"
+                                        force_save="1"
+                                        options="{'no_open': True}"
+                                    />
+                                    <field
+                                        name="available_value_ids"
+                                        column_invisible="1"
+                                    />
+                                    <field
+                                        name="value_id"
+                                        domain="[('id', 'in', available_value_ids)]"
+                                        options="{'no_create': True, 'no_open': True}"
+                                    />
+                                    <field
+                                        name="price_extra"
+                                        widget="monetary"
+                                        options="{'currency_field': 'currency_id'}"
+                                        optional="show"
+                                    />
+                                    <field name="currency_id" column_invisible="1" />
+                                </list>
+                            </field>
+                        </group>
+
+                        <group string="Cantidades y Precios">
+                            <field name="product_id" invisible="1" />
+                            <field name="quantity" />
+                            <field name="price" />
+                        </group>
+                    </group>
+                    <group string="Opciones">
+                        <field name="force_legend" widget="boolean_toggle" />
+                    </group>
+                    <div
+                        class="alert alert-info mt-3"
+                        role="alert"
+                        invisible="not force_legend"
+                    >
+                        Se agregarán fechas estáticas descriptivas al nombre de ambas líneas para mayor claridad (ej: "desde el 01/01 al 15/01").
+                    </div>
+                </sheet>
+                <footer>
+                    <button
+                        name="action_replace_line"
+                        string="Reemplazar"
+                        type="object"
+                        class="btn-primary"
+                        data-hotkey="q"
+                        invisible="not product_id"
+                    />
+                    <button
+                        string="Cancelar"
+                        class="btn-secondary"
+                        special="cancel"
+                        data-hotkey="x"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_contract_line_replace" model="ir.actions.act_window">
+        <field name="name">Reemplazar Línea</field>
+        <field name="res_model">contract.line.replace.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

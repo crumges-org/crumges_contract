@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="view_contract_modification_rule_tree" model="ir.ui.view">
         <field name="name">contract.modification.rule.tree</field>
         <field name="model">contract.modification.rule</field>
         <field name="arch" type="xml">
             <list string="Audit Rules">
-                <field name="name"/>
-                <field name="model_id"/>
-                <field name="field_id"/>
-                <field name="action_type"/>
+                <field name="name" />
+                <field name="model_id" />
+                <field name="field_id" />
+                <field name="action_type" />
             </list>
         </field>
     </record>
@@ -21,29 +21,48 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>
-                            <field name="action_type"/>
+                            <field name="name" />
+                            <field name="action_type" />
+                            <field name="is_internal" />
                         </group>
                         <group>
-                            <field name="model_id" options="{'no_create': True}"/>
-                            <field name="field_id" options="{'no_create': True}"/>
+                            <field name="model_id" options="{'no_create': True}" />
+                            <field name="field_id" options="{'no_create': True}" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Message Template">
-                            <field name="message_template" placeholder="e.g. Changed from $&#8203;{old_value} to $&#8203;{new_value}"/>
+                            <field
+                                name="message_template"
+                                placeholder="e.g. Changed from $&#8203;{old_value} to $&#8203;{new_value}"
+                            />
                             <div class="mt-4 alert alert-info" role="alert">
                                 <strong>💡 Template Variables Guide:</strong>
                                 <ul class="mt-2 mb-3">
-                                    <li><code>$&#8203;{object.name}</code>: Replaced by the name or description of the audited record (e.g. Contract Name or Line Description).</li>
-                                    <li><code>$&#8203;{old_value}</code>: The previous value of the field before the modification.</li>
-                                    <li><code>$&#8203;{new_value}</code>: The new value just saved by the user.</li>
+                                    <li><code
+                                        >$&#8203;{object.name}</code>: Replaced by the name or description of the audited record (e.g. Contract Name or Line Description).</li>
+                                    <li><code
+                                        >$&#8203;{old_value}</code>: The previous value of the field before the modification.</li>
+                                    <li><code
+                                        >$&#8203;{new_value}</code>: The new value just saved by the user.</li>
+                                    <li><strong
+                                        >For Line Replacements only:</strong> <code
+                                        >$&#8203;{old_product}</code>, <code
+                                        >$&#8203;{new_product}</code>, <code
+                                        >$&#8203;{old_quantity}</code>, <code
+                                        >$&#8203;{new_quantity}</code>, <code
+                                        >$&#8203;{date}</code>.</li>
                                 </ul>
                                 <strong>Use Cases and Examples:</strong>
                                 <ul class="mt-2 mb-0">
-                                    <li><em>State Change (Contract):</em> The contract state changed from $&#8203;{old_value} to $&#8203;{new_value}.</li>
-                                    <li><em>Price Change (Line):</em> The price of the item "$&#8203;{object.name}" was modified from $&#8203;{old_value} to $&#8203;{new_value}.</li>
-                                    <li><em>End Date:</em> The contract end date was postponed from $&#8203;{old_value} to $&#8203;{new_value}.</li>
+                                    <li><em
+                                        >State Change (Contract):</em> The contract state changed from $&#8203;{old_value} to $&#8203;{new_value}.</li>
+                                    <li><em
+                                        >Price Change (Line):</em> The price of the item "$&#8203;{object.name}" was modified from $&#8203;{old_value} to $&#8203;{new_value}.</li>
+                                    <li><em
+                                        >End Date:</em> The contract end date was postponed from $&#8203;{old_value} to $&#8203;{new_value}.</li>
+                                    <li><em
+                                        >Line Replacement:</em> "Tu servicio fue actualizado! Pasaste de $&#8203;{old_quantity}x $&#8203;{old_product} a $&#8203;{new_quantity}x $&#8203;{new_product} a partir del $&#8203;{date}."</li>
                                 </ul>
                             </div>
                         </page>
@@ -59,10 +78,12 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_contract_modification_rule"
-              name="Modification Rules"
-              parent="contract_management.contract_menu_config"
-              action="action_contract_modification_rule"
-              sequence="30"
-              groups="contract_management.group_contract_modification_rule"/>
+    <menuitem
+        id="menu_contract_modification_rule"
+        name="Modification Rules"
+        parent="contract_management.contract_menu_config"
+        action="action_contract_modification_rule"
+        sequence="30"
+        groups="contract_management.group_contract_modification_rule"
+    />
 </odoo>

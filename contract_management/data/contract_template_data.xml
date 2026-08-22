@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
 
     <!-- Etiquetas (Tags) -->
@@ -136,8 +136,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-coffee</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>📦 <b>Provisión recurrente de granos de café de especialidad</b> para la oficina.</p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -147,9 +149,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Revisa las notas internas antes de facturar para validar si el cliente solicitó cambios de origen.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>El cliente debe notificar cambios en la variedad con 5 días de anticipación. No se aceptan devoluciones de paquetes abiertos.</p>]]></field>
-        <field name="note"><![CDATA[<p>Verificar stock de orígenes exóticos antes de facturar.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_suscripcion'), ref('tag_b2b'), ref('tag_entrega_recurrente')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>El cliente debe notificar cambios en la variedad con 5 días de anticipación. No se aceptan devoluciones de paquetes abiertos.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Verificar stock de orígenes exóticos antes de facturar.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_suscripcion'), ref('tag_b2b'), ref('tag_entrega_recurrente')])]"
+        />
     </record>
 
     <!-- 2 -->
@@ -158,8 +167,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">sale</field>
         <field name="icon">fa-paperclip</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🖋️ <b>Reposición trimestral de resmas, tintas y artículos de papelería.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -169,9 +180,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Este contrato genera una Orden de Venta. Asegúrate de procesar el remito/albarán de entrega para que el cliente firme la recepción.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>Los precios pueden ajustarse según la inflación al momento de generar la orden de venta. Entrega en 48hs hábiles.</p>]]></field>
-        <field name="note"><![CDATA[<p>Genera Orden de Venta porque requiere validación de stock y entrega física mediante remito.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_b2b'), ref('tag_productos_fisicos'), ref('tag_consumo')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>Los precios pueden ajustarse según la inflación al momento de generar la orden de venta. Entrega en 48hs hábiles.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Genera Orden de Venta porque requiere validación de stock y entrega física mediante remito.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_b2b'), ref('tag_productos_fisicos'), ref('tag_consumo')])]"
+        />
     </record>
 
     <!-- 3 -->
@@ -180,8 +198,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-desktop</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🛠️ <b>Servicio de mantenimiento preventivo y soporte técnico de infraestructura IT.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -191,9 +211,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Al finalizar el mes, adjunta el reporte de uptime del servidor en el chatter del contrato para transparencia con el cliente.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>Incluye hasta 20 horas de soporte remoto. Horas excedentes se facturarán según tarifa vigente. SLA de 4 horas para incidentes críticos.</p>]]></field>
-        <field name="note"><![CDATA[<p>Recordar adjuntar el reporte de uptime al enviar la factura mensual.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_servicios_it'), ref('tag_mantenimiento'), ref('tag_prepago')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>Incluye hasta 20 horas de soporte remoto. Horas excedentes se facturarán según tarifa vigente. SLA de 4 horas para incidentes críticos.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Recordar adjuntar el reporte de uptime al enviar la factura mensual.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_servicios_it'), ref('tag_mantenimiento'), ref('tag_prepago')])]"
+        />
     </record>
 
     <!-- 4 -->
@@ -202,8 +229,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">sale</field>
         <field name="icon">fa-magic</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>✨ <b>Limpieza integral de oficinas y espacios comunes.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -213,9 +242,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Como genera Orden de Venta, el equipo operativo debe registrar sus partes de horas para que la factura final sea precisa.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>Los productos de limpieza están incluidos. El cliente debe garantizar el acceso en los horarios acordados.</p>]]></field>
-        <field name="note"><![CDATA[<p>Genera Orden de Venta porque el servicio requiere que el operario impute horas en la tarea antes de facturar.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_operativo'), ref('tag_postpago'), ref('tag_insitu')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>Los productos de limpieza están incluidos. El cliente debe garantizar el acceso en los horarios acordados.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Genera Orden de Venta porque el servicio requiere que el operario impute horas en la tarea antes de facturar.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_operativo'), ref('tag_postpago'), ref('tag_insitu')])]"
+        />
     </record>
 
     <!-- 5 -->
@@ -224,8 +260,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-bar-chart</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>💼 <b>Liquidación de impuestos, sueldos y balances contables.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -236,9 +274,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Revisa las fechas de vencimiento de AFIP y ajusta la fecha de la próxima factura para que llegue antes del día 5.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>El cliente es responsable de proveer la documentación antes del día 5 de cada mes. Retrasos generan penalidades.</p>]]></field>
-        <field name="note"><![CDATA[<p>El contador asignado debe validar las horas trabajadas a fin de mes.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_profesionales'), ref('tag_postpago')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>El cliente es responsable de proveer la documentación antes del día 5 de cada mes. Retrasos generan penalidades.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>El contador asignado debe validar las horas trabajadas a fin de mes.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_profesionales'), ref('tag_postpago')])]"
+        />
     </record>
 
     <!-- 6 -->
@@ -247,8 +292,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-bullhorn</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>📣 <b>Community management, diseño de posteos y pauta publicitaria.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -258,9 +305,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> La pauta publicitaria (inversión en Google/Meta) NO debe incluirse aquí a menos que refactures con mark-up. Configura la factura al inicio del mes.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>El presupuesto de pauta en Meta/Google no está incluido y se abona por separado. Se entregan 3 grillas mensuales.</p>]]></field>
-        <field name="note"><![CDATA[<p>Las campañas deben estar aprobadas por el cliente antes de la emisión de la factura.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_marketing'), ref('tag_suscripcion'), ref('tag_prepago')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>El presupuesto de pauta en Meta/Google no está incluido y se abona por separado. Se entregan 3 grillas mensuales.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Las campañas deben estar aprobadas por el cliente antes de la emisión de la factura.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_marketing'), ref('tag_suscripcion'), ref('tag_prepago')])]"
+        />
     </record>
 
     <!-- 7 -->
@@ -269,8 +323,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">sale</field>
         <field name="icon">fa-shield</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🔐 <b>Escaneo de vulnerabilidades y pentesting anual.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -279,9 +335,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Este contrato es ideal para renovaciones automáticas anuales. Asegúrate de coordinar la ventana de mantenimiento con el cliente antes de ejecutar el escaneo.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>La auditoría se realiza en entornos de staging a menos que el cliente autorice producción bajo su propio riesgo.</p>]]></field>
-        <field name="note"><![CDATA[<p>Requiere planificación con el equipo de DevOps local.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_servicios_it'), ref('tag_anual'), ref('tag_proyecto')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>La auditoría se realiza en entornos de staging a menos que el cliente autorice producción bajo su propio riesgo.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Requiere planificación con el equipo de DevOps local.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_servicios_it'), ref('tag_anual'), ref('tag_proyecto')])]"
+        />
     </record>
 
     <!-- 8 -->
@@ -290,8 +353,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-cloud</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>💻 <b>Suscripción mensual por el uso de la plataforma en la nube (Hosting/VPS).</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -300,9 +365,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Revisa mensualmente el consumo de ancho de banda o almacenamiento extra antes de que se genere la factura automática.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>El pago es por adelantado. La falta de pago tras 15 días suspenderá temporalmente el acceso al tenant.</p>]]></field>
-        <field name="note"><![CDATA[<p>Revisar métricas de almacenamiento por si corresponde un up-sell.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_saas'), ref('tag_suscripcion'), ref('tag_renovacion_automatica')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>El pago es por adelantado. La falta de pago tras 15 días suspenderá temporalmente el acceso al tenant.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Revisar métricas de almacenamiento por si corresponde un up-sell.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_saas'), ref('tag_suscripcion'), ref('tag_renovacion_automatica')])]"
+        />
     </record>
 
     <!-- 9 -->
@@ -311,8 +383,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-heartbeat</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>💪 <b>Membresía Gimnasio Premium: Acceso libre a sucursales y clases grupales.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -322,9 +396,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Si el socio solicita congelar la membresía por vacaciones, usa el botón de suspender o modifica la fecha de la próxima factura.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>La membresía es intransferible. La cancelación requiere un aviso de 30 días de anticipación.</p>]]></field>
-        <field name="note"><![CDATA[<p>Aplicar el descuento corporativo si el partner pertenece a una empresa adherida.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_b2c'), ref('tag_suscripcion'), ref('tag_debito')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>La membresía es intransferible. La cancelación requiere un aviso de 30 días de anticipación.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Aplicar el descuento corporativo si el partner pertenece a una empresa adherida.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_b2c'), ref('tag_suscripcion'), ref('tag_debito')])]"
+        />
     </record>
 
     <!-- 10 -->
@@ -333,8 +414,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-glass</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🍇 <b>Club de Vinos: Envío de cajas seleccionadas por sommelier cada mes.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -344,9 +427,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Notifica a logística la cantidad de contratos activos al menos 10 días antes del cierre de mes para asegurar el stock de botellas.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>En caso de rotura durante el envío, la reposición se hará en el próximo ciclo. Sujeto a disponibilidad de etiquetas.</p>]]></field>
-        <field name="note"><![CDATA[<p>Avisar a logística 5 días antes para el armado de las cajas de madera.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_b2c'), ref('tag_suscripcion'), ref('tag_productos_fisicos')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>En caso de rotura durante el envío, la reposición se hará en el próximo ciclo. Sujeto a disponibilidad de etiquetas.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Avisar a logística 5 días antes para el armado de las cajas de madera.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_b2c'), ref('tag_suscripcion'), ref('tag_productos_fisicos')])]"
+        />
     </record>
 
     <!-- 11 -->
@@ -355,8 +445,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-print</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>📄 <b>Alquiler mensual de equipo de impresión multifunción.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -366,9 +458,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Si utilizas cargos variables, asegúrate de ingresar la lectura del contador de impresiones antes de que se emita la factura mensual.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>Incluye hasta 5000 copias. Los toners de reemplazo están cubiertos por la garantía, no así el papel.</p>]]></field>
-        <field name="note"><![CDATA[<p>Pedir al cliente la lectura del contador de impresiones el día 25.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_alquileres'), ref('tag_b2b'), ref('tag_equipamiento')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>Incluye hasta 5000 copias. Los toners de reemplazo están cubiertos por la garantía, no así el papel.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Pedir al cliente la lectura del contador de impresiones el día 25.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_alquileres'), ref('tag_b2b'), ref('tag_equipamiento')])]"
+        />
     </record>
 
     <!-- 12 -->
@@ -377,8 +476,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">sale</field>
         <field name="icon">fa-truck</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🚜 <b>Alquiler de maquinaria pesada (excavadoras, grúas) para la construcción.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -388,9 +489,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Este contrato genera Órdenes de Venta. Esto te permitirá gestionar el albarán de salida de la máquina y registrar su retorno seguro al inventario.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>El cliente debe devolver la maquinaria con el tanque lleno y limpia. El traslado corre por cuenta del cliente.</p>]]></field>
-        <field name="note"><![CDATA[<p>Genera Orden de Venta para emitir el albarán de salida y gestionar la devolución de los activos.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_alquileres'), ref('tag_logistica'), ref('tag_garantia')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>El cliente debe devolver la maquinaria con el tanque lleno y limpia. El traslado corre por cuenta del cliente.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Genera Orden de Venta para emitir el albarán de salida y gestionar la devolución de los activos.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_alquileres'), ref('tag_logistica'), ref('tag_garantia')])]"
+        />
     </record>
 
     <!-- 13 -->
@@ -399,8 +507,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-building</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🪑 <b>Alquiler de espacio de trabajo fijo en Coworking con acceso a salas.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -410,9 +520,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Si el cliente cancela, desactiva el contrato y asegúrate de revocar sus credenciales de acceso magnético al edificio.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>El alquiler incluye internet de alta velocidad y café libre. El uso de salas de reunión excedente se cobra aparte.</p>]]></field>
-        <field name="note"><![CDATA[<p>Renovar las credenciales de acceso magnético cada 6 meses.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_real_estate'), ref('tag_suscripcion')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>El alquiler incluye internet de alta velocidad y café libre. El uso de salas de reunión excedente se cobra aparte.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Renovar las credenciales de acceso magnético cada 6 meses.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_real_estate'), ref('tag_suscripcion')])]"
+        />
     </record>
 
     <!-- 14 -->
@@ -421,8 +538,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-car</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🛣️ <b>Renting de vehículos para ejecutivos o flota comercial.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -432,9 +551,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Actualiza los precios del seguro a todo riesgo periódicamente si la póliza sufre ajustes por inflación.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>Seguro a todo riesgo incluido con franquicia. Límite de 3000 km mensuales; el excedente se factura a $500/km.</p>]]></field>
-        <field name="note"><![CDATA[<p>Solicitar reporte de multas e infracciones a la agencia de tránsito mensualmente.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_alquileres'), ref('tag_b2b'), ref('tag_seguros')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>Seguro a todo riesgo incluido con franquicia. Límite de 3000 km mensuales; el excedente se factura a $500/km.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Solicitar reporte de multas e infracciones a la agencia de tránsito mensualmente.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_alquileres'), ref('tag_b2b'), ref('tag_seguros')])]"
+        />
     </record>
 
     <!-- 15 -->
@@ -443,8 +569,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-bell</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>📹 <b>Servicio 24/7 de monitoreo de seguridad y respuesta rápida.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -454,9 +582,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> La facturación suele ser muy automatizada. Revisa que el cliente tenga configurada su tarjeta de crédito o método de débito automático (si está instalado el módulo de pagos).</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>Falsas alarmas recurrentes (más de 3 al mes) generarán un recargo por movilización de personal.</p>]]></field>
-        <field name="note"><![CDATA[<p>Verificar que el equipo de GPRS esté reportando sin interrupciones.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_seguridad'), ref('tag_suscripcion'), ref('tag_247')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>Falsas alarmas recurrentes (más de 3 al mes) generarán un recargo por movilización de personal.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Verificar que el equipo de GPRS esté reportando sin interrupciones.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_seguridad'), ref('tag_suscripcion'), ref('tag_247')])]"
+        />
     </record>
 
     <!-- 16 -->
@@ -465,8 +600,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">sale</field>
         <field name="icon">fa-cutlery</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🥗 <b>Viandas diarias entregadas en la oficina para el personal.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -476,9 +613,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Este contrato genera Órdenes de Venta. Modifica las cantidades en la orden si el cliente reporta ausencias o días de Home Office antes de confirmar la entrega.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>Las dietas especiales (celíacos, veganos) deben informarse el viernes previo. No se descuentan ausencias no avisadas.</p>]]></field>
-        <field name="note"><![CDATA[<p>Orden de Venta para poder ajustar las cantidades si avisan que parte del equipo hará Home Office.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_operativo'), ref('tag_consumo'), ref('tag_semanal')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>Las dietas especiales (celíacos, veganos) deben informarse el viernes previo. No se descuentan ausencias no avisadas.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Orden de Venta para poder ajustar las cantidades si avisan que parte del equipo hará Home Office.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_operativo'), ref('tag_consumo'), ref('tag_semanal')])]"
+        />
     </record>
 
     <!-- 17 -->
@@ -487,8 +631,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-wrench</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🔧 <b>Mantenimiento preventivo y correctivo de ascensores.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -498,9 +644,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Programa las tareas de los técnicos en el calendario basándote en la fecha de este contrato para no incurrir en multas municipales.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>No incluye repuestos mayores a $50,000, los cuales requerirán presupuesto adicional aprobado.</p>]]></field>
-        <field name="note"><![CDATA[<p>Agendar la visita del técnico en el módulo de Field Service.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_mantenimiento'), ref('tag_preventivo'), ref('tag_certificacion')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>No incluye repuestos mayores a $50,000, los cuales requerirán presupuesto adicional aprobado.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Agendar la visita del técnico en el módulo de Field Service.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_mantenimiento'), ref('tag_preventivo'), ref('tag_certificacion')])]"
+        />
     </record>
 
     <!-- 18 -->
@@ -509,8 +662,10 @@
         <field name="contract_type">sale</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-clipboard</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🛡️ <b>Póliza colectiva de seguro de vida para empleados.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -519,9 +674,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Actualiza la cantidad de empleados en las líneas del contrato todos los meses antes de emitir la factura, cruzando datos con el departamento de RRHH.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>Las altas y bajas de personal deben informarse mensualmente. La cobertura aplica desde el primer día hábil.</p>]]></field>
-        <field name="note"><![CDATA[<p>Reconciliar la nómina de empleados de RRHH antes de facturar.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_seguros'), ref('tag_operativo'), ref('tag_anual')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>Las altas y bajas de personal deben informarse mensualmente. La cobertura aplica desde el primer día hábil.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Reconciliar la nómina de empleados de RRHH antes de facturar.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_seguros'), ref('tag_operativo'), ref('tag_anual')])]"
+        />
     </record>
 
     <!-- 19 -->
@@ -530,8 +692,10 @@
         <field name="contract_type">purchase</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-key</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🏢 <b>CONTRATO DE PROVEEDOR: Pago de alquiler del edificio comercial.</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -541,9 +705,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Como es un contrato de compras, esto generará automáticamente facturas de proveedor en estado borrador. Valida el número de comprobante fiscal antes de publicarla.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>El índice de actualización será semestral basado en el IPC. El pago debe realizarse del 1 al 10 de cada mes.</p>]]></field>
-        <field name="note"><![CDATA[<p>Validar que el proveedor haya subido la factura electrónica en AFIP antes de procesar el pago.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_gastos'), ref('tag_real_estate')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>El índice de actualización será semestral basado en el IPC. El pago debe realizarse del 1 al 10 de cada mes.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Validar que el proveedor haya subido la factura electrónica en AFIP antes de procesar el pago.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_gastos'), ref('tag_real_estate')])]"
+        />
     </record>
 
     <!-- 20 -->
@@ -552,8 +723,10 @@
         <field name="contract_type">purchase</field>
         <field name="generation_type">invoice</field>
         <field name="icon">fa-globe</field>
-        <field name="active" eval="True"/>
-        <field name="description"><![CDATA[
+        <field name="active" eval="True" />
+        <field
+            name="description"
+        ><![CDATA[
         <p>🌩️ <b>CONTRATO DE PROVEEDOR: Abono anual de servidores y licencias (AWS/ERP).</b></p>
         <br/>
         <p><b>💡 Ideas de uso:</b></p>
@@ -562,9 +735,16 @@
         </ul>
         <p><b>⚠️ Recuerda:</b> Revisa el tipo de cambio oficial si el contrato está en moneda extranjera y ajústalo antes de aprobar la factura de compra.</p>
     ]]></field>
-        <field name="terms_and_conditions"><![CDATA[<p>El contrato renueva automáticamente a menos que se cancele 60 días antes del vencimiento.</p>]]></field>
-        <field name="note"><![CDATA[<p>Presupuesto en dólares; revisar el tipo de cambio oficial al momento del pago.</p>]]></field>
-        <field name="tag_ids" eval="[(6, 0, [ref('tag_servicios_it'), ref('tag_saas'), ref('tag_gastos')])]"/>
+        <field
+            name="terms_and_conditions"
+        ><![CDATA[<p>El contrato renueva automáticamente a menos que se cancele 60 días antes del vencimiento.</p>]]></field>
+        <field
+            name="note"
+        ><![CDATA[<p>Presupuesto en dólares; revisar el tipo de cambio oficial al momento del pago.</p>]]></field>
+        <field
+            name="tag_ids"
+            eval="[(6, 0, [ref('tag_servicios_it'), ref('tag_saas'), ref('tag_gastos')])]"
+        />
     </record>
 
 </odoo>

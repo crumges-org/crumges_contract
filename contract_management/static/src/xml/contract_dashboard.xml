@@ -1,40 +1,79 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
-    <t t-name="contract_management.KanbanView" t-inherit="web.KanbanView" t-inherit-mode="primary" owl="1">
+    <t
+        t-name="contract_management.KanbanView"
+        t-inherit="web.KanbanView"
+        t-inherit-mode="primary"
+        owl="1"
+    >
         <xpath expr="//t[@t-component='props.Renderer']" position="before">
             <ContractDashboardHeader />
         </xpath>
     </t>
-    
+
     <t t-name="contract_management.DashboardHeader" owl="1">
         <div class="row w-100 mx-0 mb-3 bg-white border-bottom p-3">
             <div class="col-3 border-end">
                 <div class="d-flex align-items-center mb-1">
-                    <span class="fa fa-file-text-o text-primary fs-3 me-3"></span>
+                    <span class="fa fa-file-text-o text-primary fs-3 me-3" />
                     <h4 class="text-muted m-0">Contratos Activos</h4>
                 </div>
                 <div class="d-flex justify-content-between align-items-end">
-                    <h2 class="mb-0"><t t-esc="state.total_active"/></h2>
-                    <div t-if="state.trends.active_contracts" class="text-end" t-att-title="state.trends.active_contracts.details" data-bs-toggle="tooltip">
-                        <span t-attf-class="fw-bold {{state.trends.active_contracts.color}}">
-                            <t t-if="state.trends.active_contracts.percentage &gt; 0">+</t><t t-esc="state.trends.active_contracts.percentage"/>%
+                    <h2 class="mb-0"><t t-esc="state.total_active" /></h2>
+                    <div
+                        t-if="state.trends.active_contracts"
+                        class="text-end"
+                        t-att-title="state.trends.active_contracts.details"
+                        data-bs-toggle="tooltip"
+                    >
+                        <span
+                            t-attf-class="fw-bold {{state.trends.active_contracts.color}}"
+                        >
+                            <t
+                                t-if="state.trends.active_contracts.percentage &gt; 0"
+                            >+</t><t
+                                t-esc="state.trends.active_contracts.percentage"
+                            />%
                         </span>
-                        <br/><small class="text-muted"><t t-esc="state.trends.active_contracts.legend"/></small>
+                        <br /><small class="text-muted"><t
+                                t-esc="state.trends.active_contracts.legend"
+                            /></small>
                     </div>
                 </div>
-                
+
                 <!-- ESTADOS GLOBALES -->
-                <div class="d-flex w-100 mt-3 justify-content-between text-center gap-1">
-                    <div class="flex-fill px-1 py-2 rounded bg-secondary text-white cursor-pointer" t-on-click="() => this.openStateContracts('draft')" style="cursor: pointer;" title="Borrador">
-                        <div class="fs-5 fw-bold"><t t-esc="state.states.draft"/></div>
+                <div
+                    class="d-flex w-100 mt-3 justify-content-between text-center gap-1"
+                >
+                    <div
+                        class="flex-fill px-1 py-2 rounded bg-secondary text-white cursor-pointer"
+                        t-on-click="() => this.openStateContracts('draft')"
+                        style="cursor: pointer;"
+                        title="Borrador"
+                    >
+                        <div class="fs-5 fw-bold"><t t-esc="state.states.draft" /></div>
                         <small style="font-size: 0.7em;">Borrador</small>
                     </div>
-                    <div class="flex-fill px-1 py-2 rounded bg-info text-white cursor-pointer" t-on-click="() => this.openStateContracts('in_progress')" style="cursor: pointer;" title="En Curso">
-                        <div class="fs-5 fw-bold"><t t-esc="state.states.in_progress"/></div>
+                    <div
+                        class="flex-fill px-1 py-2 rounded bg-info text-white cursor-pointer"
+                        t-on-click="() => this.openStateContracts('in_progress')"
+                        style="cursor: pointer;"
+                        title="En Curso"
+                    >
+                        <div class="fs-5 fw-bold"><t
+                                t-esc="state.states.in_progress"
+                            /></div>
                         <small style="font-size: 0.7em;">En Curso</small>
                     </div>
-                    <div class="flex-fill px-1 py-2 rounded bg-warning text-dark cursor-pointer" t-on-click="() => this.openStateContracts('paused')" style="cursor: pointer;" title="Pausados">
-                        <div class="fs-5 fw-bold"><t t-esc="state.states.paused"/></div>
+                    <div
+                        class="flex-fill px-1 py-2 rounded bg-warning text-dark cursor-pointer"
+                        t-on-click="() => this.openStateContracts('paused')"
+                        style="cursor: pointer;"
+                        title="Pausados"
+                    >
+                        <div class="fs-5 fw-bold"><t
+                                t-esc="state.states.paused"
+                            /></div>
                         <small style="font-size: 0.7em;">Pausados</small>
                     </div>
 
@@ -42,64 +81,135 @@
             </div>
             <div class="col-3 border-end">
                 <div class="d-flex align-items-center mb-1">
-                    <span class="fa fa-money text-success fs-3 me-3"></span>
+                    <span class="fa fa-money text-success fs-3 me-3" />
                     <h4 class="text-muted m-0">Valor Total (Activos)</h4>
                 </div>
                 <div class="d-flex justify-content-between align-items-end">
-                    <h2 class="mb-0"><t t-esc="state.currency_symbol"/> <t t-esc="state.total_revenue"/></h2>
-                    <div t-if="state.trends.total_revenue" class="text-end" t-att-title="state.trends.total_revenue.details" data-bs-toggle="tooltip">
-                        <span t-attf-class="fw-bold {{state.trends.total_revenue.color}}">
-                            <t t-if="state.trends.total_revenue.percentage &gt; 0">+</t><t t-esc="state.trends.total_revenue.percentage"/>%
+                    <h2 class="mb-0"><t t-esc="state.currency_symbol" /> <t
+                            t-esc="state.total_revenue"
+                        /></h2>
+                    <div
+                        t-if="state.trends.total_revenue"
+                        class="text-end"
+                        t-att-title="state.trends.total_revenue.details"
+                        data-bs-toggle="tooltip"
+                    >
+                        <span
+                            t-attf-class="fw-bold {{state.trends.total_revenue.color}}"
+                        >
+                            <t
+                                t-if="state.trends.total_revenue.percentage &gt; 0"
+                            >+</t><t t-esc="state.trends.total_revenue.percentage" />%
                         </span>
-                        <br/><small class="text-muted"><t t-esc="state.trends.total_revenue.legend"/></small>
+                        <br /><small class="text-muted"><t
+                                t-esc="state.trends.total_revenue.legend"
+                            /></small>
                     </div>
                 </div>
-                
+
                 <!-- INGRESOS POR ESTADO -->
-                <div class="d-flex w-100 mt-3 justify-content-between text-center gap-1">
-                    <div class="flex-fill px-1 py-2 rounded bg-secondary text-white cursor-pointer" t-on-click="() => this.openStateContracts('draft')" style="cursor: pointer;" title="Valor en Borrador">
-                        <div class="fs-5 fw-bold"><t t-esc="state.currency_symbol"/> <t t-esc="state.state_revenue.draft"/></div>
+                <div
+                    class="d-flex w-100 mt-3 justify-content-between text-center gap-1"
+                >
+                    <div
+                        class="flex-fill px-1 py-2 rounded bg-secondary text-white cursor-pointer"
+                        t-on-click="() => this.openStateContracts('draft')"
+                        style="cursor: pointer;"
+                        title="Valor en Borrador"
+                    >
+                        <div class="fs-5 fw-bold"><t t-esc="state.currency_symbol" /> <t
+                                t-esc="state.state_revenue.draft"
+                            /></div>
                         <small style="font-size: 0.7em;">Borrador</small>
                     </div>
-                    <div class="flex-fill px-1 py-2 rounded bg-info text-white cursor-pointer" t-on-click="() => this.openStateContracts('in_progress')" style="cursor: pointer;" title="Valor en Curso">
-                        <div class="fs-5 fw-bold"><t t-esc="state.currency_symbol"/> <t t-esc="state.state_revenue.in_progress"/></div>
+                    <div
+                        class="flex-fill px-1 py-2 rounded bg-info text-white cursor-pointer"
+                        t-on-click="() => this.openStateContracts('in_progress')"
+                        style="cursor: pointer;"
+                        title="Valor en Curso"
+                    >
+                        <div class="fs-5 fw-bold"><t t-esc="state.currency_symbol" /> <t
+                                t-esc="state.state_revenue.in_progress"
+                            /></div>
                         <small style="font-size: 0.7em;">En Curso</small>
                     </div>
-                    <div class="flex-fill px-1 py-2 rounded bg-warning text-dark cursor-pointer" t-on-click="() => this.openStateContracts('paused')" style="cursor: pointer;" title="Valor Pausado">
-                        <div class="fs-5 fw-bold"><t t-esc="state.currency_symbol"/> <t t-esc="state.state_revenue.paused"/></div>
+                    <div
+                        class="flex-fill px-1 py-2 rounded bg-warning text-dark cursor-pointer"
+                        t-on-click="() => this.openStateContracts('paused')"
+                        style="cursor: pointer;"
+                        title="Valor Pausado"
+                    >
+                        <div class="fs-5 fw-bold"><t t-esc="state.currency_symbol" /> <t
+                                t-esc="state.state_revenue.paused"
+                            /></div>
                         <small style="font-size: 0.7em;">Pausados</small>
                     </div>
                 </div>
             </div>
             <div class="col-6">
                 <div class="d-flex align-items-center mb-1">
-                    <span class="fa fa-clock-o text-warning fs-3 me-3"></span>
+                    <span class="fa fa-clock-o text-warning fs-3 me-3" />
                     <h4 class="text-muted m-0">Próximos a Vencer</h4>
                 </div>
                 <div class="d-flex justify-content-between align-items-end mb-3">
-                    <h2 class="mb-0"><t t-esc="state.total_expiring"/></h2>
-                    <div t-if="state.trends.expiring_soon" class="text-end" t-att-title="state.trends.expiring_soon.details" data-bs-toggle="tooltip">
-                        <span t-attf-class="fw-bold {{state.trends.expiring_soon.color}}">
-                            <t t-if="state.trends.expiring_soon.percentage &gt; 0">+</t><t t-esc="state.trends.expiring_soon.percentage"/>%
+                    <h2 class="mb-0"><t t-esc="state.total_expiring" /></h2>
+                    <div
+                        t-if="state.trends.expiring_soon"
+                        class="text-end"
+                        t-att-title="state.trends.expiring_soon.details"
+                        data-bs-toggle="tooltip"
+                    >
+                        <span
+                            t-attf-class="fw-bold {{state.trends.expiring_soon.color}}"
+                        >
+                            <t
+                                t-if="state.trends.expiring_soon.percentage &gt; 0"
+                            >+</t><t t-esc="state.trends.expiring_soon.percentage" />%
                         </span>
-                        <br/><small class="text-muted"><t t-esc="state.trends.expiring_soon.legend"/></small>
+                        <br /><small class="text-muted"><t
+                                t-esc="state.trends.expiring_soon.legend"
+                            /></small>
                     </div>
                 </div>
                 <div class="d-flex w-100 justify-content-between text-center gap-2">
-                    <div class="flex-fill p-2 rounded bg-danger text-white" t-on-click="() => this.openContracts('d7')" style="cursor: pointer;">
-                        <div class="fs-4 fw-bold"><t t-esc="state.expiring.d7.count"/></div>
+                    <div
+                        class="flex-fill p-2 rounded bg-danger text-white"
+                        t-on-click="() => this.openContracts('d7')"
+                        style="cursor: pointer;"
+                    >
+                        <div class="fs-4 fw-bold"><t
+                                t-esc="state.expiring.d7.count"
+                            /></div>
                         <small>7 días</small>
                     </div>
-                    <div class="flex-fill p-2 rounded bg-warning text-dark" t-on-click="() => this.openContracts('d15')" style="cursor: pointer;">
-                        <div class="fs-4 fw-bold"><t t-esc="state.expiring.d15.count"/></div>
+                    <div
+                        class="flex-fill p-2 rounded bg-warning text-dark"
+                        t-on-click="() => this.openContracts('d15')"
+                        style="cursor: pointer;"
+                    >
+                        <div class="fs-4 fw-bold"><t
+                                t-esc="state.expiring.d15.count"
+                            /></div>
                         <small>15 días</small>
                     </div>
-                    <div class="flex-fill p-2 rounded bg-dark text-white" t-on-click="() => this.openContracts('d30')" style="cursor: pointer;">
-                        <div class="fs-4 fw-bold"><t t-esc="state.expiring.d30.count"/></div>
+                    <div
+                        class="flex-fill p-2 rounded bg-dark text-white"
+                        t-on-click="() => this.openContracts('d30')"
+                        style="cursor: pointer;"
+                    >
+                        <div class="fs-4 fw-bold"><t
+                                t-esc="state.expiring.d30.count"
+                            /></div>
                         <small>30 días</small>
                     </div>
-                    <div class="flex-fill p-2 rounded bg-success text-white" t-on-click="() => this.openContracts('d365')" style="cursor: pointer;">
-                        <div class="fs-4 fw-bold"><t t-esc="state.expiring.d365.count"/></div>
+                    <div
+                        class="flex-fill p-2 rounded bg-success text-white"
+                        t-on-click="() => this.openContracts('d365')"
+                        style="cursor: pointer;"
+                    >
+                        <div class="fs-4 fw-bold"><t
+                                t-esc="state.expiring.d365.count"
+                            /></div>
                         <small>1 año</small>
                     </div>
                 </div>

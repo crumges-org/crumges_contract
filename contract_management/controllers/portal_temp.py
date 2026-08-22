@@ -1,16 +1,26 @@
-from odoo import http
 from odoo.http import request
-from odoo.osv import expression
 
-from odoo.addons.account.controllers.portal import CustomerPortal as AccountCustomerPortal
-from odoo.addons.sale.controllers.portal import CustomerPortal as SaleCustomerPortal
+from odoo.addons.account.controllers.portal import (
+    CustomerPortal as AccountCustomerPortal,
+)
+
 
 class ContractManagementAccountPortal(AccountCustomerPortal):
+    def _prepare_my_invoices_values(
+        self,
+        page,
+        date_begin,
+        date_end,
+        sortby,
+        filterby,
+        domain=None,
+        url="/my/invoices",
+    ):
+        values = super()._prepare_my_invoices_values(
+            page, date_begin, date_end, sortby, filterby, domain, url
+        )
 
-    def _prepare_my_invoices_values(self, page, date_begin, date_end, sortby, filterby, domain=None, url="/my/invoices"):
-        values = super()._prepare_my_invoices_values(page, date_begin, date_end, sortby, filterby, domain, url)
-        
-        contract_id = request.params.get('contract_id')
+        contract_id = request.params.get("contract_id")
         if contract_id:
             try:
                 contract_id = int(contract_id)

@@ -1,17 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="account_move_view_form_contract" model="ir.ui.view">
         <field name="name">account.move.view.form.contract</field>
         <field name="model">account.move</field>
-        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="inherit_id" ref="account.view_move_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_view_contracts"
+                <button
+                    name="action_view_contracts"
                     type="object"
                     class="oe_stat_button"
                     icon="fa-book"
-                    invisible="contract_count == 0">
-                    <field name="contract_count" widget="statinfo" string="Contratos"/>
+                    invisible="contract_count == 0"
+                >
+                    <field name="contract_count" widget="statinfo" string="Contratos" />
                 </button>
             </xpath>
         </field>

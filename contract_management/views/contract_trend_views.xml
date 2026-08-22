@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="contract_dashboard_trend_view_tree" model="ir.ui.view">
         <field name="name">contract.dashboard.trend.tree</field>
         <field name="model">contract.dashboard.trend</field>
         <field name="arch" type="xml">
             <list string="Tendencias del Tablero">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
-                <field name="metric_type"/>
-                <field name="comparison_period"/>
-                <field name="operator"/>
-                <field name="percentage"/>
-                <field name="color"/>
-                <field name="active" widget="boolean_toggle"/>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="metric_type" />
+                <field name="comparison_period" />
+                <field name="operator" />
+                <field name="percentage" />
+                <field name="color" />
+                <field name="active" widget="boolean_toggle" />
             </list>
         </field>
     </record>
@@ -24,28 +24,34 @@
             <form string="Tendencia del Tablero">
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name" placeholder="Ej. Buen crecimiento"/></h1>
+                        <label for="name" class="oe_edit_only" />
+                        <h1><field
+                                name="name"
+                                placeholder="Ej. Buen crecimiento"
+                            /></h1>
                     </div>
                     <group>
                         <group>
-                            <field name="metric_type"/>
-                            <field name="comparison_period"/>
-                            <field name="sequence"/>
-                            <field name="active" widget="boolean_toggle"/>
+                            <field name="metric_type" />
+                            <field name="comparison_period" />
+                            <field name="sequence" />
+                            <field name="active" widget="boolean_toggle" />
                         </group>
                         <group>
-                            <label for="operator" string="Regla de Evaluación"/>
+                            <label for="operator" string="Regla de Evaluación" />
                             <div>
-                                <field name="operator" class="oe_inline"/>
-                                <field name="percentage" class="oe_inline"/> %
+                                <field name="operator" class="oe_inline" />
+                                <field name="percentage" class="oe_inline" /> %
                             </div>
-                            <field name="color"/>
+                            <field name="color" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Detalles Adicionales" name="details">
-                            <field name="details" placeholder="Explica qué significa este porcentaje para el usuario..."/>
+                            <field
+                                name="details"
+                                placeholder="Explica qué significa este porcentaje para el usuario..."
+                            />
                         </page>
                     </notebook>
                 </sheet>
@@ -68,9 +74,11 @@
     </record>
 
     <!-- Menu -->
-    <menuitem id="menu_contract_dashboard_trend"
-              name="Tendencias y KPIs"
-              parent="contract_management.contract_menu_config"
-              action="action_contract_dashboard_trend"
-              sequence="20"/>
+    <menuitem
+        id="menu_contract_dashboard_trend"
+        name="Tendencias y KPIs"
+        parent="contract_management.contract_menu_config"
+        action="action_contract_dashboard_trend"
+        sequence="20"
+    />
 </odoo>

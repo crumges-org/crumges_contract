@@ -1,21 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- Vistas de Formulario Base Extendidas -->
     <record id="contract_view_form_management" model="ir.ui.view">
         <field name="name">contract.contract.form.management</field>
         <field name="model">contract.contract</field>
-        <field name="inherit_id" ref="contract.contract_contract_form_view"/>
+        <field name="inherit_id" ref="contract.contract_contract_form_view" />
         <field name="arch" type="xml">
             <!-- Agregar Botones de Estado antes de Enviar por Correo Electrónico -->
             <xpath expr="//button[@name='action_contract_send']" position="before">
-                <button name="action_in_progress" string="Confirmar" type="object" class="btn-primary" invisible="state != 'draft'"/>
-                <button name="action_cancel" string="Cancelar" type="object" invisible="state not in ('draft', 'in_progress')"/>
-                <button name="action_draft" string="Volver a Borrador" type="object" invisible="state != 'cancelled'"/>
+                <button
+                    name="action_send_pending_modifications"
+                    string="Notificar Cambios Pendientes"
+                    type="object"
+                    class="btn-primary"
+                    invisible="not has_pending_modifications"
+                />
+                <button
+                    name="action_in_progress"
+                    string="Confirmar"
+                    type="object"
+                    class="btn-primary"
+                    invisible="state != 'draft'"
+                />
+                <button
+                    name="action_cancel"
+                    string="Cancelar"
+                    type="object"
+                    invisible="state not in ('draft', 'in_progress')"
+                />
+                <button
+                    name="action_draft"
+                    string="Volver a Borrador"
+                    type="object"
+                    invisible="state != 'cancelled'"
+                />
             </xpath>
 
             <!-- Agregar Statusbar al final del Header -->
             <xpath expr="//header" position="inside">
-                <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+                <field
+                    name="state"
+                    widget="statusbar"
+                    statusbar_visible="draft,in_progress,done"
+                />
             </xpath>
 
             <!-- Ocultamos el botón de previsualizar original del header -->
@@ -24,21 +51,51 @@
             </xpath>
 
             <!-- Ocultar el botón Create Invoices si no está en curso -->
-            <xpath expr="//button[@name='recurring_create_invoice']" position="attributes">
-                <attribute name="invisible">not create_invoice_visibility or generation_type != 'invoice' or state != 'in_progress'</attribute>
+            <xpath
+                expr="//button[@name='recurring_create_invoice']"
+                position="attributes"
+            >
+                <attribute
+                    name="invisible"
+                >not create_invoice_visibility or generation_type != 'invoice' or state != 'in_progress'</attribute>
             </xpath>
 
             <!-- Agregar botón inteligente de previsualización -->
             <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_preview" type="object" class="oe_stat_button" icon="fa-globe" string="Previsualizar"/>
+                <button
+                    name="action_preview"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-globe"
+                    string="Previsualizar"
+                />
             </xpath>
 
             <!-- Campo de estado invisible para controlar accesos -->
             <xpath expr="//field[@name='name']" position="before">
-                <field name="icon" widget="fontawesome" class="oe_inline me-2" placeholder="Icono"/>
+                <field
+                    name="icon"
+                    widget="fontawesome"
+                    class="oe_inline me-2"
+                    placeholder="Icono"
+                />
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
-                <field name="state" invisible="1"/>
+                <field name="state" invisible="1" />
+                <field name="has_pending_modifications" invisible="1" />
+                <field name="pending_modification_count" invisible="1" />
+            </xpath>
+
+            <!-- Mejoras en la tabla de Modificaciones -->
+            <xpath expr="//field[@name='modification_ids']/list" position="inside">
+                <field name="is_internal" optional="hide" />
+                <button
+                    name="action_resend_modification"
+                    type="object"
+                    icon="fa-undo"
+                    title="Marcar para reenviar"
+                    invisible="not sent or is_internal"
+                />
             </xpath>
 
             <!-- ESTRUCTURA UNIFICADA Y REDISEÑO UI -->
@@ -46,87 +103,149 @@
             <xpath expr="//group[@name='main']" position="before">
                 <group name="main_custom">
                     <group name="left_column_custom">
-                        <separator string="Identificación" name="sep_identification"/>
-                        <field name="sale_generation_type" invisible="contract_type == 'purchase'" readonly="1"/>
-                        <field name="purchase_generation_type" invisible="contract_type == 'sale'" readonly="1"/>
-                        <field name="generation_type" invisible="1"/>
-                        <field name="auto_post_invoice" invisible="generation_type != 'invoice'" groups="contract_management.group_contract_invoice_auto_validate"/>
-                        
-                        <separator string="Configuración de Recurrencia" name="sep_billing"/>
-                        <field name="recurring_invoicing_type" required="1" string="Momento de Generación" readonly="state in ['in_progress', 'done']"/>
-                        <label for="recurring_interval" string="Frecuencia de Generación"/>
+                        <separator string="Identificación" name="sep_identification" />
+                        <field
+                            name="sale_generation_type"
+                            invisible="contract_type == 'purchase'"
+                            readonly="1"
+                        />
+                        <field
+                            name="purchase_generation_type"
+                            invisible="contract_type == 'sale'"
+                            readonly="1"
+                        />
+                        <field name="generation_type" invisible="1" />
+                        <field
+                            name="auto_post_invoice"
+                            invisible="generation_type != 'invoice'"
+                            groups="contract_management.group_contract_invoice_auto_validate"
+                        />
+
+                        <separator
+                            string="Configuración de Recurrencia"
+                            name="sep_billing"
+                        />
+                        <field
+                            name="recurring_invoicing_type"
+                            required="1"
+                            string="Momento de Generación"
+                            readonly="state in ['in_progress', 'done']"
+                        />
+                        <label
+                            for="recurring_interval"
+                            string="Frecuencia de Generación"
+                        />
                         <div>
-                            <field name="recurring_interval" class="oe_inline" required="1" readonly="state in ['in_progress', 'done']"/>
-                            <field name="recurring_rule_type" class="oe_inline" required="1" readonly="state in ['in_progress', 'done']"/>
+                            <field
+                                name="recurring_interval"
+                                class="oe_inline"
+                                required="1"
+                                readonly="state in ['in_progress', 'done']"
+                            />
+                            <field
+                                name="recurring_rule_type"
+                                class="oe_inline"
+                                required="1"
+                                readonly="state in ['in_progress', 'done']"
+                            />
                         </div>
-                        
-                        <separator string="Leyenda Dinámica" name="sep_legend"/>
-                        <field name="add_period_legend"/>
-                        <field name="period_legend_text" invisible="not add_period_legend" placeholder="Ej: Periodo facturado:"/>
-                        <field name="period_legend_type" invisible="not add_period_legend" required="add_period_legend"/>
-                        <field name="period_legend_location" invisible="not add_period_legend" required="add_period_legend"/>
+
+                        <separator string="Leyenda Dinámica" name="sep_legend" />
+                        <field name="add_period_legend" />
+                        <field
+                            name="period_legend_text"
+                            invisible="not add_period_legend"
+                            placeholder="Ej: Periodo facturado:"
+                        />
+                        <field
+                            name="period_legend_type"
+                            invisible="not add_period_legend"
+                            required="add_period_legend"
+                        />
+                        <field
+                            name="period_legend_location"
+                            invisible="not add_period_legend"
+                            required="add_period_legend"
+                        />
                     </group>
-                    
+
                     <group name="right_column_custom">
-                        <separator string="Clasificación y Contexto" name="sep_classification"/>
-                        <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting" options="{'product_field': 'product_id', 'business_domain': 'contract'}"/>
-                        <separator string="Fechas del Contrato" name="sep_dates"/>
+                        <separator
+                            string="Clasificación y Contexto"
+                            name="sep_classification"
+                        />
+                        <field
+                            name="analytic_distribution"
+                            widget="analytic_distribution"
+                            groups="analytic.group_analytic_accounting"
+                            options="{'product_field': 'product_id', 'business_domain': 'contract'}"
+                        />
+                        <separator string="Fechas del Contrato" name="sep_dates" />
                     </group>
                 </group>
             </xpath>
-            
+
             <xpath expr="//group[@name='main']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
 
             <!-- Mover campos a Izquierda -->
             <xpath expr="//separator[@name='sep_identification']" position="after">
-                <xpath expr="//field[@name='partner_id']" position="move"/>
+                <xpath expr="//field[@name='partner_id']" position="move" />
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
-                <xpath expr="//field[@name='contract_type']" position="move"/>
+                <xpath expr="//field[@name='contract_type']" position="move" />
             </xpath>
 
             <xpath expr="//separator[@name='sep_billing']" position="after">
-                <xpath expr="//field[@name='line_recurrence']" position="move"/>
+                <xpath expr="//field[@name='line_recurrence']" position="move" />
             </xpath>
             <xpath expr="//field[@name='line_recurrence']" position="after">
-                <xpath expr="//field[@name='payment_term_id']" position="move"/>
+                <xpath expr="//field[@name='payment_term_id']" position="move" />
             </xpath>
 
             <!-- Mover campos a Derecha (en cascada para mantener el orden) -->
             <xpath expr="//separator[@name='sep_classification']" position="after">
-                <xpath expr="//field[@name='company_id']" position="move"/>
+                <xpath expr="//field[@name='company_id']" position="move" />
             </xpath>
             <xpath expr="//field[@name='company_id']" position="after">
-                <xpath expr="//field[@name='pricelist_id']" position="move"/>
+                <xpath expr="//field[@name='pricelist_id']" position="move" />
             </xpath>
             <xpath expr="//field[@name='pricelist_id']" position="after">
-                <xpath expr="//field[@name='currency_id'][not(ancestor::field)]" position="move"/>
+                <xpath
+                    expr="//field[@name='currency_id'][not(ancestor::field)]"
+                    position="move"
+                />
             </xpath>
-            <xpath expr="//field[@name='currency_id'][not(ancestor::field)]" position="after">
-                <xpath expr="//field[@name='contract_template_id']" position="move"/>
+            <xpath
+                expr="//field[@name='currency_id'][not(ancestor::field)]"
+                position="after"
+            >
+                <xpath expr="//field[@name='contract_template_id']" position="move" />
             </xpath>
             <xpath expr="//field[@name='contract_template_id']" position="after">
-                <xpath expr="//field[@name='tag_ids']" position="move"/>
+                <xpath expr="//field[@name='tag_ids']" position="move" />
             </xpath>
 
             <xpath expr="//separator[@name='sep_dates']" position="after">
-                <xpath expr="//field[@name='date_start']" position="move"/>
+                <xpath expr="//field[@name='date_start']" position="move" />
             </xpath>
             <xpath expr="//field[@name='date_start']" position="after">
-                <xpath expr="//field[@name='date_end']" position="move"/>
+                <xpath expr="//field[@name='date_end']" position="move" />
             </xpath>
             <xpath expr="//field[@name='date_end']" position="after">
-                <xpath expr="//field[@name='recurring_next_date']" position="move"/>
-                <field name="prorating_legend" invisible="not prorating_legend" nolabel="1" class="text-muted" decoration-danger="recurring_next_date &lt; date_start" />
+                <xpath expr="//field[@name='recurring_next_date']" position="move" />
+
             </xpath>
 
             <!-- Ocultamiento dinámico (generation_type) -->
             <xpath expr="//field[@name='pricelist_id']" position="attributes">
                 <attribute name="invisible">generation_type == 'invoice'</attribute>
             </xpath>
-            <xpath expr="//field[@name='currency_id'][not(ancestor::field)]" position="attributes">
+            <xpath
+                expr="//field[@name='currency_id'][not(ancestor::field)]"
+                position="attributes"
+            >
                 <attribute name="invisible">generation_type == 'sale'</attribute>
                 <attribute name="readonly">state in ['in_progress', 'done']</attribute>
             </xpath>
@@ -149,26 +268,32 @@
 
             <!-- Restaurar restricciones de grupos de seguridad -->
             <xpath expr="//field[@name='contract_template_id']" position="attributes">
-                <attribute name="groups">contract_management.group_contract_template</attribute>
+                <attribute
+                    name="groups"
+                >contract_management.group_contract_template</attribute>
                 <attribute name="readonly">state in ['in_progress', 'done']</attribute>
             </xpath>
             <xpath expr="//field[@name='tag_ids']" position="attributes">
-                <attribute name="groups">contract_management.group_contract_tag</attribute>
+                <attribute
+                    name="groups"
+                >contract_management.group_contract_tag</attribute>
             </xpath>
             <xpath expr="//field[@name='line_recurrence']" position="attributes">
-                <attribute name="groups">contract_management.group_contract_line_recurrence</attribute>
+                <attribute
+                    name="groups"
+                >contract_management.group_contract_line_recurrence</attribute>
             </xpath>
 
             <!-- Mover campos de info y ocultar pestaña Invoicing -->
             <xpath expr="//page[@name='info']//group[1]" position="inside">
-                <xpath expr="//field[@name='user_id']" position="move"/>
-                <xpath expr="//field[@name='invoice_partner_id']" position="move"/>
-                <xpath expr="//field[@name='fiscal_position_id']" position="move"/>
-                <xpath expr="//field[@name='journal_id']" position="move"/>
+                <xpath expr="//field[@name='user_id']" position="move" />
+                <xpath expr="//field[@name='invoice_partner_id']" position="move" />
+                <xpath expr="//field[@name='fiscal_position_id']" position="move" />
+                <xpath expr="//field[@name='journal_id']" position="move" />
             </xpath>
 
             <xpath expr="//notebook" position="before">
-                <field name="description" placeholder="Descripción del contrato..."/>
+                <field name="description" placeholder="Descripción del contrato..." />
             </xpath>
 
             <xpath expr="//page[@name='invoicing']" position="attributes">
@@ -178,9 +303,13 @@
             <xpath expr="//page[@name='info']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            
+
             <xpath expr="//field[@name='note']" position="before">
-                <field name="terms_and_conditions" nolabel="1" placeholder="Términos y condiciones..."/>
+                <field
+                    name="terms_and_conditions"
+                    nolabel="1"
+                    placeholder="Términos y condiciones..."
+                />
             </xpath>
             <xpath expr="//field[@name='note']" position="attributes">
                 <attribute name="nolabel">1</attribute>
@@ -205,42 +334,120 @@
             </xpath>
 
             <!-- Reemplazar Búsqueda de Producto por Plantilla -->
-            <xpath expr="//field[@name='contract_line_fixed_ids']//field[@name='product_id']" position="before">
-                <field name="is_configurable_product" column_invisible="1"/>
-                <field name="variant_description" column_invisible="1"/>
-                <field name="product_template_id" 
-                       string="Producto" 
-                       widget="generic_variant_many2one"
-                       options="{'no_create': True}"
-                       required="parent.generation_type == 'sale'"/>
+            <xpath
+                expr="//field[@name='contract_line_fixed_ids']//field[@name='product_id']"
+                position="before"
+            >
+                <field name="is_configurable_product" column_invisible="1" />
+                <field name="variant_description" column_invisible="1" />
+                <field
+                    name="product_template_id"
+                    string="Producto"
+                    widget="generic_variant_many2one"
+                    options="{'no_create': True}"
+                    required="parent.generation_type == 'sale'"
+                />
             </xpath>
-            <xpath expr="//field[@name='contract_line_ids']//field[@name='product_id']" position="before">
-                <field name="is_configurable_product" column_invisible="1"/>
-                <field name="variant_description" column_invisible="1"/>
-                <field name="product_template_id" 
-                       string="Producto" 
-                       widget="generic_variant_many2one"
-                       options="{'no_create': True}"
-                       required="parent.generation_type == 'sale'"/>
+            <xpath
+                expr="//field[@name='contract_line_ids']//field[@name='product_id']"
+                position="before"
+            >
+                <field name="is_configurable_product" column_invisible="1" />
+                <field name="variant_description" column_invisible="1" />
+                <field
+                    name="product_template_id"
+                    string="Producto"
+                    widget="generic_variant_many2one"
+                    options="{'no_create': True}"
+                    required="parent.generation_type == 'sale'"
+                />
+            </xpath>
+            <xpath
+                expr="//field[@name='contract_line_fixed_ids']//list"
+                position="inside"
+            >
+                <field name="replaces_line_id" optional="hide" />
+                <field name="replaced_by_line_id" optional="hide" />
+                <button
+                    name="%(contract_management.action_contract_line_replace)d"
+                    type="action"
+                    icon="fa-exchange"
+                    title="Reemplazar / Mejorar Línea"
+                    invisible="replaced_by_line_id or date_end and date_end &lt; current_date"
+                    context="{'default_line_id': id, 'default_old_product_id': product_id, 'default_product_template_id': product_template_id}"
+                />
+            </xpath>
+            <xpath expr="//field[@name='contract_line_ids']//list" position="inside">
+                <field name="replaces_line_id" optional="hide" />
+                <field name="replaced_by_line_id" optional="hide" />
+                <button
+                    name="%(contract_management.action_contract_line_replace)d"
+                    type="action"
+                    icon="fa-exchange"
+                    title="Reemplazar / Mejorar Línea"
+                    invisible="replaced_by_line_id or date_end and date_end &lt; current_date"
+                    context="{'default_line_id': id, 'default_old_product_id': product_id, 'default_product_template_id': product_template_id}"
+                />
             </xpath>
 
-            <xpath expr="//field[@name='contract_line_fixed_ids']//field[@name='product_id']" position="attributes">
+            <xpath
+                expr="//field[@name='contract_line_fixed_ids']//field[@name='product_id']"
+                position="attributes"
+            >
                 <attribute name="column_invisible">1</attribute>
                 <attribute name="required">0</attribute>
+                <attribute name="force_save">1</attribute>
             </xpath>
-            <xpath expr="//field[@name='contract_line_ids']//field[@name='product_id']" position="attributes">
+            <xpath
+                expr="//field[@name='contract_line_ids']//field[@name='product_id']"
+                position="attributes"
+            >
                 <attribute name="column_invisible">1</attribute>
                 <attribute name="required">0</attribute>
+                <attribute name="force_save">1</attribute>
             </xpath>
 
             <!-- Propagar distribución analítica a nuevas líneas creadas manualmente -->
             <xpath expr="//field[@name='contract_line_ids']" position="attributes">
-                <attribute name="context">{'default_analytic_distribution': analytic_distribution}</attribute>
+                <attribute
+                    name="context"
+                >{'default_analytic_distribution': analytic_distribution}</attribute>
             </xpath>
-            <xpath expr="//field[@name='contract_line_fixed_ids']" position="attributes">
-                <attribute name="context">{'default_analytic_distribution': analytic_distribution}</attribute>
+            <xpath
+                expr="//field[@name='contract_line_fixed_ids']"
+                position="attributes"
+            >
+                <attribute
+                    name="context"
+                >{'default_analytic_distribution': analytic_distribution}</attribute>
             </xpath>
 
+        </field>
+    </record>
+
+    <!-- Añadir campos al Tree View y acción de encabezado -->
+    <record id="contract_view_tree_management" model="ir.ui.view">
+        <field name="name">contract.contract.tree.management</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field
+                    name="has_pending_modifications"
+                    string="Cambios Pend."
+                    optional="show"
+                />
+            </xpath>
+            <xpath expr="//list" position="inside">
+                <header>
+                    <button
+                        name="action_send_pending_modifications"
+                        string="Notificar Cambios"
+                        type="object"
+                        class="btn-primary"
+                    />
+                </header>
+            </xpath>
         </field>
     </record>
 
@@ -248,10 +455,15 @@
     <record id="contract_view_form_management_sale_button" model="ir.ui.view">
         <field name="name">contract.contract.form.management.sale.button</field>
         <field name="model">contract.contract</field>
-        <field name="inherit_id" ref="contract_sale_generation.contract_contract_form_view_recurring_sale_form"/>
+        <field
+            name="inherit_id"
+            ref="contract_sale_generation.contract_contract_form_view_recurring_sale_form"
+        />
         <field name="arch" type="xml">
             <xpath expr="//button[@name='recurring_create_sale']" position="attributes">
-                <attribute name="invisible">generation_type != 'sale' or state != 'in_progress'</attribute>
+                <attribute
+                    name="invisible"
+                >generation_type != 'sale' or state != 'in_progress'</attribute>
             </xpath>
         </field>
     </record>
@@ -262,29 +474,51 @@
         <field name="model">contract.contract</field>
         <field name="arch" type="xml">
             <kanban default_group_by="state" class="o_kanban_small_column">
-                <field name="icon"/>
-                <field name="name"/>
-                <field name="contract_template_id" groups="contract_management.group_contract_template"/>
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="contract_management.group_contract_tag"/>
-                <field name="partner_id"/>
-                <field name="state"/>
-                <field name="date_start"/>
-                <field name="date_end"/>
+                <field name="icon" />
+                <field name="name" />
+                <field
+                    name="contract_template_id"
+                    groups="contract_management.group_contract_template"
+                />
+                <field
+                    name="tag_ids"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                    groups="contract_management.group_contract_tag"
+                />
+                <field name="partner_id" />
+                <field name="state" />
+                <field name="date_start" />
+                <field name="date_end" />
+                <field name="has_pending_modifications" />
+                <field name="pending_modification_count" />
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div class="o_kanban_record_top">
                                 <div class="o_kanban_record_headings">
                                     <strong class="o_kanban_record_title">
-                                        <i t-if="record.icon.raw_value" t-attf-class="fa #{record.icon.raw_value} me-2"/>
-                                        <field name="name"/>
+                                        <i
+                                            t-if="record.icon.raw_value"
+                                            t-attf-class="fa #{record.icon.raw_value} me-2"
+                                        />
+                                        <field name="name" />
+                                        <span
+                                            t-if="record.has_pending_modifications.raw_value"
+                                            class="badge rounded-pill text-bg-warning ms-1"
+                                            title="Cambios Pendientes"
+                                        >
+                                            <i class="fa fa-bell" /> <t
+                                                t-esc="record.pending_modification_count.raw_value"
+                                            />
+                                        </span>
                                     </strong>
                                 </div>
                             </div>
                             <div class="o_kanban_record_body">
-                                <div><field name="partner_id"/></div>
-                                <div>Inicio: <field name="date_start"/></div>
-                                <div>Fin: <field name="date_end"/></div>
+                                <div><field name="partner_id" /></div>
+                                <div>Inicio: <field name="date_start" /></div>
+                                <div>Fin: <field name="date_end" /></div>
                             </div>
                         </div>
                     </t>
@@ -298,9 +532,14 @@
         <field name="name">contract.contract.timeline</field>
         <field name="model">contract.contract</field>
         <field name="arch" type="xml">
-            <timeline date_start="date_start" date_stop="date_end" default_group_by="partner_id" string="Contratos">
-                <field name="name"/>
-                <field name="partner_id"/>
+            <timeline
+                date_start="date_start"
+                date_stop="date_end"
+                default_group_by="partner_id"
+                string="Contratos"
+            >
+                <field name="name" />
+                <field name="partner_id" />
             </timeline>
         </field>
     </record>
@@ -310,9 +549,16 @@
         <field name="name">contract.contract.calendar</field>
         <field name="model">contract.contract</field>
         <field name="arch" type="xml">
-            <calendar string="Contratos" date_start="date_start" date_stop="date_end" color="partner_id" event_open_popup="true" mode="month">
-                <field name="name"/>
-                <field name="partner_id"/>
+            <calendar
+                string="Contratos"
+                date_start="date_start"
+                date_stop="date_end"
+                color="partner_id"
+                event_open_popup="true"
+                mode="month"
+            >
+                <field name="name" />
+                <field name="partner_id" />
             </calendar>
         </field>
     </record>
@@ -322,10 +568,16 @@
         <field name="name">contract.contract.gantt</field>
         <field name="model">contract.contract</field>
         <field name="arch" type="xml">
-            <gantt date_start="date_start" date_stop="date_end" string="Contratos" default_group_by="partner_id" color="partner_id">
-                <field name="name"/>
-                <field name="partner_id"/>
-                <field name="state"/>
+            <gantt
+                date_start="date_start"
+                date_stop="date_end"
+                string="Contratos"
+                default_group_by="partner_id"
+                color="partner_id"
+            >
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="state" />
             </gantt>
         </field>
     </record>
@@ -335,117 +587,234 @@
         <field name="name">Contratos de Facturas de Cliente</field>
         <field name="res_model">contract.contract</field>
         <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
-        <field name="domain">[('contract_type', '=', 'sale'), ('generation_type', '=', 'invoice')]</field>
-        <field name="context">{'default_contract_type': 'sale', 'default_generation_type': 'invoice', 'default_sale_generation_type': 'invoice'}</field>
+        <field
+            name="domain"
+        >[('contract_type', '=', 'sale'), ('generation_type', '=', 'invoice')]</field>
+        <field
+            name="context"
+        >{'default_contract_type': 'sale', 'default_generation_type': 'invoice', 'default_sale_generation_type': 'invoice'}</field>
     </record>
 
     <record id="action_customer_sale_contract" model="ir.actions.act_window">
         <field name="name">Contratos de Ventas</field>
         <field name="res_model">contract.contract</field>
         <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
-        <field name="domain">[('contract_type', '=', 'sale'), ('generation_type', '=', 'sale')]</field>
-        <field name="context">{'default_contract_type': 'sale', 'default_generation_type': 'sale', 'default_sale_generation_type': 'sale'}</field>
+        <field
+            name="domain"
+        >[('contract_type', '=', 'sale'), ('generation_type', '=', 'sale')]</field>
+        <field
+            name="context"
+        >{'default_contract_type': 'sale', 'default_generation_type': 'sale', 'default_sale_generation_type': 'sale'}</field>
     </record>
 
     <record id="action_supplier_invoice_contract" model="ir.actions.act_window">
         <field name="name">Contratos de Facturas de Proveedor</field>
         <field name="res_model">contract.contract</field>
         <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
-        <field name="domain">[('contract_type', '=', 'purchase'), ('generation_type', '=', 'invoice')]</field>
-        <field name="context">{'default_contract_type': 'purchase', 'default_generation_type': 'invoice', 'default_purchase_generation_type': 'invoice'}</field>
+        <field
+            name="domain"
+        >[('contract_type', '=', 'purchase'), ('generation_type', '=', 'invoice')]</field>
+        <field
+            name="context"
+        >{'default_contract_type': 'purchase', 'default_generation_type': 'invoice', 'default_purchase_generation_type': 'invoice'}</field>
     </record>
 
     <!-- Forzar Kanban como primera vista -->
-    <record id="action_customer_invoice_contract_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="0"/>
+    <record
+        id="action_customer_invoice_contract_view_kanban"
+        model="ir.actions.act_window.view"
+    >
+        <field name="sequence" eval="0" />
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="contract_view_kanban"/>
-        <field name="act_window_id" ref="action_customer_invoice_contract"/>
+        <field name="view_id" ref="contract_view_kanban" />
+        <field name="act_window_id" ref="action_customer_invoice_contract" />
     </record>
 
-    <record id="action_customer_sale_contract_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="0"/>
+    <record
+        id="action_customer_sale_contract_view_kanban"
+        model="ir.actions.act_window.view"
+    >
+        <field name="sequence" eval="0" />
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="contract_view_kanban"/>
-        <field name="act_window_id" ref="action_customer_sale_contract"/>
+        <field name="view_id" ref="contract_view_kanban" />
+        <field name="act_window_id" ref="action_customer_sale_contract" />
     </record>
 
-    <record id="action_supplier_invoice_contract_view_kanban" model="ir.actions.act_window.view">
-        <field name="sequence" eval="0"/>
+    <record
+        id="action_supplier_invoice_contract_view_kanban"
+        model="ir.actions.act_window.view"
+    >
+        <field name="sequence" eval="0" />
         <field name="view_mode">kanban</field>
-        <field name="view_id" ref="contract_view_kanban"/>
-        <field name="act_window_id" ref="action_supplier_invoice_contract"/>
+        <field name="view_id" ref="contract_view_kanban" />
+        <field name="act_window_id" ref="action_supplier_invoice_contract" />
     </record>
     <!-- Extensión de Filtros de Búsqueda -->
     <record id="contract_view_search_extended" model="ir.ui.view">
         <field name="name">contract.contract.search.extended</field>
         <field name="model">contract.contract</field>
-        <field name="inherit_id" ref="contract.contract_contract_search_view"/>
+        <field name="inherit_id" ref="contract.contract_contract_search_view" />
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <separator/>
-                <filter string="Contratos de Clientes" name="filter_customer" domain="[('contract_type', '=', 'sale')]"/>
-                <filter string="Contratos de Proveedores" name="filter_supplier" domain="[('contract_type', '=', 'purchase')]"/>
-                <separator/>
-                <filter string="Generación: Venta (Sale)" name="filter_gen_sale" domain="[('generation_type', '=', 'sale')]"/>
-                <filter string="Generación: Factura (Invoice)" name="filter_gen_invoice" domain="[('generation_type', '=', 'invoice')]"/>
-                <separator/>
-                <filter string="Facturación: Prepago" name="filter_prepaid" domain="[('recurring_invoicing_type', '=', 'pre-paid')]"/>
-                <filter string="Facturación: Postpago" name="filter_postpaid" domain="[('recurring_invoicing_type', '=', 'post-paid')]"/>
-                <separator/>
-                <filter string="Fecha de Inicio" name="filter_date_start" date="date_start"/>
-                <filter string="Fecha de Finalización" name="filter_date_end" date="date_end"/>
-                <filter string="Fecha de Próxima Factura" name="filter_next_date" date="recurring_next_date"/>
-                <separator/>
-                <filter string="Estado: Borrador" name="filter_state_draft" domain="[('state', '=', 'draft')]"/>
-                <filter string="Estado: En Curso" name="filter_state_in_progress" domain="[('state', '=', 'in_progress')]"/>
-                <filter string="Estado: Pausado" name="filter_state_paused" domain="[('state', '=', 'paused')]"/>
-                <filter string="Estado: Finalizado" name="filter_state_done" domain="[('state', '=', 'done')]"/>
-                <filter string="Estado: Cancelado" name="filter_state_cancelled" domain="[('state', '=', 'cancelled')]"/>
-                <separator/>
-                <filter string="Vence en 7 días" name="filter_expiring_d7" domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
-                <filter string="Vence en 15 días" name="filter_expiring_d15" domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=15)).strftime('%Y-%m-%d'))]"/>
-                <filter string="Vence en 30 días" name="filter_expiring_d30" domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=15)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
-                <filter string="Vence en 1 año" name="filter_expiring_d365" domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=365)).strftime('%Y-%m-%d'))]"/>
+                <separator />
+                <filter
+                    string="Contratos de Clientes"
+                    name="filter_customer"
+                    domain="[('contract_type', '=', 'sale')]"
+                />
+                <filter
+                    string="Contratos de Proveedores"
+                    name="filter_supplier"
+                    domain="[('contract_type', '=', 'purchase')]"
+                />
+                <separator />
+                <filter
+                    string="Generación: Venta (Sale)"
+                    name="filter_gen_sale"
+                    domain="[('generation_type', '=', 'sale')]"
+                />
+                <filter
+                    string="Generación: Factura (Invoice)"
+                    name="filter_gen_invoice"
+                    domain="[('generation_type', '=', 'invoice')]"
+                />
+                <separator />
+                <filter
+                    string="Facturación: Prepago"
+                    name="filter_prepaid"
+                    domain="[('recurring_invoicing_type', '=', 'pre-paid')]"
+                />
+                <filter
+                    string="Facturación: Postpago"
+                    name="filter_postpaid"
+                    domain="[('recurring_invoicing_type', '=', 'post-paid')]"
+                />
+                <separator />
+                <filter
+                    string="Fecha de Inicio"
+                    name="filter_date_start"
+                    date="date_start"
+                />
+                <filter
+                    string="Fecha de Finalización"
+                    name="filter_date_end"
+                    date="date_end"
+                />
+                <filter
+                    string="Fecha de Próxima Factura"
+                    name="filter_next_date"
+                    date="recurring_next_date"
+                />
+                <separator />
+                <filter
+                    string="Estado: Borrador"
+                    name="filter_state_draft"
+                    domain="[('state', '=', 'draft')]"
+                />
+                <filter
+                    string="Estado: En Curso"
+                    name="filter_state_in_progress"
+                    domain="[('state', '=', 'in_progress')]"
+                />
+                <filter
+                    string="Estado: Pausado"
+                    name="filter_state_paused"
+                    domain="[('state', '=', 'paused')]"
+                />
+                <filter
+                    string="Estado: Finalizado"
+                    name="filter_state_done"
+                    domain="[('state', '=', 'done')]"
+                />
+                <filter
+                    string="Estado: Cancelado"
+                    name="filter_state_cancelled"
+                    domain="[('state', '=', 'cancelled')]"
+                />
+                <separator />
+                <filter
+                    string="Vence en 7 días"
+                    name="filter_expiring_d7"
+                    domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"
+                />
+                <filter
+                    string="Vence en 15 días"
+                    name="filter_expiring_d15"
+                    domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=15)).strftime('%Y-%m-%d'))]"
+                />
+                <filter
+                    string="Vence en 30 días"
+                    name="filter_expiring_d30"
+                    domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=15)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"
+                />
+                <filter
+                    string="Vence en 1 año"
+                    name="filter_expiring_d365"
+                    domain="[('state', '=', 'in_progress'), ('date_end', '!=', False), ('date_end', '&gt;', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d')), ('date_end', '&lt;=', (context_today() + datetime.timedelta(days=365)).strftime('%Y-%m-%d'))]"
+                />
+                <separator />
+                <filter
+                    string="Cambios Pendientes"
+                    name="filter_pending_modifications"
+                    domain="[('has_pending_modifications', '=', True)]"
+                />
             </xpath>
         </field>
     </record>
     <!-- Ocultar menús originales del módulo 'contract' que ahora están en nuestro módulo -->
-    <menuitem id="contract.menu_contract_contract_customer" active="False"/>
-    <menuitem id="contract.menu_contract_contract_supplier" active="False"/>
-    <menuitem id="contract.sale_contract_manually_create_invoice_menu" active="False"/>
-    <menuitem id="contract.purchase_contract_manually_create_invoice_menu" active="False"/>
-    <menuitem id="contract.menu_config_contract" active="False"/>
+    <menuitem id="contract.menu_contract_contract_customer" active="False" />
+    <menuitem id="contract.menu_contract_contract_supplier" active="False" />
+    <menuitem id="contract.sale_contract_manually_create_invoice_menu" active="False" />
+    <menuitem
+        id="contract.purchase_contract_manually_create_invoice_menu"
+        active="False"
+    />
+    <menuitem id="contract.menu_config_contract" active="False" />
 
     <!-- Sobrescribir el reporte para asignar un nombre de descarga dinámico -->
     <record id="contract.report_contract" model="ir.actions.report">
-        <field name="print_report_name">'Contrato %s' % (object.name or object.code)</field>
+        <field
+            name="print_report_name"
+        >'Contrato %s' % (object.name or object.code)</field>
     </record>
     <!-- Vistas de Plantilla de Contrato para mostrar generation_type -->
     <record id="contract_template_form_view_inherit" model="ir.ui.view">
         <field name="name">contract.template.form.management</field>
         <field name="model">contract.template</field>
-        <field name="inherit_id" ref="contract.contract_template_form_view"/>
+        <field name="inherit_id" ref="contract.contract_template_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='contract_type']" position="after">
-                <field name="generation_type" widget="radio" options="{'horizontal': True}" invisible="contract_type == 'purchase'"/>
+                <field
+                    name="generation_type"
+                    widget="radio"
+                    options="{'horizontal': True}"
+                    invisible="contract_type == 'purchase'"
+                />
             </xpath>
 
             <xpath expr="//field[@name='contract_line_ids']/list" position="attributes">
                 <attribute name="editable">bottom</attribute>
             </xpath>
 
-            <xpath expr="//field[@name='contract_line_ids']//field[@name='product_id']" position="before">
-                <field name="is_configurable_product" column_invisible="1"/>
-                <field name="variant_description" column_invisible="1"/>
-                <field name="product_template_id" 
-                       string="Producto" 
-                       widget="generic_variant_many2one"
-                       options="{'no_create': True}"
-                       required="parent.generation_type == 'sale'"/>
+            <xpath
+                expr="//field[@name='contract_line_ids']//field[@name='product_id']"
+                position="before"
+            >
+                <field name="is_configurable_product" column_invisible="1" />
+                <field name="variant_description" column_invisible="1" />
+                <field
+                    name="product_template_id"
+                    string="Producto"
+                    widget="generic_variant_many2one"
+                    options="{'no_create': True}"
+                    required="parent.generation_type == 'sale'"
+                />
             </xpath>
 
-            <xpath expr="//field[@name='contract_line_ids']//field[@name='product_id']" position="attributes">
+            <xpath
+                expr="//field[@name='contract_line_ids']//field[@name='product_id']"
+                position="attributes"
+            >
                 <attribute name="column_invisible">1</attribute>
                 <attribute name="required">0</attribute>
             </xpath>
@@ -456,10 +825,10 @@
     <record id="contract_template_tree_view_inherit" model="ir.ui.view">
         <field name="name">contract.template.tree.management</field>
         <field name="model">contract.template</field>
-        <field name="inherit_id" ref="contract.contract_template_tree_view"/>
+        <field name="inherit_id" ref="contract.contract_template_tree_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='contract_type']" position="before">
-                <field name="generation_type"/>
+                <field name="generation_type" />
             </xpath>
         </field>
     </record>

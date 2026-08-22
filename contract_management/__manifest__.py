@@ -5,7 +5,14 @@
     "website": "https://crumges.com",
     "license": "AGPL-3",
     "category": "Sales/Contracts",
-    "depends": ["contract", "contract_sale_generation", "web_timeline", "base_setup", "crumges_generic_variant_wizard", "crumges_web_widget_fontawesome"],
+    "depends": [
+        "contract",
+        "contract_sale_generation",
+        "web_timeline",
+        "base_setup",
+        "crumges_generic_variant_wizard",
+        "crumges_web_widget_fontawesome",
+    ],
     "data": [
         "security/contract_groups.xml",
         "security/ir.model.access.csv",
@@ -13,6 +20,7 @@
         "data/dashboard_data.xml",
         "data/trend_data.xml",
         "data/contract_template_data.xml",
+        "wizard/contract_line_replace_wizard_views.xml",
         "views/contract_template_views.xml",
         "views/contract_views.xml",
         "views/contract_menu.xml",
@@ -24,12 +32,12 @@
         "views/contract_portal_templates.xml",
         "views/contract_report_templates.xml",
         "data/mail_template_data.xml",
-        "data/contract_modification_data.xml"
+        "data/contract_modification_data.xml",
     ],
     "assets": {
         "web.assets_backend": [
             "contract_management/static/src/xml/contract_dashboard.xml",
-            "contract_management/static/src/js/contract_dashboard.js"
+            "contract_management/static/src/js/contract_dashboard.js",
         ]
     },
     "installable": True,

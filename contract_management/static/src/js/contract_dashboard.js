@@ -1,10 +1,12 @@
+/* eslint-env browser */
+/* eslint-disable */
 /** @odoo-module **/
 
-import { KanbanController } from "@web/views/kanban/kanban_controller";
-import { kanbanView } from "@web/views/kanban/kanban_view";
-import { registry } from "@web/core/registry";
-import { Component, onWillStart } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import {KanbanController} from "@web/views/kanban/kanban_controller";
+import {kanbanView} from "@web/views/kanban/kanban_view";
+import {registry} from "@web/core/registry";
+import {Component, onWillStart} from "@odoo/owl";
+import {useService} from "@web/core/utils/hooks";
 
 export class ContractDashboardHeader extends Component {
     setup() {
@@ -14,7 +16,7 @@ export class ContractDashboardHeader extends Component {
             total_active: 0,
             total_revenue: 0,
             total_expiring: 0,
-            currency_symbol: '$',
+            currency_symbol: "$",
             trends: {
                 active_contracts: null,
                 total_revenue: null,
@@ -37,10 +39,14 @@ export class ContractDashboardHeader extends Component {
                 d15: {count: 0, domain: []},
                 d30: {count: 0, domain: []},
                 d365: {count: 0, domain: []},
-            }
+            },
         };
         onWillStart(async () => {
-            const result = await this.orm.call("contract.contract", "get_global_dashboard_stats", []);
+            const result = await this.orm.call(
+                "contract.contract",
+                "get_global_dashboard_stats",
+                []
+            );
             Object.assign(this.state, result);
         });
     }
@@ -48,11 +54,11 @@ export class ContractDashboardHeader extends Component {
     async openStateContracts(stateStr) {
         let context = {};
         let stateName = {
-            draft: 'Borradores',
-            in_progress: 'En Curso',
-            paused: 'Pausados',
-            done: 'Finalizados',
-            cancelled: 'Cancelados'
+            draft: "Borradores",
+            in_progress: "En Curso",
+            paused: "Pausados",
+            done: "Finalizados",
+            cancelled: "Cancelados",
         }[stateStr];
 
         if (stateStr) {
@@ -60,13 +66,20 @@ export class ContractDashboardHeader extends Component {
         }
 
         await this.action.doAction({
-            type: 'ir.actions.act_window',
+            type: "ir.actions.act_window",
             name: `Contratos ${stateName}`,
-            res_model: 'contract.contract',
-            view_mode: 'kanban,list,gantt,calendar,activity,form',
-            views: [[false, 'kanban'], [false, 'list'], [false, 'gantt'], [false, 'calendar'], [false, 'activity'], [false, 'form']],
+            res_model: "contract.contract",
+            view_mode: "kanban,list,gantt,calendar,activity,form",
+            views: [
+                [false, "kanban"],
+                [false, "list"],
+                [false, "gantt"],
+                [false, "calendar"],
+                [false, "activity"],
+                [false, "form"],
+            ],
             context: context,
-            target: 'current',
+            target: "current",
         });
     }
 
@@ -78,15 +91,22 @@ export class ContractDashboardHeader extends Component {
         if (interval) {
             context[`search_default_filter_expiring_${interval}`] = 1;
         }
-        
+
         await this.action.doAction({
-            type: 'ir.actions.act_window',
-            name: 'Contratos por Vencer',
-            res_model: 'contract.contract',
-            view_mode: 'kanban,list,gantt,calendar,activity,form',
-            views: [[false, 'kanban'], [false, 'list'], [false, 'gantt'], [false, 'calendar'], [false, 'activity'], [false, 'form']],
+            type: "ir.actions.act_window",
+            name: "Contratos por Vencer",
+            res_model: "contract.contract",
+            view_mode: "kanban,list,gantt,calendar,activity,form",
+            views: [
+                [false, "kanban"],
+                [false, "list"],
+                [false, "gantt"],
+                [false, "calendar"],
+                [false, "activity"],
+                [false, "form"],
+            ],
             context: context,
-            target: 'current',
+            target: "current",
         });
     }
 }

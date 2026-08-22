@@ -1,70 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- Menú Raíz (App) -->
-    <menuitem id="contract_management_menu_root"
-              name="Contratos"
-              action="action_contract_dashboard"
-              web_icon="contract,static/description/icon.png"
-              sequence="45"/>
+    <menuitem
+        id="contract_management_menu_root"
+        name="Contratos"
+        action="action_contract_dashboard"
+        web_icon="contract,static/description/icon.png"
+        sequence="45"
+    />
 
-    <menuitem id="contract_menu_dashboard"
-              name="Tablero"
-              parent="contract_management_menu_root"
-              action="action_contract_dashboard"
-              sequence="5"/>
+    <menuitem
+        id="contract_menu_dashboard"
+        name="Tablero"
+        parent="contract_management_menu_root"
+        action="action_contract_dashboard"
+        sequence="5"
+    />
 
     <!-- Menús Secundarios -->
-    <menuitem id="contract_menu_customers"
-              name="Clientes"
-              parent="contract_management_menu_root"
-              groups="contract_management.group_contract_sale_invoice,contract_management.group_contract_sale_order"
-              sequence="10"/>
+    <menuitem
+        id="contract_menu_customers"
+        name="Clientes"
+        parent="contract_management_menu_root"
+        groups="contract_management.group_contract_sale_invoice,contract_management.group_contract_sale_order"
+        sequence="10"
+    />
 
-    <menuitem id="contract_menu_vendors"
-              name="Proveedores"
-              parent="contract_management_menu_root"
-              groups="contract_management.group_contract_purchase_invoice"
-              sequence="20"/>
+    <menuitem
+        id="contract_menu_vendors"
+        name="Proveedores"
+        parent="contract_management_menu_root"
+        groups="contract_management.group_contract_purchase_invoice"
+        sequence="20"
+    />
 
-    <menuitem id="contract_menu_config"
-              name="Configuración"
-              parent="contract_management_menu_root"
-              sequence="100"/>
+    <menuitem
+        id="contract_menu_config"
+        name="Configuración"
+        parent="contract_management_menu_root"
+        sequence="100"
+    />
 
-    <menuitem id="menu_customer_invoice_contract_action"
-              name="Contratos de Facturas de Cliente"
-              parent="contract_menu_customers"
-              action="action_customer_invoice_contract"
-              groups="contract_management.group_contract_sale_invoice"
-              sequence="10"/>
+    <menuitem
+        id="menu_customer_invoice_contract_action"
+        name="Contratos de Facturas de Cliente"
+        parent="contract_menu_customers"
+        action="action_customer_invoice_contract"
+        groups="contract_management.group_contract_sale_invoice"
+        sequence="10"
+    />
 
-    <menuitem id="menu_customer_sale_contract_action"
-              name="Contratos de Ventas"
-              parent="contract_menu_customers"
-              action="action_customer_sale_contract"
-              groups="contract_management.group_contract_sale_order"
-              sequence="20"/>
+    <menuitem
+        id="menu_customer_sale_contract_action"
+        name="Contratos de Ventas"
+        parent="contract_menu_customers"
+        action="action_customer_sale_contract"
+        groups="contract_management.group_contract_sale_order"
+        sequence="20"
+    />
 
-    <menuitem id="menu_vendor_invoice_contract_action"
-              name="Contratos de Facturas de Proveedor"
-              parent="contract_menu_vendors"
-              action="action_supplier_invoice_contract"
-              groups="contract_management.group_contract_purchase_invoice"
-              sequence="10"/>
-              
+    <menuitem
+        id="menu_vendor_invoice_contract_action"
+        name="Contratos de Facturas de Proveedor"
+        parent="contract_menu_vendors"
+        action="action_supplier_invoice_contract"
+        groups="contract_management.group_contract_purchase_invoice"
+        sequence="10"
+    />
+
 
     <record id="action_contract_template" model="ir.actions.act_window">
         <field name="name">Plantillas del Contrato</field>
         <field name="res_model">contract.template</field>
         <field name="view_mode">list,form</field>
     </record>
-    
-    <menuitem id="menu_contract_template_action"
-              name="Plantillas del Contrato"
-              parent="contract_menu_config"
-              action="action_contract_template"
-              sequence="10"
-              groups="contract_management.group_contract_template"/>
+
+    <menuitem
+        id="menu_contract_template_action"
+        name="Plantillas del Contrato"
+        parent="contract_menu_config"
+        action="action_contract_template"
+        sequence="10"
+        groups="contract_management.group_contract_template"
+    />
 
     <record id="action_contract_tag" model="ir.actions.act_window">
         <field name="name">Etiquetas de Contrato</field>
@@ -72,10 +90,12 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_contract_tag_action"
-              name="Etiquetas de Contrato"
-              parent="contract_menu_config"
-              action="action_contract_tag"
-              sequence="20"
-              groups="contract_management.group_contract_tag"/>
+    <menuitem
+        id="menu_contract_tag_action"
+        name="Etiquetas de Contrato"
+        parent="contract_menu_config"
+        action="action_contract_tag"
+        sequence="20"
+        groups="contract_management.group_contract_tag"
+    />
 </odoo>

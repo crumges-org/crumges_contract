@@ -2,7 +2,7 @@
 Gestión de Contratos (Crumges)
 ===============================
 
-.. 
+..
    Este módulo proporciona una capa de gestión avanzada para los Contratos de Odoo.
 
 Este módulo extiende las funcionalidades nativas de gestión de contratos de Odoo añadiendo herramientas potentes para la gestión de plantillas, términos y condiciones, tableros interactivos y un motor de auditoría automatizado.
