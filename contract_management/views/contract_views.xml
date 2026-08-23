@@ -267,15 +267,9 @@
 
             <!-- Restaurar restricciones de grupos de seguridad -->
             <xpath expr="//field[@name='contract_template_id']" position="attributes">
-                <attribute
-                    name="groups"
-                >contract_management.group_contract_template</attribute>
                 <attribute name="readonly">state in ['in_progress', 'done']</attribute>
             </xpath>
             <xpath expr="//field[@name='tag_ids']" position="attributes">
-                <attribute
-                    name="groups"
-                >contract_management.group_contract_tag</attribute>
             </xpath>
             <xpath expr="//field[@name='line_recurrence']" position="attributes">
                 <attribute
@@ -477,13 +471,11 @@
                 <field name="name" />
                 <field
                     name="contract_template_id"
-                    groups="contract_management.group_contract_template"
                 />
                 <field
                     name="tag_ids"
                     widget="many2many_tags"
                     options="{'color_field': 'color'}"
-                    groups="contract_management.group_contract_tag"
                 />
                 <field name="partner_id" />
                 <field name="state" />

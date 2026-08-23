@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- Technical groups for settings -->
-    <record id="group_contract_template" model="res.groups">
-        <field name="name">Use Contract Templates</field>
-        <field name="category_id" ref="base.module_category_hidden" />
-    </record>
-
-    <record id="group_contract_tag" model="res.groups">
-        <field name="name">Use Contract Tags</field>
-        <field name="category_id" ref="base.module_category_hidden" />
-    </record>
-
     <record id="group_contract_line_recurrence" model="res.groups">
         <field name="name">Use Line Level Recurrence</field>
         <field name="category_id" ref="base.module_category_hidden" />
     </record>
-
     <record id="group_contract_modification_rule" model="res.groups">
         <field name="name">Use Automatic Change Management</field>
         <field name="category_id" ref="base.module_category_hidden" />

@@ -119,6 +119,7 @@ class Contract(models.Model):
     safe_template_id = fields.Many2one(
         "contract.template",
         string="Plantilla de Contrato",
+        required=True,
     )
 
     @api.onchange("safe_template_id")

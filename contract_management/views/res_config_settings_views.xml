@@ -20,18 +20,7 @@
                         title="Características Opcionales"
                         name="contract_optional_features"
                     >
-                        <setting
-                            id="contract_template_setting"
-                            help="Permite crear y utilizar plantillas base para nuevos contratos."
-                        >
-                            <field name="group_contract_template" />
-                        </setting>
-                        <setting
-                            id="contract_tag_setting"
-                            help="Permite categorizar los contratos usando etiquetas personalizadas."
-                        >
-                            <field name="group_contract_tag" />
-                        </setting>
+
                         <setting
                             id="contract_line_recurrence_setting"
                             help="Permite configurar reglas de facturación diferentes para cada línea individual de un contrato."

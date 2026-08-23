@@ -4,16 +4,6 @@ from odoo import api, fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
-    group_contract_template = fields.Boolean(
-        string="Usar Plantillas de Contrato",
-        implied_group="contract_management.group_contract_template",
-        help="Habilita el menú y funcionalidad de Plantillas del Contrato.",
-    )
-    group_contract_tag = fields.Boolean(
-        string="Usar Etiquetas de Contrato",
-        implied_group="contract_management.group_contract_tag",
-        help="Habilita el menú y funcionalidad de Etiquetas de Contrato.",
-    )
     group_contract_line_recurrence = fields.Boolean(
         string="Recurrencia a nivel de línea",
         implied_group="contract_management.group_contract_line_recurrence",
