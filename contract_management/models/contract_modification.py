@@ -30,7 +30,6 @@ class ContractModificationRule(models.Model):
         required=True,
     )
     is_internal = fields.Boolean(
-        ,
         default=False,
         help="If checked, this modification will not be notified to the customer.",
     )

@@ -5,7 +5,7 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     contract_ids = fields.Many2many(
-        "contract.contract", compute="_compute_contract_ids", 
+        "contract.contract", compute="_compute_contract_ids"
     )
     contract_count = fields.Integer(compute="_compute_contract_ids")
 
