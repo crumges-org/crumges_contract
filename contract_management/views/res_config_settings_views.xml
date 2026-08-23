@@ -86,42 +86,7 @@
                             <field name="group_contract_purchase_invoice" />
                         </setting>
                     </block>
-                    <block
-                        title="Facturación Avanzada y Pagos"
-                        name="contract_advanced_invoicing"
-                    >
-                        <setting
-                            id="contract_invoice_auto_validate_setting"
-                            help="Publica (valida) automáticamente las facturas de contrato apenas el sistema las crea."
-                        >
-                            <field name="group_contract_invoice_auto_validate" />
-                        </setting>
-                        <setting
-                            id="contract_invoice_start_end_dates_setting"
-                            help="Inyecta campos para controlar estrictamente las fechas de inicio y fin en las líneas de factura generadas."
-                        >
-                            <field name="module_contract_invoice_start_end_dates" />
-                        </setting>
-                        <setting
-                            id="contract_invoice_manually_setting"
-                            help="Agrega un botón para forzar la facturación de un contrato manualmente sin esperar al proceso programado."
-                        >
-                            <field name="module_contract_invoice_manually" />
-                        </setting>
-                        <setting
-                            id="contract_payment_mode_setting"
-                            help="Integra los Contratos con métodos de pago bancarios y adeudos SEPA."
-                        >
-                            <field name="module_contract_payment_mode" />
-                        </setting>
-                        <setting
-                            id="contract_mandate_setting"
-                            help="Integra los Contratos con Mandatos Bancarios SEPA (Requiere Métodos de Pago)."
-                            invisible="not module_contract_payment_mode"
-                        >
-                            <field name="module_contract_mandate" />
-                        </setting>
-                    </block>
+
                     <block title="Vistas Adicionales" name="contract_additional_views">
                         <setting
                             id="contract_timeline_setting"

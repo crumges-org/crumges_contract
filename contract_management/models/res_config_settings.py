@@ -49,21 +49,7 @@ class ResConfigSettings(models.TransientModel):
         string="Módulo OCA: contract_sale_generation"
     )
 
-    # Bloque: Facturación Avanzada y Pagos
-    group_contract_invoice_auto_validate = fields.Boolean(
-        string="Auto Validar Facturas de Contrato",
-        implied_group="contract_management.group_contract_invoice_auto_validate",
-    )
-    module_contract_invoice_start_end_dates = fields.Boolean(
-        string="Fechas de Inicio y Fin en Líneas de Factura"
-    )
-    module_contract_invoice_manually = fields.Boolean(
-        string="Facturación Manual de Contratos"
-    )
-    module_contract_payment_mode = fields.Boolean(string="Integrar con Métodos de Pago")
-    module_contract_mandate = fields.Boolean(
-        string="Integrar con Mandatos Bancarios SEPA"
-    )
+
 
     # Bloque: Vistas Adicionales
     module_contract_management_timeline = fields.Boolean(

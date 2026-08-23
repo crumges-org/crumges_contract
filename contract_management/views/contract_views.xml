@@ -118,7 +118,6 @@
                         <field
                             name="auto_post_invoice"
                             invisible="generation_type != 'invoice'"
-                            groups="contract_management.group_contract_invoice_auto_validate"
                         />
 
                         <separator

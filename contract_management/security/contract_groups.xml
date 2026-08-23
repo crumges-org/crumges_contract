@@ -37,11 +37,7 @@
         <field name="category_id" ref="base.module_category_hidden" />
     </record>
 
-    <!-- Advanced Invoicing Toggles -->
-    <record id="group_contract_invoice_auto_validate" model="res.groups">
-        <field name="name">Auto Validate Contract Invoices</field>
-        <field name="category_id" ref="base.module_category_hidden" />
-    </record>
+
 
     <!-- Rules for Template Cards Visibility -->
     <record id="rule_category_sale_invoice" model="ir.rule">
