@@ -65,7 +65,27 @@ class ResConfigSettings(models.TransientModel):
         string="Integrar con Mandatos Bancarios SEPA"
     )
 
+    # Bloque: Vistas Adicionales
+    module_contract_management_timeline = fields.Boolean(
+        string="Vista de Línea de Tiempo (Community)"
+    )
+    module_contract_management_gantt_ee = fields.Boolean(
+        string="Vista Gantt (Enterprise)"
+    )
+
     @api.onchange("group_contract_sale_order")
     def _onchange_group_contract_sale_order(self):
         for rec in self:
             rec.module_contract_sale_generation = rec.group_contract_sale_order
+
+    @api.onchange("module_contract_management_timeline")
+    def _onchange_timeline(self):
+        for rec in self:
+            if rec.module_contract_management_timeline:
+                rec.module_contract_management_gantt_ee = False
+
+    @api.onchange("module_contract_management_gantt_ee")
+    def _onchange_gantt(self):
+        for rec in self:
+            if rec.module_contract_management_gantt_ee:
+                rec.module_contract_management_timeline = False

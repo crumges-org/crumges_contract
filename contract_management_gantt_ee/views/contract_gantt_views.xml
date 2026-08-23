@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="contract_view_gantt" model="ir.ui.view">
+        <field name="name">contract.contract.gantt</field>
+        <field name="model">contract.contract</field>
+        <field name="arch" type="xml">
+            <gantt
+                date_start="date_start"
+                date_stop="date_end"
+                string="Contratos"
+                default_group_by="partner_id"
+                color="partner_id"
+            >
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="state" />
+            </gantt>
+        </field>
+    </record>
+
+    <!-- Inyectar gantt en las acciones -->
+    <record
+        id="contract_management.action_customer_invoice_contract"
+        model="ir.actions.act_window"
+    >
+        <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
+    </record>
+    <record
+        id="contract_management.action_customer_sale_contract"
+        model="ir.actions.act_window"
+    >
+        <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
+    </record>
+    <record
+        id="contract_management.action_supplier_invoice_contract"
+        model="ir.actions.act_window"
+    >
+        <field name="view_mode">list,kanban,gantt,calendar,activity,form</field>
+    </record>
+</odoo>

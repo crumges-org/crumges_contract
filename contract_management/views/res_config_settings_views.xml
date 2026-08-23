@@ -122,6 +122,20 @@
                             <field name="module_contract_mandate" />
                         </setting>
                     </block>
+                    <block title="Vistas Adicionales" name="contract_additional_views">
+                        <setting
+                            id="contract_timeline_setting"
+                            help="Habilita la Vista de Línea de Tiempo comunitaria (Requiere módulo OCA web_timeline)."
+                        >
+                            <field name="module_contract_management_timeline" />
+                        </setting>
+                        <setting
+                            id="contract_gantt_ee_setting"
+                            help="Habilita la Vista Gantt nativa (Requiere Odoo Enterprise)."
+                        >
+                            <field name="module_contract_management_gantt_ee" />
+                        </setting>
+                    </block>
                 </app>
             </xpath>
         </field>

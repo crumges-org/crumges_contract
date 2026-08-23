@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="contract_view_timeline" model="ir.ui.view">
+        <field name="name">contract.contract.timeline</field>
+        <field name="model">contract.contract</field>
+        <field name="arch" type="xml">
+            <timeline
+                date_start="date_start"
+                date_stop="date_end"
+                string="Contratos"
+                default_group_by="partner_id"
+                color="partner_id"
+            >
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="state" />
+                <templates>
+                    <t t-name="timeline-item">
+                        <div class="o_timeline_item">
+                            <span t-esc="record.name" /> - <span
+                                t-esc="record.partner_id[1]"
+                            />
+                        </div>
+                    </t>
+                </templates>
+            </timeline>
+        </field>
+    </record>
+
+    <!-- Inyectar timeline en las acciones -->
+    <record
+        id="contract_management.action_customer_invoice_contract"
+        model="ir.actions.act_window"
+    >
+        <field name="view_mode">list,kanban,timeline,calendar,activity,form</field>
+    </record>
+    <record
+        id="contract_management.action_customer_sale_contract"
+        model="ir.actions.act_window"
+    >
+        <field name="view_mode">list,kanban,timeline,calendar,activity,form</field>
+    </record>
+    <record
+        id="contract_management.action_supplier_invoice_contract"
+        model="ir.actions.act_window"
+    >
+        <field name="view_mode">list,kanban,timeline,calendar,activity,form</field>
+    </record>
+</odoo>
