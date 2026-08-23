@@ -87,33 +87,7 @@ class Contract(models.Model):
         tracking=True,
     )
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            if vals.get("name", _("New")) == _("New") or not vals.get("name"):
-                # Determinar el prefijo según el tipo de contrato y generación
-                c_type = vals.get(
-                    "contract_type",
-                    self.env.context.get("default_contract_type", "sale"),
-                )
-                g_type = vals.get(
-                    "generation_type",
-                    self.env.context.get("default_generation_type", "invoice"),
-                )
 
-                if c_type == "sale":
-                    prefix = "CIV-" if g_type == "invoice" else "CSO-"
-                else:
-                    prefix = "CIP-" if g_type == "invoice" else "CPO-"
-
-                # Obtener el siguiente número de la secuencia universal (ej. 2026/0001)
-                sequence_number = (
-                    self.env["ir.sequence"].next_by_code("contract.contract") or ""
-                )
-                vals["name"] = (
-                    f"{prefix}{sequence_number}" if sequence_number else _("New")
-                )
-        return super().create(vals_list)
 
     # Bloqueamos el cambio de plantilla si no es borrador y emulamos la protección de ventas
     safe_template_id = fields.Many2one(
@@ -324,28 +298,10 @@ class Contract(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get("name", _("New")) == _("New") or not vals.get("name"):
-                # Determinar el prefijo según el tipo de contrato y generación
-                c_type = vals.get(
-                    "contract_type",
-                    self.env.context.get("default_contract_type", "sale"),
-                )
-                g_type = vals.get(
-                    "generation_type",
-                    self.env.context.get("default_generation_type", "invoice"),
-                )
-
-                if c_type == "sale":
-                    prefix = "CIV-" if g_type == "invoice" else "CSO-"
-                else:
-                    prefix = "CIP-" if g_type == "invoice" else "CPO-"
-
-                # Obtener el siguiente número de la secuencia universal (ej. 2026/0001)
                 sequence_number = (
                     self.env["ir.sequence"].next_by_code("contract.contract") or ""
                 )
-                vals["name"] = (
-                    f"{prefix}{sequence_number}" if sequence_number else _("New")
-                )
+                vals["name"] = sequence_number or _("New")
 
         records = super().create(vals_list)
         for record in records:
