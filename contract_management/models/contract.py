@@ -229,35 +229,7 @@ class Contract(models.Model):
             if rec.contract_type == "sale":
                 rec.generation_type = rec.sale_generation_type
 
-    @api.constrains("generation_type", "contract_type")
-    def _check_generation_type_allowed(self):
-        for rec in self:
-            if rec.contract_type == "sale":
-                if rec.generation_type == "invoice" and not self.env.user.has_group(
-                    "contract_management.group_contract_sale_invoice"
-                ):
-                    raise ValidationError(
-                        _(
-                            "La generación de Facturas de Venta está desactivada en la Configuración Global."
-                        )
-                    )
-                if rec.generation_type == "sale" and not self.env.user.has_group(
-                    "contract_management.group_contract_sale_order"
-                ):
-                    raise ValidationError(
-                        _(
-                            "La generación de Pedidos de Venta está desactivada en la Configuración Global."
-                        )
-                    )
-            elif rec.contract_type == "purchase":
-                if rec.generation_type == "invoice" and not self.env.user.has_group(
-                    "contract_management.group_contract_purchase_invoice"
-                ):
-                    raise ValidationError(
-                        _(
-                            "La generación de Facturas de Compra está desactivada en la Configuración Global."
-                        )
-                    )
+
 
     # --- Leyenda Dinámica de Periodo ---
     add_period_legend = fields.Boolean(

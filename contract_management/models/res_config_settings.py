@@ -29,28 +29,6 @@ class ResConfigSettings(models.TransientModel):
         help="Permite aplicar reglas de prorrateo a las fórmulas y consumos variables a mitad de mes.",
     )
 
-    # Bloque: Motores de Generación
-    group_contract_sale_invoice = fields.Boolean(
-        string="Generar Facturas de Venta",
-        implied_group="contract_management.group_contract_sale_invoice",
-        help="Habilita la generación de facturas recurrentes a clientes.",
-    )
-    group_contract_sale_order = fields.Boolean(
-        string="Generar Pedidos de Venta",
-        implied_group="contract_management.group_contract_sale_order",
-        help="Habilita la generación de órdenes de venta (Presupuestos/Pedidos).",
-    )
-    group_contract_purchase_invoice = fields.Boolean(
-        string="Generar Facturas de Compra",
-        implied_group="contract_management.group_contract_purchase_invoice",
-        help="Habilita la generación de facturas recurrentes de proveedores.",
-    )
-    module_contract_sale_generation = fields.Boolean(
-        string="Módulo OCA: contract_sale_generation"
-    )
-
-
-
     # Bloque: Vistas Adicionales
     enable_gantt_view = fields.Boolean(
         string="Activar Vista Gantt / Timeline",
@@ -84,11 +62,6 @@ class ResConfigSettings(models.TransientModel):
                 rec.module_contract_management_timeline = False
                 rec.module_contract_management_gantt_ee = False
                 rec.gantt_view_type = False
-
-    @api.onchange("group_contract_sale_order")
-    def _onchange_group_contract_sale_order(self):
-        for rec in self:
-            rec.module_contract_sale_generation = rec.group_contract_sale_order
 
     @api.onchange("module_contract_management_timeline")
     def _onchange_timeline(self):

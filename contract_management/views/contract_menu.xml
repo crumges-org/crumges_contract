@@ -22,7 +22,6 @@
         id="contract_menu_customers"
         name="Clientes"
         parent="contract_management_menu_root"
-        groups="contract_management.group_contract_sale_invoice,contract_management.group_contract_sale_order"
         sequence="10"
     />
 
@@ -30,7 +29,6 @@
         id="contract_menu_vendors"
         name="Proveedores"
         parent="contract_management_menu_root"
-        groups="contract_management.group_contract_purchase_invoice"
         sequence="20"
     />
 
@@ -46,7 +44,6 @@
         name="Contratos de Facturas de Cliente"
         parent="contract_menu_customers"
         action="action_customer_invoice_contract"
-        groups="contract_management.group_contract_sale_invoice"
         sequence="10"
     />
 
@@ -55,7 +52,6 @@
         name="Contratos de Ventas"
         parent="contract_menu_customers"
         action="action_customer_sale_contract"
-        groups="contract_management.group_contract_sale_order"
         sequence="20"
     />
 
@@ -64,7 +60,6 @@
         name="Contratos de Facturas de Proveedor"
         parent="contract_menu_vendors"
         action="action_supplier_invoice_contract"
-        groups="contract_management.group_contract_purchase_invoice"
         sequence="10"
     />
 

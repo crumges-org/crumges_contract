@@ -44,47 +44,6 @@
                         >
                             <field name="group_contract_modification_rule" />
                         </setting>
-                        <setting
-                            id="contract_variable_qty_prorated_setting"
-                            help="Permite aplicar reglas de prorrateo a consumos o plantillas de variables a mitad de mes."
-                        >
-                            <field name="module_contract_variable_qty_prorated" />
-                        </setting>
-                    </block>
-                    <block
-                        title="Motores de Generación"
-                        name="contract_generation_engines"
-                    >
-                        <setting
-                            id="contract_sale_invoice_setting"
-                            help="Permite generar recurrentemente Facturas de Venta a clientes."
-                        >
-                            <field name="group_contract_sale_invoice" />
-                        </setting>
-                        <setting
-                            id="contract_sale_order_setting"
-                            help="Permite generar recurrentemente Pedidos de Venta a clientes."
-                        >
-                            <field name="group_contract_sale_order" />
-                            <div
-                                class="content-group"
-                                invisible="not group_contract_sale_order"
-                            >
-                                <div class="mt8 text-muted">
-                                    <field
-                                        name="module_contract_sale_generation"
-                                        invisible="1"
-                                    />
-
-                                </div>
-                            </div>
-                        </setting>
-                        <setting
-                            id="contract_purchase_invoice_setting"
-                            help="Permite generar recurrentemente Facturas de Compra de proveedores."
-                        >
-                            <field name="group_contract_purchase_invoice" />
-                        </setting>
                     </block>
 
                     <block title="Vistas Adicionales" name="contract_additional_views">
