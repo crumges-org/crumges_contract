@@ -44,6 +44,12 @@
                         >
                             <field name="group_contract_modification_rule" />
                         </setting>
+                        <setting
+                            id="contract_variable_qty_prorated_setting"
+                            help="Permite aplicar reglas de prorrateo a consumos o plantillas de variables a mitad de mes."
+                        >
+                            <field name="module_contract_variable_qty_prorated" />
+                        </setting>
                     </block>
 
                     <block title="Vistas Adicionales" name="contract_additional_views">
