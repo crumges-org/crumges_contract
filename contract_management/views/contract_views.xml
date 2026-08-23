@@ -268,6 +268,7 @@
             <!-- Restaurar restricciones de grupos de seguridad -->
             <xpath expr="//field[@name='contract_template_id']" position="attributes">
                 <attribute name="readonly">state in ['in_progress', 'done']</attribute>
+                <attribute name="required">1</attribute>
             </xpath>
             <xpath expr="//field[@name='tag_ids']" position="attributes">
             </xpath>
