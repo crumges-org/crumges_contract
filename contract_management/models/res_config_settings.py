@@ -58,8 +58,8 @@ class ResConfigSettings(models.TransientModel):
     )
     gantt_view_type = fields.Selection(
         [
-            ("community", "Vista de Línea de Tiempo (Community)"),
-            ("enterprise", "Vista Gantt (Enterprise)"),
+            ("community", "Gantt Community"),
+            ("enterprise", "Gantt Enterprise"),
         ],
         string="Tipo de Vista",
         config_parameter="contract_management.gantt_view_type",
