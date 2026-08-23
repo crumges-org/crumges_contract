@@ -52,12 +52,38 @@ class ResConfigSettings(models.TransientModel):
 
 
     # Bloque: Vistas Adicionales
-    module_contract_management_timeline = fields.Boolean(
-        string="Vista de Línea de Tiempo (Community)"
+    enable_gantt_view = fields.Boolean(
+        string="Activar Vista Gantt / Timeline",
+        config_parameter="contract_management.enable_gantt_view",
     )
-    module_contract_management_gantt_ee = fields.Boolean(
-        string="Vista Gantt (Enterprise)"
+    gantt_view_type = fields.Selection(
+        [
+            ("community", "Vista de Línea de Tiempo (Community)"),
+            ("enterprise", "Vista Gantt (Enterprise)"),
+        ],
+        string="Tipo de Vista",
+        config_parameter="contract_management.gantt_view_type",
     )
+    module_contract_management_timeline = fields.Boolean()
+    module_contract_management_gantt_ee = fields.Boolean()
+
+    @api.onchange("enable_gantt_view", "gantt_view_type")
+    def _onchange_gantt_view_selection(self):
+        for rec in self:
+            if rec.enable_gantt_view:
+                if rec.gantt_view_type == "community":
+                    rec.module_contract_management_timeline = True
+                    rec.module_contract_management_gantt_ee = False
+                elif rec.gantt_view_type == "enterprise":
+                    rec.module_contract_management_timeline = False
+                    rec.module_contract_management_gantt_ee = True
+                else:
+                    rec.module_contract_management_timeline = False
+                    rec.module_contract_management_gantt_ee = False
+            else:
+                rec.module_contract_management_timeline = False
+                rec.module_contract_management_gantt_ee = False
+                rec.gantt_view_type = False
 
     @api.onchange("group_contract_sale_order")
     def _onchange_group_contract_sale_order(self):

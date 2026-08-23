@@ -89,16 +89,25 @@
 
                     <block title="Vistas Adicionales" name="contract_additional_views">
                         <setting
-                            id="contract_timeline_setting"
-                            help="Habilita la Vista de Línea de Tiempo comunitaria (Requiere módulo OCA web_timeline)."
+                            id="contract_gantt_setting"
+                            help="Habilita la Vista de Línea de Tiempo / Gantt para visualización de contratos."
                         >
-                            <field name="module_contract_management_timeline" />
-                        </setting>
-                        <setting
-                            id="contract_gantt_ee_setting"
-                            help="Habilita la Vista Gantt nativa (Requiere Odoo Enterprise)."
-                        >
-                            <field name="module_contract_management_gantt_ee" />
+                            <field name="enable_gantt_view" />
+                            <div
+                                class="content-group mt16"
+                                invisible="not enable_gantt_view"
+                            >
+                                <div class="row">
+                                    <label
+                                        for="gantt_view_type"
+                                        class="col-lg-3 o_light_label"
+                                    />
+                                    <field
+                                        name="gantt_view_type"
+                                        required="enable_gantt_view"
+                                    />
+                                </div>
+                            </div>
                         </setting>
                     </block>
                 </app>
