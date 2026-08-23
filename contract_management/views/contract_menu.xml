@@ -5,7 +5,7 @@
         id="contract_management_menu_root"
         name="Contratos"
         action="action_contract_dashboard"
-        web_icon="contract,static/description/icon.png"
+        web_icon="contract_management,static/description/icon.png"
         sequence="45"
     />
 
