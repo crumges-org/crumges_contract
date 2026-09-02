@@ -1,6 +1,6 @@
 {
     "name": "Contract Management App",
-    "version": "18.0.1.0.0",
+    "version": "18.0.1.0.1",
     "author": "Crumges",
     "website": "https://crumges.com",
     "license": "AGPL-3",

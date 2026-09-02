@@ -131,6 +131,31 @@ class Contract(models.Model):
             if self.safe_template_id.terms_and_conditions:
                 self.terms_and_conditions = self.safe_template_id.terms_and_conditions
 
+            # Forzar la propagación de líneas y otros campos desde la plantilla original de OCA
+            if hasattr(self, "_onchange_contract_template_id"):
+                self._onchange_contract_template_id()
+            
+            # En Odoo 18 el onchange anidado puede fallar al popular One2many, por lo que forzamos la copia:
+            if self.safe_template_id.contract_line_ids:
+                from odoo import Command
+                lines_vals = []
+                for tmpl_line in self.safe_template_id.contract_line_ids:
+                    if hasattr(self, "_convert_contract_line"):
+                        val = self._convert_contract_line(tmpl_line)
+                    else:
+                        val = tmpl_line.copy_data()[0]
+                        val.pop('contract_id', None)
+                        val.pop('contract_template_id', None)
+                    
+                    lines_vals.append(Command.create(val))
+                
+                if getattr(self.safe_template_id, "line_recurrence", False):
+                    if not self.contract_line_ids:
+                        self.contract_line_ids = lines_vals
+                else:
+                    if not getattr(self, "contract_line_fixed_ids", False):
+                        self.contract_line_fixed_ids = lines_vals
+
             self.safe_template_id = False
 
     def action_in_progress(self):
@@ -648,13 +673,37 @@ class Contract(models.Model):
 
     @api.onchange("contract_template_id")
     def _onchange_contract_template_id(self):
+        # En Odoo 18, si el super usa res.new() en One2many dentro del onchange, la interfaz puede ignorarlo.
+        # Por lo tanto, extraemos las líneas de la plantilla usando Command.create
         res = super()._onchange_contract_template_id()
-        if (
-            self.contract_template_id
-            and self.contract_template_id.analytic_distribution
-        ):
-            self.analytic_distribution = self.contract_template_id.analytic_distribution
-            self._onchange_analytic_distribution_header()
+        
+        if self.contract_template_id:
+            if self.contract_template_id.analytic_distribution:
+                self.analytic_distribution = self.contract_template_id.analytic_distribution
+                self._onchange_analytic_distribution_header()
+                
+            # Forzamos la copia de las líneas directamente con el ORM para que el UI las dibuje correctamente
+            # NOTA: En Odoo 18 OCA dividió las líneas en contract_line_ids y contract_line_fixed_ids basado en line_recurrence,
+            # pero olvidaron actualizar el onchange de la plantilla para popular contract_line_fixed_ids.
+            if self.contract_template_id.contract_line_ids:
+                from odoo import Command
+                lines_vals = []
+                for tmpl_line in self.contract_template_id.contract_line_ids:
+                    if hasattr(self, "_convert_contract_line"):
+                        val = self._convert_contract_line(tmpl_line)
+                    else:
+                        val = tmpl_line.copy_data()[0]
+                        val.pop('contract_id', None)
+                        val.pop('contract_template_id', None)
+                    lines_vals.append(Command.create(val))
+                
+                if getattr(self.contract_template_id, "line_recurrence", False):
+                    if not self.contract_line_ids:
+                        self.contract_line_ids = lines_vals
+                else:
+                    if not getattr(self, "contract_line_fixed_ids", False):
+                        self.contract_line_fixed_ids = lines_vals
+                
         return res
 
     @api.onchange("analytic_distribution")
